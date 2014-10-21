@@ -50,8 +50,8 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 		);
 
 		if ( false !== $result ) {
-			$payment->set_transaction_id( $result->transaction_id );
-			$payment->set_action_url( $result->url );
+			// $payment->set_transaction_id( $result->transaction_id );
+			// $payment->set_action_url( $result->url );
 
 		} else {
 			// $this->error = $this->client->get_error();
