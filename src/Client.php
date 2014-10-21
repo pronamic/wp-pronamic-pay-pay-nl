@@ -26,7 +26,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 
 	/////////////////////////////////////////////////
 
-	public function get_urL( $version, $namespace, $method, $output, $parameters = array() ) {
+	public function get_url( $version, $namespace, $method, $output, $parameters = array() ) {
 		return add_query_arg( $parameters, sprintf(
 			self::API_URL,
 			$version,

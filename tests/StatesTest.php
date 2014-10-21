@@ -24,5 +24,5 @@ class Pronamic_WP_Pay_Gateways_PayNL_StatesTest extends PHPUnit_Framework_TestCa
 			array( Pronamic_WP_Pay_Gateways_PayNL_States::CANCELED, Pronamic_WP_Pay_Statuses::CANCELLED ),
 			array( 'not existing status', null ),
 		);
-    }
+	}
 }
