@@ -36,7 +36,20 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 		) );
 	}
 
-	public function start_transaction( $amount, $ip_address, $finish_url ) {
+	/**
+	 * Transaction start
+	 *
+	 * @param float $amount
+	 * @param string $ip_address
+	 * @param string $finish_url
+	 * @return stdClass
+	 *
+	 * @see https://admin.pay.nl/docpanel/api/Transaction/start/4
+	 */
+	public function transaction_start( $amount, $ip_address, $finish_url ) {
+		$result = null;
+
+		// URL
 		$url = $this->get_url( 'v4', 'Transaction', 'start', 'json', array(
 			'token'     => $this->token,
 			'serviceId' => $this->service_id,
@@ -45,7 +58,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 			'finishUrl' => $finish_url,
 		) );
 
-
+		// Request
 		$result = wp_remote_get( $url );
 
 		if ( 200 == wp_remote_retrieve_response_code( $result ) ) {
@@ -54,8 +67,43 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 			$data = json_decode( $body );
 
 			if ( isset( $data, $data->request, $data->request->result ) ) {
-				var_dump( $data );
+				$result = $data;
 			}
 		}
+
+		// Return
+		return $result;
+	}
+
+	/**
+	 * Transaction info
+	 *
+	 * @param string $transaction_id
+	 *
+	 * @see https://admin.pay.nl/docpanel/api/Transaction/info/4
+	 */
+	public function transaction_info( $transaction_id ) {
+		$result = null;
+
+		// URL
+		$url = $this->get_url( 'v4', 'Transaction', 'info', 'json', array(
+			'token'         => $this->token,
+			'transactionId' => $transaction_id,
+		) );
+
+		// Request
+		$result = wp_remote_get( $url );
+
+		if ( 200 == wp_remote_retrieve_response_code( $result ) ) {
+			$body = wp_remote_retrieve_body( $result );
+
+			$data = json_decode( $body );
+
+			if ( isset( $data, $data->request, $data->request->result ) ) {
+				$result = $data;
+			}
+		}
+
+		return $result;
 	}
 }
