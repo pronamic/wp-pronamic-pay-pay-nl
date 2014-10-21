@@ -78,8 +78,8 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 				$state = $result->paymentDetails->state;
 
 				$status = Pronamic_WP_Pay_Gateways_PayNL_States::transform( $state );
-				var_dump( $status );
-				exit;
+
+				$payment->set_status( $status );
 			}
 		}
 	}
