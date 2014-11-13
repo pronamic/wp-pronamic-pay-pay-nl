@@ -49,7 +49,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 			add_query_arg( 'payment', $payment->get_id(), home_url( '/' ) )
 		);
 
-		if ( isset( $result, $result->transaction ) ) {
+		if ( isset( $result, $result->result, $result->transaction ) && 1 == $result->result ) {
 			$transaction_id = $result->transaction->transactionId;
 			$payment_url    = $result->transaction->paymentURL;
 
@@ -70,7 +70,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	public function update_status( Pronamic_Pay_Payment $payment ) {
 		$result = $this->client->transaction_info( $payment->get_transaction_id() );
 
-		if ( isset( $result, $result->paymentDetails ) ) {
+		if ( isset( $result, $result->result, $result->paymentDetails ) && 1 == $result->result ) {
 			$state = $result->paymentDetails->state;
 
 			$status = Pronamic_WP_Pay_Gateways_PayNL_States::transform( $state );
