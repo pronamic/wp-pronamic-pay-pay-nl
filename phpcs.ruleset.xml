@@ -2,7 +2,7 @@
 <ruleset name="WordPress Pay Pay.nl rules">
 	<rule ref="WordPress">	
 		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
-
+		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
 		<exclude name="WordPress.VIP.RestrictedFunctions.wp_remote_get" />
 	</rule>
 </ruleset>
