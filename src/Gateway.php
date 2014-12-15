@@ -43,18 +43,20 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	 * @see Pronamic_WP_Pay_Gateway::start()
 	 */
 	public function start( Pronamic_Pay_PaymentDataInterface $data, Pronamic_Pay_Payment $payment, $payment_method = null ) {
-		$result = $this->client->start_transaction(
-			$date->get_amount(),
+		$result = $this->client->transaction_start(
+			$data->get_amount(),
 			Pronamic_WP_Pay_Gateways_PayNL_Util::get_ip_address(),
 			add_query_arg( 'payment', $payment->get_id(), home_url( '/' ) )
 		);
 
-		if ( false !== $result ) {
-			$payment->set_transaction_id( $result->transaction_id );
-			$payment->set_action_url( $result->url );
+		if ( isset( $result, $result->result, $result->transaction ) && 1 == $result->result ) {
+			$transaction_id = $result->transaction->transactionId;
+			$payment_url    = $result->transaction->paymentURL;
 
+			$payment->set_transaction_id( $transaction_id );
+			$payment->set_action_url( $payment_url );
 		} else {
-			// $this->error = $this->client->get_error();
+			$this->error = $this->client->get_error();
 		}
 	}
 
@@ -66,6 +68,14 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	 * @param Pronamic_Pay_Payment $payment
 	 */
 	public function update_status( Pronamic_Pay_Payment $payment ) {
+		$result = $this->client->transaction_info( $payment->get_transaction_id() );
 
+		if ( isset( $result, $result->result, $result->paymentDetails ) && 1 == $result->result ) {
+			$state = $result->paymentDetails->state;
+
+			$status = Pronamic_WP_Pay_Gateways_PayNL_States::transform( $state );
+
+			$payment->set_status( $status );
+		}
 	}
 }
