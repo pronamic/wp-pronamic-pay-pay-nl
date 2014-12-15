@@ -6,7 +6,7 @@
  * Copyright: Copyright (c) 2005 - 2014
  * Company: Pronamic
  * @author Remco Tolsma
- * @version 1.0.0
+ * @version 1.0.1
  */
 class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	/**
@@ -49,7 +49,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 			add_query_arg( 'payment', $payment->get_id(), home_url( '/' ) )
 		);
 
-		if ( isset( $result, $result->result, $result->transaction ) && 1 == $result->result ) {
+		if ( isset( $result, $result->transaction ) ) {
 			$transaction_id = $result->transaction->transactionId;
 			$payment_url    = $result->transaction->paymentURL;
 
