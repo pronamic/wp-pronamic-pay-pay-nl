@@ -6,7 +6,7 @@
  * Copyright: Copyright (c) 2005 - 2014
  * Company: Pronamic
  * @author Remco Tolsma
- * @version 1.0.1
+ * @version 1.0.2
  */
 class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	/**
@@ -70,7 +70,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	public function update_status( Pronamic_Pay_Payment $payment ) {
 		$result = $this->client->transaction_info( $payment->get_transaction_id() );
 
-		if ( isset( $result, $result->result, $result->paymentDetails ) && 1 == $result->result ) {
+		if ( isset( $result, $result->paymentDetails ) ) {
 			$state = $result->paymentDetails->state;
 
 			$status = Pronamic_WP_Pay_Gateways_PayNL_States::transform( $state );
