@@ -114,7 +114,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 			'token'     => $this->token,
 			'serviceId' => $this->service_id,
 			'amount'    => Pronamic_WP_Util::amount_to_cents( $amount ),
-			'ipAddress'	=> $ip_address,
+			'ipAddress' => $ip_address,
 			'finishUrl' => $finish_url,
 		) );
 
