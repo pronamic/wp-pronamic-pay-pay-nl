@@ -8,7 +8,7 @@
  * @version 1.2.0
  * @since 1.2.0
  */
-class Pronamic_WP_Pay_Gateways_PayNL_GatewaySettings extends Pronamic_WP_Pay_Admin_GatewaySettings {
+class Pronamic_WP_Pay_Gateways_PayNL_GatewaySettings extends Pronamic_WP_Pay_GatewaySettings {
 	public function __construct() {
 		add_filter( 'pronamic_pay_gateway_sections', array( $this, 'sections' ) );
 		add_filter( 'pronamic_pay_gateway_fields', array( $this, 'fields' ) );
