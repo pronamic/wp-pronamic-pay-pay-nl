@@ -1,20 +1,27 @@
-# Changelog
+# Change Log
 
-## 1.1.1
-*	Updated WordPress pay core library to version 1.2.0.
+All notable changes to this project will be documented in this file.
 
-## 1.1.0
-*	Updated WordPress pay core library to version 1.1.0.
-*	Fixed isues with filter_input INPUT_SERVER (https://bugs.php.net/bug.php?id=49184).
+This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
-## 1.0.3
-*	Require WordPress pay core library version 1.0.0.
+## [Unreleased][unreleased]
+- Added an gateway settings class.
 
-## 1.0.2
-*	Fix - fixed issue with payment status update handling.
+## [1.1.1] - 2015-03-26
+- Updated WordPress pay core library to version 1.2.0.
 
-## 1.0.1
-*	Fix - Fixed issue with start transaction response handling.
+## [1.1.0] - 2015-02-27
+- Updated WordPress pay core library to version 1.1.0.
+- Fixed isues with filter_input INPUT_SERVER (https://bugs.php.net/bug.php?id=49184).
 
-## 1.0.0
-*	First release.
+## [1.0.3] - 2015-01-20
+- Require WordPress pay core library version 1.0.0.
+
+## [1.0.2] - 2014-12-16
+- Fix - fixed issue with payment status update handling.
+
+## [1.0.1] - 2014-12-15
+- Fix - Fixed issue with start transaction response handling.
+
+## 1.0.0 - 2014-12-15
+- First release.
