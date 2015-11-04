@@ -28,6 +28,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_GatewaySettings extends Pronamic_WP_Pay_Gat
 	public function fields( array $fields ) {
 		// Token
 		$fields[] = array(
+			'filter'      => FILTER_SANITIZE_STRING,
 			'section'     => 'sisow',
 			'meta_key'    => '_pronamic_gateway_pay_nl_token',
 			'title'       => __( 'Token', 'pronamic_ideal' ),
@@ -42,6 +43,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_GatewaySettings extends Pronamic_WP_Pay_Gat
 
 		// Service ID
 		$fields[] = array(
+			'filter'      => FILTER_SANITIZE_STRING,
 			'section'     => 'sisow',
 			'meta_key'    => '_pronamic_gateway_pay_nl_service_id',
 			'title'       => __( 'Service ID', 'pronamic_ideal' ),
