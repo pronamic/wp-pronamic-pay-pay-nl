@@ -37,6 +37,30 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	/////////////////////////////////////////////////
 
 	/**
+	 * Get payment methods
+	 *
+	 * @return mixed an array or null
+	 */
+	public function get_payment_methods() {
+		return Pronamic_WP_Pay_PaymentMethods::IDEAL;
+	}
+
+	/////////////////////////////////////////////////
+
+	/**
+	 * Get supported payment methods
+	 *
+	 * @see Pronamic_WP_Pay_Gateway::get_supported_payment_methods()
+	 */
+	public function get_supported_payment_methods() {
+		return array(
+			Pronamic_WP_Pay_PaymentMethods::IDEAL => Pronamic_WP_Pay_PaymentMethods::IDEAL,
+		);
+	}
+
+	/////////////////////////////////////////////////
+
+	/**
 	 * Start
 	 *
 	 * @param Pronamic_Pay_PaymentDataInterface $data
