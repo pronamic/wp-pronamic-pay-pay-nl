@@ -1,4 +1,9 @@
+sudo: false
+
 language: php
+
+matrix:
+  fast_finish: true
 
 php:
   - 5.3
