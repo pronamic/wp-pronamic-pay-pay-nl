@@ -37,12 +37,37 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	/////////////////////////////////////////////////
 
 	/**
-	 * Get payment methods
+	 * Get issuers
 	 *
-	 * @return mixed an array or null
+	 * @see Pronamic_WP_Pay_Gateway::get_issuers()
 	 */
-	public function get_payment_methods() {
-		return Pronamic_WP_Pay_PaymentMethods::IDEAL;
+	public function get_issuers() {
+		$groups = array();
+
+		$result = $this->client->get_issuers();
+
+		if ( $result ) {
+			$groups[] = array(
+				'options' => $result,
+			);
+		} else {
+			$this->error = $this->client->get_error();
+		}
+
+		return $groups;
+	}
+
+	public function get_issuer_field() {
+		if ( Pronamic_WP_Pay_PaymentMethods::IDEAL === $this->get_payment_method() ) {
+			return array (
+				'id'       => 'pronamic_ideal_issuer_id',
+				'name'     => 'pronamic_ideal_issuer_id',
+				'label'    => __( 'Choose your bank', 'pronamic_ideal' ),
+				'required' => true,
+				'type'     => 'select',
+				'choices'  => $this->get_transient_issuers(),
+			);
+		}
 	}
 
 	/////////////////////////////////////////////////
@@ -54,7 +79,8 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	 */
 	public function get_supported_payment_methods() {
 		return array(
-			Pronamic_WP_Pay_PaymentMethods::IDEAL => Pronamic_WP_Pay_PaymentMethods::IDEAL,
+			Pronamic_WP_Pay_PaymentMethods::IDEAL       => Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL,
+			Pronamic_WP_Pay_PaymentMethods::MISTER_CASH => Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::MISTERCASH,
 		);
 	}
 
@@ -67,10 +93,25 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	 * @see Pronamic_WP_Pay_Gateway::start()
 	 */
 	public function start( Pronamic_Pay_PaymentDataInterface $data, Pronamic_Pay_Payment $payment, $payment_method = null ) {
+		$request = array();
+
+		switch ( $payment_method ) {
+			case Pronamic_WP_Pay_PaymentMethods::MISTER_CASH :
+				$request['paymentOptionId'] = Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::MISTERCASH;
+
+				break;
+			case Pronamic_WP_Pay_PaymentMethods::IDEAL :
+				$request['paymentOptionId']    = Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL;
+				$request['paymentOptionSubId'] = $data->get_issuer_id();
+
+				break;
+		}
+
 		$result = $this->client->transaction_start(
 			$data->get_amount(),
 			Pronamic_WP_Pay_Gateways_PayNL_Util::get_ip_address(),
-			urlencode( $payment->get_return_url() )
+			urlencode( $payment->get_return_url() ),
+			$request
 		);
 
 		if ( isset( $result, $result->transaction ) ) {
