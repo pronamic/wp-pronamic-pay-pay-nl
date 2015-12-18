@@ -16,7 +16,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Settings extends Pronamic_WP_Pay_GatewaySet
 
 	public function sections( array $sections ) {
 		// Pay.nl
-		$sections['sisow'] = array(
+		$sections['pay-nl'] = array(
 			'title'   => __( 'Pay.nl', 'pronamic_ideal' ),
 			'methods' => array( 'pay_nl' ),
 		);
@@ -29,7 +29,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Settings extends Pronamic_WP_Pay_GatewaySet
 		// Token
 		$fields[] = array(
 			'filter'      => FILTER_SANITIZE_STRING,
-			'section'     => 'sisow',
+			'section'     => 'pay-nl',
 			'meta_key'    => '_pronamic_gateway_pay_nl_token',
 			'title'       => __( 'Token', 'pronamic_ideal' ),
 			'type'        => 'text',
@@ -44,7 +44,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Settings extends Pronamic_WP_Pay_GatewaySet
 		// Service ID
 		$fields[] = array(
 			'filter'      => FILTER_SANITIZE_STRING,
-			'section'     => 'sisow',
+			'section'     => 'pay-nl',
 			'meta_key'    => '_pronamic_gateway_pay_nl_service_id',
 			'title'       => __( 'Service ID', 'pronamic_ideal' ),
 			'type'        => 'text',
