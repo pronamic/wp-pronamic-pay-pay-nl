@@ -20,9 +20,9 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 
 	/**
 	 * Error
-	*
-	* @var WP_Error
-	*/
+	 *
+	 * @var WP_Error
+	 */
 	private $error;
 
 	/////////////////////////////////////////////////
@@ -82,7 +82,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 		$result = null;
 
 		if ( isset( $data, $data->request, $data->request->result ) ) {
-			if ( 0 == $data->request->result && isset( $data->request->errorId, $data->request->errorMessage ) ) {
+			if ( 0 == $data->request->result && isset( $data->request->errorId, $data->request->errorMessage ) ) { // WPCS: loose comparison ok.
 				$pay_nl_error = new Pronamic_WP_Pay_Gateways_PayNL_Error( $data->request->errorId, $data->request->errorMessage );
 
 				$this->error = new WP_Error( 'pay_nl_error', (string) $pay_nl_error, $pay_nl_error );
@@ -106,22 +106,27 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 	 *
 	 * @see https://admin.pay.nl/docpanel/api/Transaction/start/4
 	 */
-	public function transaction_start( $amount, $ip_address, $finish_url ) {
+	public function transaction_start( $amount, $ip_address, $finish_url, $request_param = array() ) {
 		$result = null;
 
+		$parameters = array_merge(
+			$request_param,
+			array(
+				'token'     => $this->token,
+				'serviceId' => $this->service_id,
+				'amount'    => Pronamic_WP_Util::amount_to_cents( $amount ),
+				'ipAddress' => $ip_address,
+				'finishUrl' => $finish_url,
+			)
+		);
+
 		// URL
-		$url = $this->get_url( 'v4', 'Transaction', 'start', 'json', array(
-			'token'     => $this->token,
-			'serviceId' => $this->service_id,
-			'amount'    => Pronamic_WP_Util::amount_to_cents( $amount ),
-			'ipAddress' => $ip_address,
-			'finishUrl' => $finish_url,
-		) );
+		$url = $this->get_url( 'v4', 'Transaction', 'start', 'json', $parameters );
 
 		// Request
 		$response = wp_remote_get( $url );
 
-		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
+		if ( 200 == wp_remote_retrieve_response_code( $response ) ) { // WPCS: loose comparison ok.
 			$body = wp_remote_retrieve_body( $response );
 
 			$data = json_decode( $body );
@@ -152,7 +157,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 		// Request
 		$response = wp_remote_get( $url );
 
-		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
+		if ( 200 == wp_remote_retrieve_response_code( $response ) ) { // WPCS: loose comparison ok.
 			$body = wp_remote_retrieve_body( $response );
 
 			$data = json_decode( $body );
@@ -162,5 +167,54 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 
 		// Return
 		return $result;
+	}
+
+	//////////////////////////////////////////////////
+
+	/**
+	 * Get issuers
+	 *
+	 * @return array
+	 */
+	public function get_issuers() {
+		$issuers = false;
+
+		// URL
+		$url = $this->get_url( 'v4', 'Transaction', 'getService', 'json', array(
+			'token'           => $this->token,
+			'serviceId'       => $this->service_id,
+			'paymentMethodId' => Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL,
+		) );
+
+		// Request
+		$response = wp_remote_get( $url );
+
+		$response_code = wp_remote_retrieve_response_code( $response );
+
+		if ( 200 == $response_code ) { // WPCS: loose comparison ok.
+			$body = wp_remote_retrieve_body( $response );
+
+			// NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit.
+			$result = json_decode( $body );
+
+			if ( null !== $result ) {
+				$issuers = array();
+
+				foreach ( $result->countryOptionList as $countries ) {
+					foreach ( $countries->paymentOptionList as $payment_method ) {
+						if ( Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL === $payment_method->id ) {
+							foreach ( $payment_method->paymentOptionSubList as $issuer ) {
+								$id   = Pronamic_WP_Pay_XML_Security::filter( $issuer->id );
+								$name = Pronamic_WP_Pay_XML_Security::filter( $issuer->name );
+
+								$issuers[ $id ] = $name;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return $issuers;
 	}
 }

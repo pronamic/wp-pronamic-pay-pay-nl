@@ -16,10 +16,12 @@ module.exports = function( grunt ) {
 					'**/*.php',
 					'!node_modules/**',
 					'!vendor/**'
-				],
+				]
 			},
 			options: {
-				standard: 'phpcs.ruleset.xml'
+				bin: 'vendor/bin/phpcs',
+				standard: 'phpcs.ruleset.xml',
+				showSniffCodes: true
 			}
 		},
 
