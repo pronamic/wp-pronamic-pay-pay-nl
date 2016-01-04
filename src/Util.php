@@ -15,7 +15,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Util {
 			return Pronamic_WP_Pay_Server::get( 'HTTP_X_FORWARDED_FOR', FILTER_VALIDATE_IP );
 		}
 
-		if ( isset( $_SERVER['REMOTE_ADDR'] ) )  {
+		if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
 			return Pronamic_WP_Pay_Server::get( 'REMOTE_ADDR', FILTER_VALIDATE_IP );
 		}
 

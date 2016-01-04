@@ -82,7 +82,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 		$result = null;
 
 		if ( isset( $data, $data->request, $data->request->result ) ) {
-			if ( 0 == $data->request->result && isset( $data->request->errorId, $data->request->errorMessage ) ) {
+			if ( 0 == $data->request->result && isset( $data->request->errorId, $data->request->errorMessage ) ) { // WPCS: loose comparison ok.
 				$pay_nl_error = new Pronamic_WP_Pay_Gateways_PayNL_Error( $data->request->errorId, $data->request->errorMessage );
 
 				$this->error = new WP_Error( 'pay_nl_error', (string) $pay_nl_error, $pay_nl_error );
@@ -126,7 +126,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 		// Request
 		$response = wp_remote_get( $url );
 
-		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
+		if ( 200 == wp_remote_retrieve_response_code( $response ) ) { // WPCS: loose comparison ok.
 			$body = wp_remote_retrieve_body( $response );
 
 			$data = json_decode( $body );
@@ -157,7 +157,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 		// Request
 		$response = wp_remote_get( $url );
 
-		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
+		if ( 200 == wp_remote_retrieve_response_code( $response ) ) { // WPCS: loose comparison ok.
 			$body = wp_remote_retrieve_body( $response );
 
 			$data = json_decode( $body );
@@ -191,7 +191,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 
 		$response_code = wp_remote_retrieve_response_code( $response );
 
-		if ( $response_code == 200 ) {
+		if ( 200 == $response_code ) { // WPCS: loose comparison ok.
 			$body = wp_remote_retrieve_body( $response );
 
 			// NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit.
@@ -201,27 +201,18 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 				$issuers = array();
 
 				foreach ( $result->countryOptionList as $countries ) {
-
 					foreach ( $countries->paymentOptionList as $payment_method ) {
-
 						if ( Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL === $payment_method->id ) {
-
 							foreach ( $payment_method->paymentOptionSubList as $issuer ) {
-
 								$id   = Pronamic_WP_Pay_XML_Security::filter( $issuer->id );
 								$name = Pronamic_WP_Pay_XML_Security::filter( $issuer->name );
 
 								$issuers[ $id ] = $name;
 							}
-
 						}
-
 					}
-
 				}
-
 			}
-
 		}
 
 		return $issuers;

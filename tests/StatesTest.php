@@ -10,6 +10,8 @@
  */
 class Pronamic_WP_Pay_Gateways_PayNL_StatesTest extends PHPUnit_Framework_TestCase {
 	/**
+	 * Test transform.
+	 *
 	 * @dataProvider states_matrix_provider
 	 */
 	public function test_transform( $state, $expected ) {
