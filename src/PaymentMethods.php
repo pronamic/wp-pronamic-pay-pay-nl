@@ -3,8 +3,9 @@
 /**
  * Title: Pay.nl payment methods
  * Description:
- * Copyright: Copyright (c) 2005 - 2015
+ * Copyright: Copyright (c) 2005 - 2016
  * Company: Pronamic
+ *
  * @author Reüel van der Steege
  * @version 1.0.0
  * @see https://admin.pay.nl/data/payment_profiles
