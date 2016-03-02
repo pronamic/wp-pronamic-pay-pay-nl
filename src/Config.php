@@ -13,4 +13,8 @@ class Pronamic_WP_Pay_Gateways_PayNL_Config extends Pronamic_WP_Pay_GatewayConfi
 	public $token;
 
 	public $service_id;
+
+	public function get_gateway_class() {
+		return 'Pronamic_WP_Pay_Gateways_PayNL_Gateway';
+	}
 }
