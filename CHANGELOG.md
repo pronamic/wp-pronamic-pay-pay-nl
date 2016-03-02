@@ -7,6 +7,11 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [1.1.3] - 2016-03-02
+- Added get settings function.
+- Moved get_gateway_class() function to the configuration class.
+- Removed get_config_class(), no longer required.
+
 ## [1.1.2] - 2016-02-1
 - Added an gateway settings class.
 
