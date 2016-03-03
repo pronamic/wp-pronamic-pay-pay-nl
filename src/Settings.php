@@ -18,8 +18,12 @@ class Pronamic_WP_Pay_Gateways_PayNL_Settings extends Pronamic_WP_Pay_GatewaySet
 	public function sections( array $sections ) {
 		// Pay.nl
 		$sections['pay-nl'] = array(
-			'title'   => __( 'Pay.nl', 'pronamic_ideal' ),
-			'methods' => array( 'pay_nl' ),
+			'title'       => __( 'Pay.nl', 'pronamic_ideal' ),
+			'methods'     => array( 'pay_nl' ),
+			'description' => sprintf(
+				__( 'Account details are provided by %s after registration. These settings need to match with the %1$s dashboard.', 'pronamic_ideal' ),
+				__( 'Pay.nl', 'pronamic_ideal' )
+			),
 		);
 
 		// Return
@@ -35,11 +39,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Settings extends Pronamic_WP_Pay_GatewaySet
 			'title'       => __( 'Token', 'pronamic_ideal' ),
 			'type'        => 'text',
 			'classes'     => array( 'regular-text', 'code' ),
-			'description' => sprintf(
-				__( 'You can find your token on the <a href="%s" target="_blank">Pay.nl admin page</a> under <a href="%s" target="_blank">Merchant » Company data (Connection)</a>.', 'pronamic_ideal' ),
-				'https://admin.pay.nl/',
-				'https://admin.pay.nl/my_merchant'
-			),
+			'tooltip'     => __( 'Token as mentioned at <strong>Merchant » Company data (Connection)</strong> in the payment provider dashboard.', 'pronamic_ideal' ),
 		);
 
 		// Service ID
@@ -50,10 +50,18 @@ class Pronamic_WP_Pay_Gateways_PayNL_Settings extends Pronamic_WP_Pay_GatewaySet
 			'title'       => __( 'Service ID', 'pronamic_ideal' ),
 			'type'        => 'text',
 			'classes'     => array( 'regular-text', 'code' ),
-			'description' => sprintf(
-				__( 'You can find your service ID on the <a href="%s" target="_blank">Pay.nl admin page</a> under <a href="%s" target="_blank">Manage » Services</a>.', 'pronamic_ideal' ),
-				'https://admin.pay.nl/',
-				'https://admin.pay.nl/programs/programs'
+			'tooltip'     => __( 'Service ID as mentioned at <strong>Manage » Services</strong> in the payment provider dashboard.', 'pronamic_ideal' ),
+		);
+
+		// Transaction feedback
+		$fields[] = array(
+			'section'     => 'pay-nl',
+			'methods'     => array( 'pay_nl' ),
+			'title'       => __( 'Transaction feedback', 'pronamic_ideal' ),
+			'type'        => 'description',
+			'html'        => sprintf(
+				'<span class="dashicons dashicons-yes pronamic-pay-yes"></span> %s',
+				__( 'Payment status updates will be processed without any additional configuration.', 'pronamic_ideal' )
 			),
 		);
 
