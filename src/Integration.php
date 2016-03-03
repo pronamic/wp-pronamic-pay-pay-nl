@@ -15,7 +15,8 @@ class Pronamic_WP_Pay_Gateways_PayNL_Integration extends Pronamic_WP_Pay_Gateway
 		$this->id            = 'pay_nl';
 		$this->name          = 'Pay.nl';
 		$this->url           = 'https://www.pay.nl/';
-		$this->dashboard_url = 'https://www.pay.nl/';
+		$this->product_url   = 'http://www.pay.nl/';
+		$this->dashboard_url = 'https://admin.pay.nl/';
 		$this->provider      = 'pay_nl';
 	}
 
