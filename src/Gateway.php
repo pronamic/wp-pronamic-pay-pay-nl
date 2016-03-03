@@ -124,6 +124,14 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 		} else {
 			$this->error = $this->client->get_error();
 		}
+
+		/*
+		 * Schedule transaction status request
+		 *
+		 * @since 1.1.3
+		 */
+		$time = time();
+		wp_schedule_single_event( $time + 30, 'pronamic_ideal_check_transaction_status', array( 'payment_id' => $payment->get_id(), 'seconds' => 30 ) );
 	}
 
 	/////////////////////////////////////////////////
