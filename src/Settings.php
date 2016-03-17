@@ -60,7 +60,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Settings extends Pronamic_WP_Pay_GatewaySet
 			'title'       => __( 'Transaction feedback', 'pronamic_ideal' ),
 			'type'        => 'description',
 			'html'        => sprintf(
-				'<span class="dashicons dashicons-yes pronamic-pay-yes"></span> %s',
+				'<span class="dashicons dashicons-yes"></span> %s',
 				__( 'Payment status updates will be processed without any additional configuration.', 'pronamic_ideal' )
 			),
 		);
