@@ -6,6 +6,8 @@
 
 		<exclude name="Squiz.Commenting" />
 
+		<exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar" />
+
 		<exclude name="WordPress.VIP.RestrictedFunctions.wp_remote_get" />
 		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints" />
 		<exclude name="WordPress.VIP.SuperGlobalInputUsage.AccessDetected" />

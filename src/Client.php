@@ -135,7 +135,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 			$result = $this->parse_response( $data );
 		}
 
-		// Return
+		// Return result
 		return $result;
 	}
 
@@ -166,7 +166,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 			$result = $this->parse_response( $data );
 		}
 
-		// Return
+		// Return result
 		return $result;
 	}
 
