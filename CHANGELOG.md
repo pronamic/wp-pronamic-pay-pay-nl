@@ -7,6 +7,11 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [1.1.4] - 2016-03-22
+- Added scheduled transaction status request.
+- Updated gateway settings.
+- Added product and dashboard URLs.
+
 ## [1.1.3] - 2016-03-02
 - Added get settings function.
 - Moved get_gateway_class() function to the configuration class.
