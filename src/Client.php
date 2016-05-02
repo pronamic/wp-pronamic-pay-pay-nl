@@ -72,146 +72,32 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 		) );
 	}
 
-	/////////////////////////////////////////////////
-
 	/**
-	 * Parse reponse
+	 * Send request to the specified URL.
 	 *
-	 * @param stdClass $data
-	 * @return Ambigous <NULL, stdClass>
+	 * @param string $url
+	 * @return stdClass response object or false if request failed.
 	 */
-	private function parse_response( $data ) {
-		$result = null;
+	private function send_request( $version, $namespace, $method, $output, $parameters = array() ) {
+		$url = $this->get_url( $version, $namespace, $method, $output, $parameters );
 
-		if ( isset( $data, $data->request, $data->request->result ) ) {
-			if ( 0 == $data->request->result && isset( $data->request->errorId, $data->request->errorMessage ) ) { // WPCS: loose comparison ok.
-				$pay_nl_error = new Pronamic_WP_Pay_Gateways_PayNL_Error( $data->request->errorId, $data->request->errorMessage );
-
-				$this->error = new WP_Error( 'pay_nl_error', (string) $pay_nl_error, $pay_nl_error );
-			}
-
-			$result = $data;
-		}
-
-		return $result;
-	}
-
-	/////////////////////////////////////////////////
-
-	/**
-	 * Transaction start
-	 *
-	 * @param float $amount
-	 * @param string $ip_address
-	 * @param string $finish_url
-	 * @return stdClass
-	 *
-	 * @see https://admin.pay.nl/docpanel/api/Transaction/start/4
-	 */
-	public function transaction_start( $amount, $ip_address, $finish_url, $request_param = array() ) {
-		$result = null;
-
-		$parameters = array_merge(
-			$request_param,
-			array(
-				'token'     => $this->token,
-				'serviceId' => $this->service_id,
-				'amount'    => Pronamic_WP_Util::amount_to_cents( $amount ),
-				'ipAddress' => $ip_address,
-				'finishUrl' => $finish_url,
-			)
-		);
-
-		// URL
-		$url = $this->get_url( 'v4', 'Transaction', 'start', 'json', $parameters );
-
-		// Request
-		$response = wp_remote_get( $url );
-
-		if ( 200 == wp_remote_retrieve_response_code( $response ) ) { // WPCS: loose comparison ok.
-			$body = wp_remote_retrieve_body( $response );
-
-			$data = json_decode( $body );
-
-			$result = $this->parse_response( $data );
-		}
-
-		// Return result
-		return $result;
-	}
-
-	/**
-	 * Transaction info
-	 *
-	 * @param string $transaction_id
-	 *
-	 * @see https://admin.pay.nl/docpanel/api/Transaction/info/4
-	 */
-	public function transaction_info( $transaction_id ) {
-		$result = null;
-
-		// URL
-		$url = $this->get_url( 'v4', 'Transaction', 'info', 'json', array(
-			'token'         => $this->token,
-			'transactionId' => $transaction_id,
-		) );
-
-		// Request
-		$response = wp_remote_get( $url );
-
-		if ( 200 == wp_remote_retrieve_response_code( $response ) ) { // WPCS: loose comparison ok.
-			$body = wp_remote_retrieve_body( $response );
-
-			$data = json_decode( $body );
-
-			$result = $this->parse_response( $data );
-		}
-
-		// Return result
-		return $result;
-	}
-
-	//////////////////////////////////////////////////
-
-	/**
-	 * Get issuers
-	 *
-	 * @return array
-	 */
-	public function get_issuers() {
-		$issuers = false;
-
-		// URL
-		$url = $this->get_url( 'v4', 'Transaction', 'getService', 'json', array(
-			'token'           => $this->token,
-			'serviceId'       => $this->service_id,
-			'paymentMethodId' => Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL,
-		) );
-
-		// Request
 		$response = wp_remote_get( $url );
 
 		$response_code = wp_remote_retrieve_response_code( $response );
-
-		if ( 200 != $response_code ) { // WPCS: loose comparison ok.
-			$this->error = new WP_Error(
-				'wrong_response_code',
-				sprintf(
-					__( 'The response code (%s) from the Pay.nl provider was incorrect.', 'pronamic_ideal' ),
-					sprintf( '<code>%s</code>', esc_html( $response_code ) )
-				)
-			);
-
-			return false;
-		}
-
+		
 		// Body
 		$body = wp_remote_retrieve_body( $response );
 
 		$result = json_decode( $body );
 
+		// Result is array
+		if ( is_array( $result ) ) {
+			return $result;
+		}
+
+		// Result is object
 		// NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit.
-		if ( ! is_object( $result ) || ! isset( $result->request, $result->request->result ) ) {
+		if ( ! is_object( $result ) ) {
 			$this->error = new WP_Error(
 				'unknown_response',
 				__( 'Unknown response from Pay.nl error.', 'pronamic_ideal' ),
@@ -234,8 +120,19 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 			return false;
 		}
 
-		// Check result
-		if ( '1' !== $result->request->result ) {
+		// Check result (v3)
+		if ( isset( $result->status, $result->error ) && ! filter_var( $result->status, FILTER_VALIDATE_BOOLEAN ) && ! empty( $result->error ) ) {
+			$this->error = new WP_Error(
+				'pay_nl_error',
+				$result->error,
+				$result
+			);
+
+			return false;
+		}
+
+		// Check result (v4)
+		if ( isset( $result->request, $result->request->result ) && '1' !== $result->request->result ) {
 			$this->error = new WP_Error(
 				'pay_nl_error',
 				__( 'Unknown Pay.nl error.', 'pronamic_ideal' ),
@@ -245,6 +142,79 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 			return false;
 		}
 
+		// Return result
+		return $result;
+	}
+
+	/////////////////////////////////////////////////
+
+	/**
+	 * Transaction start
+	 *
+	 * @param float $amount
+	 * @param string $ip_address
+	 * @param string $finish_url
+	 * @return stdClass
+	 *
+	 * @see https://admin.pay.nl/docpanel/api/Transaction/start/4
+	 */
+	public function transaction_start( $amount, $ip_address, $finish_url, $request_param = array() ) {
+		$parameters = array_merge(
+			$request_param,
+			array(
+				'token'     => $this->token,
+				'serviceId' => $this->service_id,
+				'amount'    => Pronamic_WP_Util::amount_to_cents( $amount ),
+				'ipAddress' => $ip_address,
+				'finishUrl' => $finish_url,
+			)
+		);
+
+		// Request
+		$result = $this->send_request( 'v4', 'Transaction', 'start', 'json', $parameters );
+
+		// Return result
+		return $result;
+	}
+
+	/**
+	 * Transaction info
+	 *
+	 * @param string $transaction_id
+	 *
+	 * @see https://admin.pay.nl/docpanel/api/Transaction/info/4
+	 */
+	public function transaction_info( $transaction_id ) {
+		// Request
+		$result = $this->send_request( 'v4', 'Transaction', 'info', 'json', array(
+			'token'         => $this->token,
+			'transactionId' => $transaction_id,
+		) );
+
+		// Return result
+		return $result;
+	}
+
+	//////////////////////////////////////////////////
+
+	/**
+	 * Get issuers
+	 *
+	 * @return array
+	 */
+	public function get_issuers() {
+		// Request
+		$result = $this->send_request( 'v4', 'Transaction', 'getService', 'json', array(
+			'token'           => $this->token,
+			'serviceId'       => $this->service_id,
+			'paymentMethodId' => Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL,
+		) );
+
+		if ( false === $result ) {
+			return false;
+		}
+
+		// Country option list
 		if ( ! isset( $result->countryOptionList ) ) {
 			$this->error = new WP_Error(
 				'pay_nl_error',

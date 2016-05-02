@@ -1,0 +1,16 @@
+HTTP/1.1 200 OK
+Date: Mon, 02 May 2016 08:50:42 GMT
+Server: Apache
+Set-Cookie: device_id=f66cadc3c94385ff2d99c722dc20cb2b957823e5; expires=Tue, 02-May-2017 08:50:42 GMT; path=/; domain=.pay.nl
+Set-Cookie: language_id=1; expires=Tue, 02-May-2017 08:50:42 GMT; path=/; httponly
+Set-Cookie: width=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; httponly
+Set-Cookie: ci_session_idefix=d6898bfa08357e8db9380dcee06e257cb0760d4d; expires=Mon, 02-May-2016 10:50:42 GMT; path=/
+Expires: Mon, 26 Jul 1990 05:00:00 GMT
+Last-Modified: Mon, 02 May 2016 08:50:42 GMT
+Cache-Control: post-check=0, pre-check=0
+Pragma: no-cache
+Content-Length: 131
+Connection: close
+Content-Type: application/json
+
+{"request":{"result":"0","errorId":"PAY-404","errorMessage":"Service not found"},"merchant":"","service":"","countryOptionList":""}
