@@ -83,8 +83,6 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 
 		$response = wp_remote_get( $url );
 
-		$response_code = wp_remote_retrieve_response_code( $response );
-		
 		// Body
 		$body = wp_remote_retrieve_body( $response );
 

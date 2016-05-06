@@ -19,12 +19,12 @@ class Pronamic_WP_Pay_Gateways_PayNL_ClientTest extends WP_UnitTestCase {
 	public function pre_http_request( $preempt, $request, $url ) {
 		$response = file_get_contents( dirname( __FILE__ ) . '/mocks/transaction-get-service-json-ideal-service-not-found.http' );
 
-		$processedResponse = WP_Http::processResponse( $response );
+		$processed_response = WP_Http::processResponse( $response );
 
-		$processedHeaders = WP_Http::processHeaders( $processedResponse['headers'], $url );
-		$processedHeaders['body'] = $processedResponse['body'];
+		$processed_headers = WP_Http::processHeaders( $processed_response['headers'], $url );
+		$processed_headers['body'] = $processed_response['body'];
 
-		return $processedHeaders;
+		return $processed_headers;
 	}
 
 	public function test_get_issuers() {
