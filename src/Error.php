@@ -7,7 +7,8 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.0.0
+ * @version 1.1.5
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Gateways_PayNL_Error {
 	/**
@@ -49,6 +50,6 @@ class Pronamic_WP_Pay_Gateways_PayNL_Error {
 	 * @return string
 	 */
 	public function __toString() {
-		return $this->id . ' ' . $this->message;
+		return $this->id . ' - ' . $this->message;
 	}
 }

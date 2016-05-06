@@ -48,12 +48,12 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 
 		$result = $this->client->get_issuers();
 
+		$this->error = $this->client->get_error();
+
 		if ( $result ) {
 			$groups[] = array(
 				'options' => $result,
 			);
-		} else {
-			$this->error = $this->client->get_error();
 		}
 
 		return $groups;
@@ -116,14 +116,14 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 			$request
 		);
 
+		$this->error = $this->client->get_error();
+
 		if ( isset( $result, $result->transaction ) ) {
 			$transaction_id = $result->transaction->transactionId;
 			$payment_url    = $result->transaction->paymentURL;
 
 			$payment->set_transaction_id( $transaction_id );
 			$payment->set_action_url( $payment_url );
-		} else {
-			$this->error = $this->client->get_error();
 		}
 
 		/*
