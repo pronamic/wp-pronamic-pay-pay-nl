@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
 ## [Unreleased][unreleased]
+-
+
+## [1.1.6] - 2016-06-08
+- Simplified the gateay payment start function.
 
 ## [1.1.5] - 2016-05-06
 - Improved error handling.
@@ -40,3 +44,15 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 
 ## 1.0.0 - 2014-12-15
 - First release.
+
+[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.6...HEAD
+[1.1.6]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.5...1.1.6
+[1.1.5]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.4...1.1.5
+[1.1.4]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.3...1.1.4
+[1.1.3]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.2...1.1.3
+[1.1.2]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.1...1.1.2
+[1.1.1]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.0...1.1.1
+[1.1.0]: https://github.com/wp-pay-gateways/pay-nl/compare/1.0.3...1.1.0
+[1.0.3]: https://github.com/wp-pay-gateways/pay-nl/compare/1.0.2...1.0.3
+[1.0.2]: https://github.com/wp-pay-gateways/pay-nl/compare/1.0.1...1.0.2
+[1.0.1]: https://github.com/wp-pay-gateways/pay-nl/compare/1.0.0...1.0.1

@@ -7,7 +7,7 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.1.4
+ * @version 1.1.6
  * @since 1.0.
  */
 class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
@@ -94,23 +94,23 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	 * @param Pronamic_Pay_PaymentDataInterface $data
 	 * @see Pronamic_WP_Pay_Gateway::start()
 	 */
-	public function start( Pronamic_Pay_PaymentDataInterface $data, Pronamic_Pay_Payment $payment, $payment_method = null ) {
+	public function start( Pronamic_Pay_Payment $payment ) {
 		$request = array();
 
-		switch ( $payment_method ) {
+		switch ( $payment->get_method() ) {
 			case Pronamic_WP_Pay_PaymentMethods::MISTER_CASH :
 				$request['paymentOptionId'] = Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::MISTERCASH;
 
 				break;
 			case Pronamic_WP_Pay_PaymentMethods::IDEAL :
 				$request['paymentOptionId']    = Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL;
-				$request['paymentOptionSubId'] = $data->get_issuer_id();
+				$request['paymentOptionSubId'] = $payment->get_issuer();
 
 				break;
 		}
 
 		$result = $this->client->transaction_start(
-			$data->get_amount(),
+			$payment->get_amount(),
 			Pronamic_WP_Pay_Gateways_PayNL_Util::get_ip_address(),
 			urlencode( $payment->get_return_url() ),
 			$request
