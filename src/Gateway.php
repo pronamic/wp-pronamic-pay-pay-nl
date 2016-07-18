@@ -116,15 +116,14 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 			$request
 		);
 
-		$this->error = $this->client->get_error();
+		if ( ! $result ) {
+			$this->error = $this->client->get_error();
 
-		if ( isset( $result, $result->transaction ) ) {
-			$transaction_id = $result->transaction->transactionId;
-			$payment_url    = $result->transaction->paymentURL;
-
-			$payment->set_transaction_id( $transaction_id );
-			$payment->set_action_url( $payment_url );
+			return;
 		}
+
+		$payment->set_transaction_id( $result->transaction->transactionId );
+		$payment->set_action_url( $result->transaction->paymentURL );
 
 		/*
 		 * Schedule transaction status request
