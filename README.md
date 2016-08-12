@@ -8,7 +8,7 @@
 [![Total Downloads](https://poser.pugx.org/wp-pay-gateways/pay-nl/downloads.svg)](https://packagist.org/packages/wp-pay-gateways/pay-nl)
 [![Latest Unstable Version](https://poser.pugx.org/wp-pay-gateways/pay-nl/v/unstable.svg)](https://packagist.org/packages/wp-pay-gateways/pay-nl)
 [![License](https://poser.pugx.org/wp-pay-gateways/pay-nl/license.svg)](https://packagist.org/packages/wp-pay-gateways/pay-nl)
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+[![Built with Grunt](https://cdn.gruntjs.com/builtwith.svg)](http://gruntjs.com/)
 
 ## Documentation
 
