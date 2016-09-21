@@ -95,7 +95,12 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	 * @see Pronamic_WP_Pay_Gateway::start()
 	 */
 	public function start( Pronamic_Pay_Payment $payment ) {
-		$request = array();
+		$request = array(
+			'enduser' => array(
+				'lastName' => $payment->get_customer_name(),
+				'emailAddress' => $payment->get_email(),
+			),
+		);
 
 		switch ( $payment->get_method() ) {
 			case Pronamic_WP_Pay_PaymentMethods::BANCONTACT :
