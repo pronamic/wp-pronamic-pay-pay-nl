@@ -118,7 +118,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 		$result = $this->client->transaction_start(
 			$payment->get_amount(),
 			Pronamic_WP_Pay_Gateways_PayNL_Util::get_ip_address(),
-			urlencode( $payment->get_return_url() ),
+			rawurlencode( $payment->get_return_url() ),
 			$request
 		);
 
