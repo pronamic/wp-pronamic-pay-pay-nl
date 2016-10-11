@@ -130,15 +130,6 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 
 		$payment->set_transaction_id( $result->transaction->transactionId );
 		$payment->set_action_url( $result->transaction->paymentURL );
-
-		/*
-		 * Schedule transaction status request
-		 *
-		 * @since 1.1.4
-		 */
-		$time = time();
-
-		wp_schedule_single_event( $time + 30, 'pronamic_ideal_check_transaction_status', array( 'payment_id' => $payment->get_id(), 'seconds' => 30 ) );
 	}
 
 	/////////////////////////////////////////////////
