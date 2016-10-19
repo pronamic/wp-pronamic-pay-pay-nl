@@ -7,7 +7,7 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.1.5
+ * @version 1.1.7
  * @since 1.0.0
  */
 class Pronamic_WP_Pay_Gateways_PayNL_Client {

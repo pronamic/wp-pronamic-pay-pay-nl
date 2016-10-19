@@ -7,8 +7,8 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.1.6
- * @since 1.0.
+ * @version 1.1.7
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	/**
@@ -101,7 +101,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	public function start( Pronamic_Pay_Payment $payment ) {
 		$request = array(
 			'enduser' => array(
-				'lastName' => $payment->get_customer_name(),
+				'lastName'     => $payment->get_customer_name(),
 				'emailAddress' => $payment->get_email(),
 			),
 		);

@@ -9,15 +9,19 @@
 		<exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar" />
 
 		<exclude name="WordPress.VIP.RestrictedFunctions.wp_remote_get" />
-		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints" />
+
 		<exclude name="WordPress.VIP.SuperGlobalInputUsage.AccessDetected" />
 	</rule>
 
-	<rule ref="WordPress.VIP.SlowDBQuery.slow_db_query">
-		<exclude-pattern>/src/Settings.php</exclude-pattern>
+	<rule ref="WordPress.VIP.RestrictedVariables.cache_constraints">
+		<exclude-pattern>/src/Util.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.VIP.RestrictedFunctions.file_get_contents">
 		<exclude-pattern>/tests/ClientTest.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.VIP.SlowDBQuery.slow_db_query">
+		<exclude-pattern>/src/Settings.php</exclude-pattern>
 	</rule>
 </ruleset>
