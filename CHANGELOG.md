@@ -7,6 +7,14 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [1.1.7] - 2016-10-20
+- Added `payment_status_request` feature support.
+- Fixed "urlencode should only be used when dealing with legacy applications, rawurlencode() should now be used instead.
+- Removed schedule status check event, this will be part of the Pronamic iDEAL plugin.
+- Added end user name and e-mail address to transaction.
+- Added support new Bancontact constant.
+- Don't schedule `pronamic_ideal_check_transaction_status` event on transaction error.
+
 ## [1.1.6] - 2016-06-08
 - Simplified the gateay payment start function.
 
@@ -45,7 +53,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2014-12-15
 - First release.
 
-[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.6...HEAD
+[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.7...HEAD
+[1.1.7]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.6...1.1.7
 [1.1.6]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.5...1.1.6
 [1.1.5]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.4...1.1.5
 [1.1.4]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.3...1.1.4

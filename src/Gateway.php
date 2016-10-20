@@ -7,8 +7,8 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.1.6
- * @since 1.0.
+ * @version 1.1.7
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	/**
@@ -27,6 +27,10 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	 */
 	public function __construct( Pronamic_WP_Pay_Gateways_PayNL_Config $config ) {
 		parent::__construct( $config );
+
+		$this->supports = array(
+			'payment_status_request',
+		);
 
 		$this->set_method( Pronamic_WP_Pay_Gateway::METHOD_HTTP_REDIRECT );
 		$this->set_has_feedback( true );
@@ -81,8 +85,8 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	 */
 	public function get_supported_payment_methods() {
 		return array(
-			Pronamic_WP_Pay_PaymentMethods::IDEAL       => Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL,
-			Pronamic_WP_Pay_PaymentMethods::MISTER_CASH => Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::MISTERCASH,
+			Pronamic_WP_Pay_PaymentMethods::IDEAL,
+			Pronamic_WP_Pay_PaymentMethods::BANCONTACT,
 		);
 	}
 
@@ -95,9 +99,15 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	 * @see Pronamic_WP_Pay_Gateway::start()
 	 */
 	public function start( Pronamic_Pay_Payment $payment ) {
-		$request = array();
+		$request = array(
+			'enduser' => array(
+				'lastName'     => $payment->get_customer_name(),
+				'emailAddress' => $payment->get_email(),
+			),
+		);
 
 		switch ( $payment->get_method() ) {
+			case Pronamic_WP_Pay_PaymentMethods::BANCONTACT :
 			case Pronamic_WP_Pay_PaymentMethods::MISTER_CASH :
 				$request['paymentOptionId'] = Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::MISTERCASH;
 
@@ -112,28 +122,18 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 		$result = $this->client->transaction_start(
 			$payment->get_amount(),
 			Pronamic_WP_Pay_Gateways_PayNL_Util::get_ip_address(),
-			urlencode( $payment->get_return_url() ),
+			rawurlencode( $payment->get_return_url() ),
 			$request
 		);
 
-		$this->error = $this->client->get_error();
+		if ( ! $result ) {
+			$this->error = $this->client->get_error();
 
-		if ( isset( $result, $result->transaction ) ) {
-			$transaction_id = $result->transaction->transactionId;
-			$payment_url    = $result->transaction->paymentURL;
-
-			$payment->set_transaction_id( $transaction_id );
-			$payment->set_action_url( $payment_url );
+			return;
 		}
 
-		/*
-		 * Schedule transaction status request
-		 *
-		 * @since 1.1.4
-		 */
-		$time = time();
-
-		wp_schedule_single_event( $time + 30, 'pronamic_ideal_check_transaction_status', array( 'payment_id' => $payment->get_id(), 'seconds' => 30 ) );
+		$payment->set_transaction_id( $result->transaction->transactionId );
+		$payment->set_action_url( $result->transaction->paymentURL );
 	}
 
 	/////////////////////////////////////////////////

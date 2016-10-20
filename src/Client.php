@@ -7,7 +7,7 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.1.5
+ * @version 1.1.7
  * @since 1.0.0
  */
 class Pronamic_WP_Pay_Gateways_PayNL_Client {
@@ -102,7 +102,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 				$result
 			);
 
-			return false;
+			return null;
 		}
 
 		// Error
@@ -115,7 +115,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 				$pay_nl_error
 			);
 
-			return false;
+			return null;
 		}
 
 		// Check result (v3)
@@ -126,7 +126,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 				$result
 			);
 
-			return false;
+			return null;
 		}
 
 		// Check result (v4)
@@ -137,7 +137,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 				$result
 			);
 
-			return false;
+			return null;
 		}
 
 		// Return result
@@ -208,7 +208,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 			'paymentMethodId' => Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL,
 		) );
 
-		if ( false === $result ) {
+		if ( ! $result ) {
 			return false;
 		}
 
