@@ -119,6 +119,18 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 				break;
 		}
 
+		// Set transaction sale data
+		// @see https://admin.pay.nl/docpanel/api/Transaction/start/4
+		$request['saleData'] = array(
+			'orderData'    => array(
+				array(
+					'description' => $payment->get_description(),
+					'price'       => Pronamic_WP_Util::amount_to_cents( $payment->get_amount() ),
+					'quantity'    => 1,
+				)
+			),
+		);
+
 		$result = $this->client->transaction_start(
 			$payment->get_amount(),
 			Pronamic_WP_Pay_Gateways_PayNL_Util::get_ip_address(),
