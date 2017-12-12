@@ -50,6 +50,9 @@ module.exports = function( grunt ) {
 
 		// PHPUnit
 		phpunit: {
+			options: {
+				bin: 'vendor/bin/phpunit'
+			},
 			application: {},
 		},
 	} );

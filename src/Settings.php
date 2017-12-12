@@ -6,7 +6,7 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.1.4
+ * @version 1.1.8
  * @since 1.0.0
  */
 class Pronamic_WP_Pay_Gateways_PayNL_Settings extends Pronamic_WP_Pay_GatewaySettings {
