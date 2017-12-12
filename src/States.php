@@ -7,7 +7,8 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.0.0
+ * @version 1.1.8
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Gateways_PayNL_States {
 	/**
@@ -37,9 +38,9 @@ class Pronamic_WP_Pay_Gateways_PayNL_States {
 	*/
 	public static function transform( $state ) {
 		switch ( $state ) {
-			case self::PAID :
+			case self::PAID:
 				return Pronamic_WP_Pay_Statuses::SUCCESS;
-			case self::CANCELED :
+			case self::CANCELED:
 				return Pronamic_WP_Pay_Statuses::CANCELLED;
 			default:
 				return null;
