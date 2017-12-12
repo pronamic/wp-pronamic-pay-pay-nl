@@ -37,9 +37,9 @@ class Pronamic_WP_Pay_Gateways_PayNL_States {
 	*/
 	public static function transform( $state ) {
 		switch ( $state ) {
-			case self::PAID :
+			case self::PAID:
 				return Pronamic_WP_Pay_Statuses::SUCCESS;
-			case self::CANCELED :
+			case self::CANCELED:
 				return Pronamic_WP_Pay_Statuses::CANCELLED;
 			default:
 				return null;

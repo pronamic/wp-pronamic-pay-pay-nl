@@ -107,12 +107,12 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 		);
 
 		switch ( $payment->get_method() ) {
-			case Pronamic_WP_Pay_PaymentMethods::BANCONTACT :
-			case Pronamic_WP_Pay_PaymentMethods::MISTER_CASH :
+			case Pronamic_WP_Pay_PaymentMethods::BANCONTACT:
+			case Pronamic_WP_Pay_PaymentMethods::MISTER_CASH:
 				$request['paymentOptionId'] = Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::MISTERCASH;
 
 				break;
-			case Pronamic_WP_Pay_PaymentMethods::IDEAL :
+			case Pronamic_WP_Pay_PaymentMethods::IDEAL:
 				$request['paymentOptionId']    = Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL;
 				$request['paymentOptionSubId'] = $payment->get_issuer();
 

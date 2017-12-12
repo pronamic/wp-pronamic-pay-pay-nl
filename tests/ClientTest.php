@@ -22,6 +22,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_ClientTest extends WP_UnitTestCase {
 		$processed_response = WP_Http::processResponse( $response );
 
 		$processed_headers = WP_Http::processHeaders( $processed_response['headers'], $url );
+
 		$processed_headers['body'] = $processed_response['body'];
 
 		return $processed_headers;
