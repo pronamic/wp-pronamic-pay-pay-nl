@@ -21,7 +21,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Settings extends Pronamic_WP_Pay_GatewaySet
 			'title'       => __( 'Pay.nl', 'pronamic_ideal' ),
 			'methods'     => array( 'pay_nl' ),
 			'description' => sprintf(
-				__( 'Account details are provided by %s after registration. These settings need to match with the %1$s dashboard.', 'pronamic_ideal' ),
+				__( 'Account details are provided by %1$s after registration. These settings need to match with the %1$s dashboard.', 'pronamic_ideal' ),
 				__( 'Pay.nl', 'pronamic_ideal' )
 			),
 		);
