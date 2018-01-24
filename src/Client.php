@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Util;
 
 /**
  * Title: Pay.nl client
@@ -162,7 +163,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 			array(
 				'token'     => $this->token,
 				'serviceId' => $this->service_id,
-				'amount'    => Pronamic_WP_Util::amount_to_cents( $amount ),
+				'amount'    => Util::amount_to_cents( $amount ),
 				'ipAddress' => $ip_address,
 				'finishUrl' => $finish_url,
 			)

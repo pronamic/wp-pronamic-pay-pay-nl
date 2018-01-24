@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Payments\PaymentDataInterface;
 
 /**
  * Title: Pay.nl gateway
@@ -95,7 +96,8 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	/**
 	 * Start
 	 *
-	 * @param Pronamic_Pay_PaymentDataInterface $data
+	 * @param PaymentDataInterface $data
+	 *
 	 * @see Pronamic_WP_Pay_Gateway::start()
 	 */
 	public function start( Pronamic_Pay_Payment $payment ) {
