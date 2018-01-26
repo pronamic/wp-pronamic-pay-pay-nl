@@ -3,7 +3,7 @@
 	"description": "Pay.nl driver for the WordPress payment processing library.",
 	"keywords": ["wordpress", "wp", "pay", "pay-nl", "ideal", "gateway", "pronamic"],
 	"homepage": "http://www.wp-pay.org/gateways/pay-nl/",
-	"license": "GPL",
+	"license": "GPL-3.0-or-later",
 	"authors": [
 		{
 			"name": "Pronamic",
