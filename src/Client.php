@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Core\XML\Security;
 use Pronamic\WordPress\Pay\Util;
 
 /**
@@ -231,8 +232,8 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 			foreach ( $countries->paymentOptionList as $payment_method ) {
 				if ( Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL === $payment_method->id ) {
 					foreach ( $payment_method->paymentOptionSubList as $issuer ) {
-						$id   = Pronamic_WP_Pay_XML_Security::filter( $issuer->id );
-						$name = Pronamic_WP_Pay_XML_Security::filter( $issuer->name );
+						$id   = Security::filter( $issuer->id );
+						$name = Security::filter( $issuer->name );
 
 						$issuers[ $id ] = $name;
 					}

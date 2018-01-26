@@ -1,4 +1,6 @@
 <?php
+use Pronamic\WordPress\Pay\Core\Gateway;
+use Pronamic\WordPress\Pay\Core\PaymentMethods;
 use Pronamic\WordPress\Pay\Payments\PaymentDataInterface;
 
 /**
@@ -11,7 +13,7 @@ use Pronamic\WordPress\Pay\Payments\PaymentDataInterface;
  * @version 1.1.7
  * @since 1.0.0
  */
-class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
+class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Gateway {
 	/**
 	 * Slug of this gateway
 	 *
@@ -33,7 +35,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 			'payment_status_request',
 		);
 
-		$this->set_method( Pronamic_WP_Pay_Gateway::METHOD_HTTP_REDIRECT );
+		$this->set_method( Gateway::METHOD_HTTP_REDIRECT );
 		$this->set_has_feedback( true );
 		$this->set_amount_minimum( 1.20 );
 		$this->set_slug( self::SLUG );
@@ -65,7 +67,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	}
 
 	public function get_issuer_field() {
-		if ( Pronamic_WP_Pay_PaymentMethods::IDEAL === $this->get_payment_method() ) {
+		if ( PaymentMethods::IDEAL === $this->get_payment_method() ) {
 			return array(
 				'id'       => 'pronamic_ideal_issuer_id',
 				'name'     => 'pronamic_ideal_issuer_id',
@@ -86,8 +88,8 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 	 */
 	public function get_supported_payment_methods() {
 		return array(
-			Pronamic_WP_Pay_PaymentMethods::IDEAL,
-			Pronamic_WP_Pay_PaymentMethods::BANCONTACT,
+			PaymentMethods::IDEAL,
+			PaymentMethods::BANCONTACT,
 		);
 	}
 
@@ -109,12 +111,12 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Pronamic_WP_Pay_Gateway {
 		);
 
 		switch ( $payment->get_method() ) {
-			case Pronamic_WP_Pay_PaymentMethods::BANCONTACT:
-			case Pronamic_WP_Pay_PaymentMethods::MISTER_CASH:
+			case PaymentMethods::BANCONTACT:
+			case PaymentMethods::MISTER_CASH:
 				$request['paymentOptionId'] = Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::MISTERCASH;
 
 				break;
-			case Pronamic_WP_Pay_PaymentMethods::IDEAL:
+			case PaymentMethods::IDEAL:
 				$request['paymentOptionId']    = Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL;
 				$request['paymentOptionSubId'] = $payment->get_issuer();
 

@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Core\Statuses;
 
 /**
  * Title: Pay.nl states
@@ -39,9 +40,9 @@ class Pronamic_WP_Pay_Gateways_PayNL_States {
 	public static function transform( $state ) {
 		switch ( $state ) {
 			case self::PAID:
-				return Pronamic_WP_Pay_Statuses::SUCCESS;
+				return Statuses::SUCCESS;
 			case self::CANCELED:
-				return Pronamic_WP_Pay_Statuses::CANCELLED;
+				return Statuses::CANCELLED;
 			default:
 				return null;
 		}

@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Gateways\Common\AbstractIntegration;
 
 /**
  * Title: Pay.nl integration
@@ -10,7 +11,7 @@
  * @version 1.1.4
  * @since 1.0.0
  */
-class Pronamic_WP_Pay_Gateways_PayNL_Integration extends Pronamic_WP_Pay_Gateways_AbstractIntegration {
+class Pronamic_WP_Pay_Gateways_PayNL_Integration extends AbstractIntegration {
 	public function __construct() {
 		$this->id            = 'pay_nl';
 		$this->name          = 'Pay.nl';

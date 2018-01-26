@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Core\Statuses;
 
 /**
  * Title: Pay.nl states constants tests
@@ -23,8 +24,8 @@ class Pronamic_WP_Pay_Gateways_PayNL_StatesTest extends PHPUnit_Framework_TestCa
 
 	public function states_matrix_provider() {
 		return array(
-			array( Pronamic_WP_Pay_Gateways_PayNL_States::PAID, Pronamic_WP_Pay_Statuses::SUCCESS ),
-			array( Pronamic_WP_Pay_Gateways_PayNL_States::CANCELED, Pronamic_WP_Pay_Statuses::CANCELLED ),
+			array( Pronamic_WP_Pay_Gateways_PayNL_States::PAID, Statuses::SUCCESS ),
+			array( Pronamic_WP_Pay_Gateways_PayNL_States::CANCELED, Statuses::CANCELLED ),
 			array( 'not existing status', null ),
 		);
 	}
