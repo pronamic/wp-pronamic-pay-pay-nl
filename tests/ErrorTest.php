@@ -1,5 +1,7 @@
 <?php
 
+use Pronamic\WordPress\Pay\Gateways\PayNL\Error as PayNL_Error;
+
 /**
  * Title: Pay.nl error tests
  * Description:
@@ -14,7 +16,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_ErrorTest extends PHPUnit_Framework_TestCas
 	 * Test error
 	 */
 	public function test_error() {
-		$error = new Pronamic_WP_Pay_Gateways_PayNL_Error( 'PAY-101', 'Location not found' );
+		$error = new PayNL_Error( 'PAY-101', 'Location not found' );
 
 		$expected = 'PAY-101 - Location not found';
 

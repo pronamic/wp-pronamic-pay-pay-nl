@@ -1,7 +1,10 @@
 <?php
-use Pronamic\WordPress\Pay\Core\Gateway;
+
+namespace Pronamic\WordPress\Pay\Gateways\PayNL;
+
+use Pronamic\WordPress\Pay\Core\Gateway as Core_Gateway;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
-use Pronamic\WordPress\Pay\Payments\PaymentDataInterface;
+use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
  * Title: Pay.nl gateway
@@ -9,11 +12,11 @@ use Pronamic\WordPress\Pay\Payments\PaymentDataInterface;
  * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
+ * @author  Remco Tolsma
  * @version 1.1.7
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Gateway {
+class Gateway extends Core_Gateway {
 	/**
 	 * Slug of this gateway
 	 *
@@ -26,9 +29,9 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Gateway {
 	/**
 	 * Constructs and initializes an Pay.nl gateway
 	 *
-	 * @param Pronamic_WP_Pay_Gateways_PayNL_Config $config
+	 * @param Config $config
 	 */
-	public function __construct( Pronamic_WP_Pay_Gateways_PayNL_Config $config ) {
+	public function __construct( Config $config ) {
 		parent::__construct( $config );
 
 		$this->supports = array(
@@ -40,7 +43,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Gateway {
 		$this->set_amount_minimum( 1.20 );
 		$this->set_slug( self::SLUG );
 
-		$this->client = new Pronamic_WP_Pay_Gateways_PayNL_Client( $config->token, $config->service_id );
+		$this->client = new Client( $config->token, $config->service_id );
 	}
 
 	/////////////////////////////////////////////////
@@ -82,14 +85,26 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Gateway {
 	/////////////////////////////////////////////////
 
 	/**
+	 * Get payment methods
+	 *
+	 * @see Pronamic_WP_Pay_Gateway::get_payment_methods()
+	 */
+	public function get_payment_methods() {
+		return array( array( 'options' => $this->get_supported_payment_methods() ) );
+	}
+
+	/**
 	 * Get supported payment methods
 	 *
 	 * @see Pronamic_WP_Pay_Gateway::get_supported_payment_methods()
 	 */
 	public function get_supported_payment_methods() {
 		return array(
-			PaymentMethods::IDEAL,
 			PaymentMethods::BANCONTACT,
+			PaymentMethods::BANK_TRANSFER,
+			PaymentMethods::CREDIT_CARD,
+			PaymentMethods::IDEAL,
+			PaymentMethods::PAYPAL,
 		);
 	}
 
@@ -98,11 +113,13 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Gateway {
 	/**
 	 * Start
 	 *
-	 * @param PaymentDataInterface $data
+	 * @see Core_Gateway::start()
 	 *
-	 * @see Pronamic_WP_Pay_Gateway::start()
+	 * @param Payment $payment
 	 */
-	public function start( Pronamic_Pay_Payment $payment ) {
+	public function start( Payment $payment ) {
+		$payment_method = $payment->get_method();
+
 		$request = array(
 			'enduser' => array(
 				'lastName'     => $payment->get_customer_name(),
@@ -110,17 +127,23 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Gateway {
 			),
 		);
 
-		switch ( $payment->get_method() ) {
-			case PaymentMethods::BANCONTACT:
-			case PaymentMethods::MISTER_CASH:
-				$request['paymentOptionId'] = Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::MISTERCASH;
-
-				break;
+		switch ( $payment_method ) {
 			case PaymentMethods::IDEAL:
-				$request['paymentOptionId']    = Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL;
+				$request['paymentOptionId']    = Methods::IDEAL;
 				$request['paymentOptionSubId'] = $payment->get_issuer();
 
 				break;
+			default:
+				$method = Methods::transform( $payment_method );
+
+				if ( $method ) {
+					$request['paymentOptionId'] = $method;
+				}
+
+				if ( ! isset( $request['paymentOptionId'] ) && ! empty( $payment_method ) ) {
+					// Leap of faith if the WordPress payment method could not transform to a Mollie method?
+					$request['paymentOptionId'] = $payment_method;
+				}
 		}
 
 		// Set transaction description.
@@ -131,7 +154,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Gateway {
 
 		$result = $this->client->transaction_start(
 			$payment->get_amount(),
-			Pronamic_WP_Pay_Gateways_PayNL_Util::get_ip_address(),
+			Util::get_ip_address(),
 			rawurlencode( $payment->get_return_url() ),
 			$request
 		);
@@ -151,15 +174,15 @@ class Pronamic_WP_Pay_Gateways_PayNL_Gateway extends Gateway {
 	/**
 	 * Update status of the specified payment
 	 *
-	 * @param Pronamic_Pay_Payment $payment
+	 * @param Payment $payment
 	 */
-	public function update_status( Pronamic_Pay_Payment $payment ) {
+	public function update_status( Payment $payment ) {
 		$result = $this->client->transaction_info( $payment->get_transaction_id() );
 
 		if ( isset( $result, $result->paymentDetails ) ) {
 			$state = $result->paymentDetails->state;
 
-			$status = Pronamic_WP_Pay_Gateways_PayNL_States::transform( $state );
+			$status = Statuses::transform( $state );
 
 			$payment->set_status( $status );
 		}

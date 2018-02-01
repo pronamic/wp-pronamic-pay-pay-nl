@@ -1,6 +1,12 @@
 <?php
+
+namespace Pronamic\WordPress\Pay\Gateways\PayNL;
+
 use Pronamic\WordPress\Pay\Core\XML\Security;
-use Pronamic\WordPress\Pay\Util;
+use Pronamic\WordPress\Pay\Gateways\PayNL\Error as PayNL_Error;
+use Pronamic\WordPress\Pay\Util as Pay_Util;
+use stdClass;
+use WP_Error;
 
 /**
  * Title: Pay.nl client
@@ -8,11 +14,11 @@ use Pronamic\WordPress\Pay\Util;
  * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
+ * @author  Remco Tolsma
  * @version 1.1.7
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Gateways_PayNL_Client {
+class Client {
 	/**
 	 * API URL
 	 *
@@ -62,7 +68,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 	 * @param string $namespace
 	 * @param string $method
 	 * @param string $output
-	 * @param array $parameters
+	 * @param array  $parameters
 	 */
 	private function get_url( $version, $namespace, $method, $output, $parameters = array() ) {
 		return add_query_arg( $parameters, sprintf(
@@ -78,6 +84,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 	 * Send request to the specified URL.
 	 *
 	 * @param string $url
+	 *
 	 * @return stdClass response object or false if request failed.
 	 */
 	private function send_request( $version, $namespace, $method, $output, $parameters = array() ) {
@@ -109,7 +116,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 
 		// Error
 		if ( isset( $result->request->errorId, $result->request->errorMessage ) && ! empty( $result->request->errorId ) ) {
-			$pay_nl_error = new Pronamic_WP_Pay_Gateways_PayNL_Error( $result->request->errorId, $result->request->errorMessage );
+			$pay_nl_error = new PayNL_Error( $result->request->errorId, $result->request->errorMessage );
 
 			$this->error = new WP_Error(
 				'pay_nl_error',
@@ -151,9 +158,10 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 	/**
 	 * Transaction start
 	 *
-	 * @param float $amount
+	 * @param float  $amount
 	 * @param string $ip_address
 	 * @param string $finish_url
+	 *
 	 * @return stdClass
 	 *
 	 * @see https://admin.pay.nl/docpanel/api/Transaction/start/4
@@ -164,7 +172,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 			array(
 				'token'     => $this->token,
 				'serviceId' => $this->service_id,
-				'amount'    => Util::amount_to_cents( $amount ),
+				'amount'    => Pay_Util::amount_to_cents( $amount ),
 				'ipAddress' => $ip_address,
 				'finishUrl' => $finish_url,
 			)
@@ -207,7 +215,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 		$result = $this->send_request( 'v4', 'Transaction', 'getService', 'json', array(
 			'token'           => $this->token,
 			'serviceId'       => $this->service_id,
-			'paymentMethodId' => Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL,
+			'paymentMethodId' => Methods::IDEAL,
 		) );
 
 		if ( ! $result ) {
@@ -230,7 +238,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_Client {
 
 		foreach ( $result->countryOptionList as $countries ) {
 			foreach ( $countries->paymentOptionList as $payment_method ) {
-				if ( Pronamic_WP_Pay_Gateways_PayNL_PaymentMethods::IDEAL === $payment_method->id ) {
+				if ( Methods::IDEAL === $payment_method->id ) {
 					foreach ( $payment_method->paymentOptionSubList as $issuer ) {
 						$id   = Security::filter( $issuer->id );
 						$name = Security::filter( $issuer->name );

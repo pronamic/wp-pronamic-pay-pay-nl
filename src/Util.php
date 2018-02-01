@@ -1,4 +1,7 @@
 <?php
+
+namespace Pronamic\WordPress\Pay\Gateways\PayNL;
+
 use Pronamic\WordPress\Pay\Core\Server;
 
 /**
@@ -7,11 +10,11 @@ use Pronamic\WordPress\Pay\Core\Server;
  * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
+ * @author  Remco Tolsma
  * @version 1.1.0
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Gateways_PayNL_Util {
+class Util {
 	public static function get_ip_address() {
 		if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
 			return Server::get( 'HTTP_X_FORWARDED_FOR', FILTER_VALIDATE_IP );

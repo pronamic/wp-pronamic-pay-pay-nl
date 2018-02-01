@@ -1,5 +1,7 @@
 <?php
 
+use Pronamic\WordPress\Pay\Gateways\PayNL\Client;
+
 /**
  * Title: Pay.nl client test
  * Description:
@@ -31,7 +33,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_ClientTest extends WP_UnitTestCase {
 	public function test_get_issuers() {
 		add_filter( 'pre_http_request', array( $this, 'pre_http_request' ), 10, 3 );
 
-		$client = new Pronamic_WP_Pay_Gateways_PayNL_Client( '', '' );
+		$client = new Client( '', '' );
 
 		$issuers = $client->get_issuers();
 

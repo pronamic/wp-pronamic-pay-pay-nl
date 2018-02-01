@@ -24,7 +24,9 @@
 		"source": "https://github.com/wp-pay-gateways/pay-nl"
 	},
 	"autoload": {
-		"classmap": ["src/"]
+		"psr-4": {
+			"Pronamic\\WordPress\\Pay\\Gateways\\PayNL\\": "src/"
+		}
 	},
 	"config": {
 		"platform": {
