@@ -29,7 +29,7 @@ class StatusesTest extends \PHPUnit_Framework_TestCase {
 	public function states_matrix_provider() {
 		return array(
 			array( Statuses::PAID, Core_Statuses::SUCCESS ),
-			array( Statuses::CANCELED, Core_Statuses::CANCELLED ),
+			array( Statuses::CANCELLED, Core_Statuses::CANCELLED ),
 			array( 'not existing status', null ),
 		);
 	}

@@ -25,7 +25,7 @@ class Statuses {
 	const PAID = '100';
 
 	/**
-	 * Canceled
+	 * Cancelled.
 	 *
 	 * @var string
 	 *
