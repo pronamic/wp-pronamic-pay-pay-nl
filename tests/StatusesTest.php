@@ -1,7 +1,9 @@
 <?php
 
+namespace Pronamic\WordPress\Pay\Gateways\PayNL;
+
+use PHPUnit_Framework_TestCase;
 use Pronamic\WordPress\Pay\Core\Statuses as Core_Statuses;
-use Pronamic\WordPress\Pay\Gateways\PayNL\Statuses;
 
 /**
  * Title: Pay.nl states constants tests
@@ -12,7 +14,7 @@ use Pronamic\WordPress\Pay\Gateways\PayNL\Statuses;
  * @author Remco Tolsma
  * @version 1.0.0
  */
-class Pronamic_WP_Pay_Gateways_PayNL_StatusesTest extends PHPUnit_Framework_TestCase {
+class StatusesTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Test transform.
 	 *

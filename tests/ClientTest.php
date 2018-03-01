@@ -1,6 +1,9 @@
 <?php
 
-use Pronamic\WordPress\Pay\Gateways\PayNL\Client;
+namespace Pronamic\WordPress\Pay\Gateways\PayNL;
+
+use WP_UnitTestCase;
+use WP_Http;
 
 /**
  * Title: Pay.nl client test
@@ -11,7 +14,7 @@ use Pronamic\WordPress\Pay\Gateways\PayNL\Client;
  * @author Remco Tolsma
  * @version 1.0.0
  */
-class Pronamic_WP_Pay_Gateways_PayNL_ClientTest extends WP_UnitTestCase {
+class ClientTest extends \WP_UnitTestCase {
 	/**
 	 * Pre HTTP request
 	 *
