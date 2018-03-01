@@ -24,8 +24,6 @@ class Gateway extends Core_Gateway {
 	 */
 	const SLUG = 'pay_nl';
 
-	/////////////////////////////////////////////////
-
 	/**
 	 * Constructs and initializes an Pay.nl gateway
 	 *
@@ -45,8 +43,6 @@ class Gateway extends Core_Gateway {
 
 		$this->client = new Client( $config->token, $config->service_id );
 	}
-
-	/////////////////////////////////////////////////
 
 	/**
 	 * Get issuers
@@ -82,8 +78,6 @@ class Gateway extends Core_Gateway {
 		}
 	}
 
-	/////////////////////////////////////////////////
-
 	/**
 	 * Get payment methods
 	 *
@@ -107,8 +101,6 @@ class Gateway extends Core_Gateway {
 			PaymentMethods::PAYPAL,
 		);
 	}
-
-	/////////////////////////////////////////////////
 
 	/**
 	 * Start
@@ -168,8 +160,6 @@ class Gateway extends Core_Gateway {
 		$payment->set_transaction_id( $result->transaction->transactionId );
 		$payment->set_action_url( $result->transaction->paymentURL );
 	}
-
-	/////////////////////////////////////////////////
 
 	/**
 	 * Update status of the specified payment

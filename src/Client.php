@@ -26,16 +26,12 @@ class Client {
 	 */
 	const API_URL = 'https://rest-api.pay.nl/%s/%s/%s/%s/';
 
-	/////////////////////////////////////////////////
-
 	/**
 	 * Error
 	 *
 	 * @var WP_Error
 	 */
 	private $error;
-
-	/////////////////////////////////////////////////
 
 	/**
 	 * Construct and initialize an Pay.nl client
@@ -48,8 +44,6 @@ class Client {
 		$this->service_id = $service_id;
 	}
 
-	/////////////////////////////////////////////////
-
 	/**
 	 * Get latest error
 	 *
@@ -58,8 +52,6 @@ class Client {
 	public function get_error() {
 		return $this->error;
 	}
-
-	/////////////////////////////////////////////////
 
 	/**
 	 * Get Pay.nl API URL
@@ -153,8 +145,6 @@ class Client {
 		return $result;
 	}
 
-	/////////////////////////////////////////////////
-
 	/**
 	 * Transaction start
 	 *
@@ -202,8 +192,6 @@ class Client {
 		// Return result
 		return $result;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Get issuers

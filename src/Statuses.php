@@ -33,8 +33,6 @@ class Statuses {
 	 */
 	const CANCELLED = '-90';
 
-	/////////////////////////////////////////////////
-
 	/**
 	 * Transform an Pay.nl status to an Pronamic Pay status
 	 *

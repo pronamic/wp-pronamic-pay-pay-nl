@@ -27,8 +27,6 @@ class Error {
 	 */
 	private $message;
 
-	/////////////////////////////////////////////////
-
 	/**
 	 * Constructs and initializes an Pay.nl error object
 	 *
@@ -39,8 +37,6 @@ class Error {
 		$this->id      = $id;
 		$this->message = $message;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Create an string representation of this object
