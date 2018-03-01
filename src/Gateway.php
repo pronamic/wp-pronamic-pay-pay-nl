@@ -97,8 +97,10 @@ class Gateway extends Core_Gateway {
 			PaymentMethods::BANCONTACT,
 			PaymentMethods::BANK_TRANSFER,
 			PaymentMethods::CREDIT_CARD,
+			PaymentMethods::GIROPAY,
 			PaymentMethods::IDEAL,
 			PaymentMethods::PAYPAL,
+			PaymentMethods::SOFORT,
 		);
 	}
 

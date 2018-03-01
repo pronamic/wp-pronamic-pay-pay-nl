@@ -16,6 +16,13 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
  */
 class Methods {
 	/**
+	 * Constant for the Bancontact method.
+	 *
+	 * @var string
+	 */
+	const BANCONTACT = '436';
+
+	/**
 	 * Constant for the Bank transfer method.
 	 *
 	 * @var string
@@ -30,18 +37,18 @@ class Methods {
 	const CREDITCARD = '706';
 
 	/**
+	 * Constant for the Giropay method.
+	 *
+	 * @var string
+	 */
+	const GIROPAY = '694';
+
+	/**
 	 * Constant for the iDEAL method.
 	 *
 	 * @var string
 	 */
 	const IDEAL = '10';
-
-	/**
-	 * Constant for the Mister Cash method.
-	 *
-	 * @var string
-	 */
-	const MISTERCASH = '436';
 
 	/**
 	 * Constant for the PayPal method.
@@ -58,17 +65,26 @@ class Methods {
 	const PAYSAFECARD = '553';
 
 	/**
+	 * Constant for the Sofort method.
+	 *
+	 * @var string
+	 */
+	const SOFORT = '577';
+
+	/**
 	 * Payments methods map.
 	 *
 	 * @var array
 	 */
 	private static $map = array(
-		PaymentMethods::BANCONTACT    => Methods::MISTERCASH,
+		PaymentMethods::BANCONTACT    => Methods::BANCONTACT,
 		PaymentMethods::BANK_TRANSFER => Methods::BANKTRANSFER,
 		PaymentMethods::CREDIT_CARD   => Methods::CREDITCARD,
+		PaymentMethods::GIROPAY       => Methods::GIROPAY,
 		PaymentMethods::IDEAL         => Methods::IDEAL,
-		PaymentMethods::MISTER_CASH   => Methods::MISTERCASH,
+		PaymentMethods::MISTER_CASH   => Methods::BANCONTACT,
 		PaymentMethods::PAYPAL        => Methods::PAYPAL,
+		PaymentMethods::SOFORT        => Methods::SOFORT,
 	);
 
 	/**
