@@ -138,7 +138,7 @@ class Gateway extends Core_Gateway {
 		);
 
 		$result = $this->client->transaction_start(
-			$payment->get_amount(),
+			$payment->get_amount()->get_amount(),
 			Util::get_ip_address(),
 			rawurlencode( $payment->get_return_url() ),
 			$request
