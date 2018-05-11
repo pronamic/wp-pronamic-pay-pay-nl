@@ -1,16 +1,19 @@
 <?php
 
+namespace Pronamic\WordPress\Pay\Gateways\PayNL;
+
 /**
  * Title: Pay.nl output options
  * Description:
- * Copyright: Copyright (c) 2005 - 2016
+ * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
- * @version 1.0.0
- * @see https://admin.pay.nl/docpanel/api
+ * @author  Remco Tolsma
+ * @version 2.0.0
+ * @since   1.0.0
+ * @see     https://admin.pay.nl/docpanel/api
  */
-class Pronamic_WP_Pay_Gateways_PayNL_OutputOptions {
+class OutputOptions {
 	/**
 	 * Output XML
 	 *

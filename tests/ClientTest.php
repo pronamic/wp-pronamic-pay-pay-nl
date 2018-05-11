@@ -1,15 +1,21 @@
 <?php
 
+namespace Pronamic\WordPress\Pay\Gateways\PayNL;
+
+use WP_UnitTestCase;
+use WP_Http;
+
 /**
  * Title: Pay.nl client test
  * Description:
- * Copyright: Copyright (c) 2005 - 2016
+ * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
- * @version 1.0.0
+ * @author  Remco Tolsma
+ * @version 2.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Gateways_PayNL_ClientTest extends WP_UnitTestCase {
+class ClientTest extends \WP_UnitTestCase {
 	/**
 	 * Pre HTTP request
 	 *
@@ -31,7 +37,7 @@ class Pronamic_WP_Pay_Gateways_PayNL_ClientTest extends WP_UnitTestCase {
 	public function test_get_issuers() {
 		add_filter( 'pre_http_request', array( $this, 'pre_http_request' ), 10, 3 );
 
-		$client = new Pronamic_WP_Pay_Gateways_PayNL_Client( '', '' );
+		$client = new Client( '', '' );
 
 		$issuers = $client->get_issuers();
 
