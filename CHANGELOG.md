@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [2.0.0] - 2018-05-11
+- Switched to PHP namespaces.
+
 ## [1.1.8] - 2017-12-12
 - Set transaction description.
 
@@ -56,7 +59,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2014-12-15
 - First release.
 
-[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.8...HEAD
+[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.8...2.0.0
 [1.1.8]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.7...1.1.8
 [1.1.7]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.6...1.1.7
 [1.1.6]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.5...1.1.6
