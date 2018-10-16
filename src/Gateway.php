@@ -138,7 +138,7 @@ class Gateway extends Core_Gateway {
 				'initials'       => $customer->get_name()->get_first_name(),
 				'lastName'       => $customer->get_name()->get_last_name(),
 				'gender'         => $customer->get_gender(),
-				'dob'            => ( $birth_date instanceof \DateTime ) ? $birth_date->format( 'ddmmYYYY' ) : null,
+				'dob'            => ( $birth_date instanceof \DateTime ) ? $birth_date->format( 'dmY' ) : null,
 				'phoneNumber'    => $customer->get_phone(),
 				'emailAddress'   => $customer->get_email(),
 				'language'       => $customer->get_language(),
