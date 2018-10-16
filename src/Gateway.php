@@ -118,7 +118,7 @@ class Gateway extends Core_Gateway {
 				'productId'   => $line->get_id(),
 				'productType' => $line->get_type(), // ARTICLE, SHIPPING, HANDLING, DISCOUNT.
 				'description' => $line->get_description(),
-				'price'       => $line->get_unit_price(),
+				'price'       => $line->get_unit_price()->get_cents(),
 				'quantity'    => $line->get_quantity(),
 			);
 		}
@@ -188,7 +188,7 @@ class Gateway extends Core_Gateway {
 
 		// Start transaction.
 		$result = $this->client->transaction_start(
-			$payment->get_amount()->get_amount(),
+			$payment->get_amount()->get_cents(),
 			Util::get_ip_address(),
 			rawurlencode( $payment->get_return_url() ),
 			$request

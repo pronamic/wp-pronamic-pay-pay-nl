@@ -4,7 +4,6 @@ namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 
 use Pronamic\WordPress\Pay\Core\XML\Security;
 use Pronamic\WordPress\Pay\Gateways\PayNL\Error as PayNL_Error;
-use Pronamic\WordPress\Pay\Util as Pay_Util;
 use stdClass;
 use WP_Error;
 
@@ -186,7 +185,7 @@ class Client {
 			array(
 				'token'     => $this->token,
 				'serviceId' => $this->service_id,
-				'amount'    => Pay_Util::amount_to_cents( $amount ),
+				'amount'    => $amount,
 				'ipAddress' => $ip_address,
 				'finishUrl' => $finish_url,
 			)
