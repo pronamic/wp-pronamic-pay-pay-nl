@@ -113,14 +113,16 @@ class Gateway extends Core_Gateway {
 		// Payment lines.
 		$order_data = array();
 
-		foreach ( $payment->get_lines() as $line ) {
-			$order_data[] = array(
-				'productId'   => $line->get_id(),
-				'productType' => $line->get_type(), // ARTICLE, SHIPPING, HANDLING, DISCOUNT.
-				'description' => $line->get_description(),
-				'price'       => $line->get_unit_price()->get_cents(),
-				'quantity'    => $line->get_quantity(),
-			);
+		if ( null !== $payment->get_lines() ) {
+			foreach ( $payment->get_lines() as $line ) {
+				$order_data[] = array(
+					'productId'   => $line->get_id(),
+					'productType' => $line->get_type(), // ARTICLE, SHIPPING, HANDLING, DISCOUNT.
+					'description' => $line->get_description(),
+					'price'       => $line->get_unit_price()->get_cents(),
+					'quantity'    => $line->get_quantity(),
+				);
+			}
 		}
 
 		$request = array(
