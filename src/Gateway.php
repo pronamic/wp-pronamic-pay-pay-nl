@@ -107,7 +107,6 @@ class Gateway extends Core_Gateway {
 		 * @link https://www.pay.nl/docs/developers.php#transactions
 		 */
 		$customer        = $payment->get_customer();
-		$birth_date      = $payment->get_customer()->get_birth_date();
 		$billing_address = $payment->get_billing_address();
 
 		// Payment lines.
@@ -137,14 +136,6 @@ class Gateway extends Core_Gateway {
 
 			// End user.
 			'enduser'         => array(
-				'initials'       => $customer->get_name()->get_first_name(),
-				'lastName'       => $customer->get_name()->get_last_name(),
-				'gender'         => $customer->get_gender(),
-				'dob'            => ( $birth_date instanceof \DateTime ) ? $birth_date->format( 'dmY' ) : null,
-				'phoneNumber'    => $customer->get_phone(),
-				'emailAddress'   => $customer->get_email(),
-				'language'       => $customer->get_language(),
-
 				// Address.
 				'address'        => array(
 					'streetName'            => $billing_address->get_street_name(),
@@ -157,9 +148,6 @@ class Gateway extends Core_Gateway {
 
 				// Invoice address.
 				'invoiceAddress' => array(
-					'initials'              => $customer->get_name()->get_first_name(),
-					'lastName'              => $customer->get_name()->get_last_name(),
-					'gender'                => $customer->get_gender(),
 					'streetName'            => $billing_address->get_street_name(),
 					'streetNumber'          => $billing_address->get_house_number(),
 					'streetNumberExtension' => $billing_address->get_house_number_addition(),
@@ -176,6 +164,37 @@ class Gateway extends Core_Gateway {
 				'orderData'    => $order_data,
 			),
 		);
+
+		if ( null !== $payment->get_customer() ) {
+			$enduser = array(
+				'gender'       => $customer->get_gender(),
+				'phoneNumber'  => $customer->get_phone(),
+				'emailAddress' => $customer->get_email(),
+				'language'     => $customer->get_language(),
+			);
+
+			$invoice_address = array(
+				'gender' => $customer->get_gender(),
+			);
+
+			// Set name from customer.
+			if ( null !== $customer->get_name() ) {
+				$enduser['initials'] = $customer->get_name()->get_first_name();
+				$enduser['lastName'] = $customer->get_name()->get_last_name();
+
+				$invoice_address['initials'] = $customer->get_name()->get_first_name();
+				$invoice_address['lastName'] = $customer->get_name()->get_last_name();
+			}
+
+			// Set date of birth.
+			if ( $customer->get_birth_date() instanceof \DateTime ) {
+				$enduser['dob'] = $customer->get_birth_date()->format( 'dmY' );
+			}
+
+			$request['enduser'] = array_merge( $request['enduser'], $enduser );
+
+			$request['enduser']['invoiceAddress'] = array_merge( $request['enduser']['invoiceAddress'], $invoice_address );
+		}
 
 		// Check payment method.
 		if ( null === $request['paymentOptionId'] && ! empty( $payment_method ) ) {
