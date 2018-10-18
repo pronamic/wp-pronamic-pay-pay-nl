@@ -106,8 +106,9 @@ class Gateway extends Core_Gateway {
 		 * New transaction request.
 		 * @link https://www.pay.nl/docs/developers.php#transactions
 		 */
-		$customer        = $payment->get_customer();
-		$billing_address = $payment->get_billing_address();
+		$customer         = $payment->get_customer();
+		$billing_address  = $payment->get_billing_address();
+		$shipping_address = $payment->get_shipping_address();
 
 		// Payment lines.
 		$order_data = array();
@@ -124,6 +125,34 @@ class Gateway extends Core_Gateway {
 			}
 		}
 
+		// End user.
+		$end_user = array();
+
+		// End user - Address.
+		if ( null !== $shipping_address ) {
+			$end_user['address'] = array(
+				'streetName'            => $shipping_address->get_street_name(),
+				'streetNumber'          => $shipping_address->get_house_number(),
+				'streetNumberExtension' => $shipping_address->get_house_number_addition(),
+				'zipCode'               => $shipping_address->get_postal_code(),
+				'city'                  => $shipping_address->get_city(),
+				'countryCode'           => $shipping_address->get_country_code(),
+			);
+		}
+
+		// End user - Invoice address.
+		if ( null !== $billing_address ) {
+			$end_user['invoiceAddress'] = array(
+				'streetName'            => $billing_address->get_street_name(),
+				'streetNumber'          => $billing_address->get_house_number(),
+				'streetNumberExtension' => $billing_address->get_house_number_addition(),
+				'zipCode'               => $billing_address->get_postal_code(),
+				'city'                  => $billing_address->get_city(),
+				'countryCode'           => $billing_address->get_country_code(),
+			);
+		}
+
+		// Request.
 		$request = array(
 			// Transaction.
 			'transaction'     => array(
@@ -135,27 +164,7 @@ class Gateway extends Core_Gateway {
 			'paymentOptionId' => Methods::transform( $payment_method ),
 
 			// End user.
-			'enduser'         => array(
-				// Address.
-				'address'        => array(
-					'streetName'            => $billing_address->get_street_name(),
-					'streetNumber'          => $billing_address->get_house_number(),
-					'streetNumberExtension' => $billing_address->get_house_number_addition(),
-					'zipCode'               => $billing_address->get_postal_code(),
-					'city'                  => $billing_address->get_city(),
-					'countryCode'           => $billing_address->get_country_code(),
-				),
-
-				// Invoice address.
-				'invoiceAddress' => array(
-					'streetName'            => $billing_address->get_street_name(),
-					'streetNumber'          => $billing_address->get_house_number(),
-					'streetNumberExtension' => $billing_address->get_house_number_addition(),
-					'zipCode'               => $billing_address->get_postal_code(),
-					'city'                  => $billing_address->get_city(),
-					'countryCode'           => $billing_address->get_country_code(),
-				),
-			),
+			'enduser'         => $end_user,
 
 			// Sale data.
 			'saleData'        => array(
