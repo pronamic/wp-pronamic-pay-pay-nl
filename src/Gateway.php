@@ -118,7 +118,7 @@ class Gateway extends Core_Gateway {
 				$order_data[] = array(
 					'productId'   => $line->get_id(),
 					'productType' => $line->get_type(), // ARTICLE, SHIPPING, HANDLING, DISCOUNT.
-					'description' => $line->get_description(),
+					'description' => $line->get_name(),
 					'price'       => $line->get_unit_price()->get_cents(),
 					'quantity'    => $line->get_quantity(),
 				);
