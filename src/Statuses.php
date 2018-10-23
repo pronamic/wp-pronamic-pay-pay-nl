@@ -20,7 +20,7 @@ class Statuses {
 	 *
 	 * @var string
 	 *
-	 * @see https://admin.pay.nl/docpanel/api/Transaction/info/4
+	 * @link https://admin.pay.nl/docpanel/api/Transaction/info/4
 	 */
 	const PAID = '100';
 
@@ -29,7 +29,7 @@ class Statuses {
 	 *
 	 * @var string
 	 *
-	 * @see https://plugins.trac.wordpress.org/browser/woocommerce-paynl-payment-methods/tags/2.2.6/includes/classes/Pay/Gateways.php#L180
+	 * @link https://plugins.trac.wordpress.org/browser/woocommerce-paynl-payment-methods/tags/2.2.6/includes/classes/Pay/Gateways.php#L180
 	 */
 	const CANCELLED = '-90';
 

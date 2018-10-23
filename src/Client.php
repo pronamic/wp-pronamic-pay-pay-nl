@@ -177,7 +177,7 @@ class Client {
 	 *
 	 * @return stdClass
 	 *
-	 * @see https://admin.pay.nl/docpanel/api/Transaction/start/4
+	 * @link https://admin.pay.nl/docpanel/api/Transaction/start/4
 	 */
 	public function transaction_start( $amount, $ip_address, $finish_url, $request_param = array() ) {
 		$parameters = array_merge(
