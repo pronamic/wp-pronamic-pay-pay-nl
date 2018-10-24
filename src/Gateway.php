@@ -156,7 +156,7 @@ class Gateway extends Core_Gateway {
 		$request = array(
 			// Transaction.
 			'transaction'     => array(
-				'currency'    => $payment->get_currency(),
+				'currency'    => $payment->get_total_amount()->get_currency()->get_alphabetic_code(),
 				'description' => $payment->get_description(),
 			),
 
