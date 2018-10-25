@@ -79,7 +79,7 @@ class Client {
 	 */
 	private function get_url( $version, $namespace, $method, $output, $parameters = array() ) {
 		return add_query_arg(
-			$parameters,
+			rawurlencode_deep( $parameters ),
 			sprintf(
 				self::API_URL,
 				$version,
