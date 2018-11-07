@@ -117,7 +117,7 @@ class Gateway extends Core_Gateway {
 			foreach ( $payment->get_lines() as $line ) {
 				$order_data[] = array(
 					'productId'   => $line->get_id(),
-					'productType' => $line->get_type(), // ARTICLE, SHIPPING, HANDLING, DISCOUNT.
+					'productType' => ProductTypes::transform( $line->get_type() ),
 					'description' => $line->get_name(),
 					'price'       => $line->get_unit_price()->get_cents(),
 					'quantity'    => $line->get_quantity(),
@@ -132,7 +132,7 @@ class Gateway extends Core_Gateway {
 		if ( null !== $shipping_address ) {
 			$end_user['address'] = array(
 				'streetName'            => $shipping_address->get_street_name(),
-				'streetNumber'          => $shipping_address->get_house_number(),
+				'streetNumber'          => $shipping_address->get_house_number_base(),
 				'streetNumberExtension' => $shipping_address->get_house_number_addition(),
 				'zipCode'               => $shipping_address->get_postal_code(),
 				'city'                  => $shipping_address->get_city(),
@@ -144,7 +144,7 @@ class Gateway extends Core_Gateway {
 		if ( null !== $billing_address ) {
 			$end_user['invoiceAddress'] = array(
 				'streetName'            => $billing_address->get_street_name(),
-				'streetNumber'          => $billing_address->get_house_number(),
+				'streetNumber'          => $billing_address->get_house_number_base(),
 				'streetNumberExtension' => $billing_address->get_house_number_addition(),
 				'zipCode'               => $billing_address->get_postal_code(),
 				'city'                  => $billing_address->get_city(),
