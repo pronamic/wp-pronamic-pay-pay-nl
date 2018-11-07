@@ -2,7 +2,7 @@
 
 namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 
-use Pronamic\WordPress\Pay\Core\Server;
+use Pronamic\WordPress\Pay\Core\Util as Core_Util;
 
 /**
  * Title: Pay.nl utility class
@@ -15,13 +15,16 @@ use Pronamic\WordPress\Pay\Core\Server;
  * @since   1.0.0
  */
 class Util {
+	/**
+	 * Get IP address.
+	 *
+	 * @return mixed
+	 */
 	public static function get_ip_address() {
-		if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-			return Server::get( 'HTTP_X_FORWARDED_FOR', FILTER_VALIDATE_IP );
-		}
+		$ip_address = Core_Util::get_remote_address();
 
-		if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
-			return Server::get( 'REMOTE_ADDR', FILTER_VALIDATE_IP );
+		if ( null !== $ip_address ) {
+			return $ip_address;
 		}
 
 		return '127.0.0.1';
