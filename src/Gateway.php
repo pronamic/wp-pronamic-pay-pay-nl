@@ -115,11 +115,17 @@ class Gateway extends Core_Gateway {
 
 		if ( null !== $payment->get_lines() ) {
 			foreach ( $payment->get_lines() as $line ) {
+				$price = null;
+
+				if ( null !== $line->get_unit_price() ) {
+					$price = $line->get_unit_price()->get_including_tax()->get_cents();
+				}
+
 				$order_data[] = array(
 					'productId'   => $line->get_id(),
 					'productType' => ProductTypes::transform( $line->get_type() ),
 					'description' => $line->get_name(),
-					'price'       => $line->get_unit_price()->get_cents(),
+					'price'       => $price,
 					'quantity'    => $line->get_quantity(),
 				);
 			}
