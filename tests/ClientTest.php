@@ -19,7 +19,7 @@ class ClientTest extends \WP_UnitTestCase {
 	/**
 	 * Pre HTTP request
 	 *
-	 * @see https://github.com/WordPress/WordPress/blob/3.9.1/wp-includes/class-http.php#L150-L164
+	 * @link https://github.com/WordPress/WordPress/blob/3.9.1/wp-includes/class-http.php#L150-L164
 	 * @return string
 	 */
 	public function pre_http_request( $preempt, $request, $url ) {

@@ -4,7 +4,6 @@ namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 
 use Pronamic\WordPress\Pay\Core\XML\Security;
 use Pronamic\WordPress\Pay\Gateways\PayNL\Error as PayNL_Error;
-use Pronamic\WordPress\Pay\Util as Pay_Util;
 use stdClass;
 use WP_Error;
 
@@ -27,6 +26,20 @@ class Client {
 	const API_URL = 'https://rest-api.pay.nl/%s/%s/%s/%s/';
 
 	/**
+	 * Token.
+	 *
+	 * @var string
+	 */
+	private $token;
+
+	/**
+	 * Service id.
+	 *
+	 * @var string
+	 */
+	private $service_id;
+
+	/**
 	 * Error
 	 *
 	 * @var WP_Error
@@ -36,8 +49,8 @@ class Client {
 	/**
 	 * Construct and initialize an Pay.nl client
 	 *
-	 * @param string $token
-	 * @param string $service_id
+	 * @param string $token      Token.
+	 * @param string $service_id Service ID.
 	 */
 	public function __construct( $token, $service_id ) {
 		$this->token      = $token;
@@ -54,28 +67,37 @@ class Client {
 	}
 
 	/**
-	 * Get Pay.nl API URL
+	 * Get Pay.nl API URL.
 	 *
-	 * @param string $version
-	 * @param string $namespace
-	 * @param string $method
-	 * @param string $output
-	 * @param array  $parameters
+	 * @param string $version    Version.
+	 * @param string $namespace  Namespace.
+	 * @param string $method     Method.
+	 * @param string $output     Output.
+	 * @param array  $parameters Parameters.
+	 *
+	 * @return string
 	 */
 	private function get_url( $version, $namespace, $method, $output, $parameters = array() ) {
-		return add_query_arg( $parameters, sprintf(
-			self::API_URL,
-			$version,
-			$namespace,
-			$method,
-			$output
-		) );
+		return add_query_arg(
+			rawurlencode_deep( $parameters ),
+			sprintf(
+				self::API_URL,
+				$version,
+				$namespace,
+				$method,
+				$output
+			)
+		);
 	}
 
 	/**
 	 * Send request to the specified URL.
 	 *
-	 * @param string $url
+	 * @param string $version    Version.
+	 * @param string $namespace  Namespace.
+	 * @param string $method     Method.
+	 * @param string $output     Output.
+	 * @param array  $parameters Parameters.
 	 *
 	 * @return stdClass response object or false if request failed.
 	 */
@@ -84,12 +106,12 @@ class Client {
 
 		$response = wp_remote_get( $url );
 
-		// Body
+		// Body.
 		$body = wp_remote_retrieve_body( $response );
 
 		$result = json_decode( $body );
 
-		// Result is array
+		// Result is array.
 		if ( is_array( $result ) ) {
 			return $result;
 		}
@@ -106,7 +128,7 @@ class Client {
 			return null;
 		}
 
-		// Error
+		// Error.
 		if ( isset( $result->request->errorId, $result->request->errorMessage ) && ! empty( $result->request->errorId ) ) {
 			$pay_nl_error = new PayNL_Error( $result->request->errorId, $result->request->errorMessage );
 
@@ -119,7 +141,7 @@ class Client {
 			return null;
 		}
 
-		// Check result (v3)
+		// Check result (v3).
 		if ( isset( $result->status, $result->error ) && ! filter_var( $result->status, FILTER_VALIDATE_BOOLEAN ) && ! empty( $result->error ) ) {
 			$this->error = new WP_Error(
 				'pay_nl_error',
@@ -130,7 +152,7 @@ class Client {
 			return null;
 		}
 
-		// Check result (v4)
+		// Check result (v4).
 		if ( isset( $result->request, $result->request->result ) && '1' !== $result->request->result ) {
 			$this->error = new WP_Error(
 				'pay_nl_error',
@@ -141,20 +163,21 @@ class Client {
 			return null;
 		}
 
-		// Return result
+		// Return result.
 		return $result;
 	}
 
 	/**
 	 * Transaction start
 	 *
-	 * @param float  $amount
-	 * @param string $ip_address
-	 * @param string $finish_url
+	 * @param float  $amount        Transaction amount.
+	 * @param string $ip_address    IP address.
+	 * @param string $finish_url    Finish URL.
+	 * @param array  $request_param Request parameters.
 	 *
 	 * @return stdClass
 	 *
-	 * @see https://admin.pay.nl/docpanel/api/Transaction/start/4
+	 * @link https://admin.pay.nl/docpanel/api/Transaction/start/4
 	 */
 	public function transaction_start( $amount, $ip_address, $finish_url, $request_param = array() ) {
 		$parameters = array_merge(
@@ -162,55 +185,69 @@ class Client {
 			array(
 				'token'     => $this->token,
 				'serviceId' => $this->service_id,
-				'amount'    => Pay_Util::amount_to_cents( $amount ),
+				'amount'    => $amount,
 				'ipAddress' => $ip_address,
 				'finishUrl' => $finish_url,
 			)
 		);
 
-		// Request
+		// Request.
 		$result = $this->send_request( 'v4', 'Transaction', 'start', 'json', $parameters );
 
-		// Return result
+		// Return result.
 		return $result;
 	}
 
 	/**
-	 * Transaction info
+	 * Transaction info.
 	 *
-	 * @param string $transaction_id
+	 * @param string $transaction_id Transaction ID.
 	 *
-	 * @see https://admin.pay.nl/docpanel/api/Transaction/info/4
+	 * @link https://admin.pay.nl/docpanel/api/Transaction/info/4
+	 *
+	 * @return stdClass
 	 */
 	public function transaction_info( $transaction_id ) {
-		// Request
-		$result = $this->send_request( 'v4', 'Transaction', 'info', 'json', array(
-			'token'         => $this->token,
-			'transactionId' => $transaction_id,
-		) );
+		// Request.
+		$result = $this->send_request(
+			'v4',
+			'Transaction',
+			'info',
+			'json',
+			array(
+				'token'         => $this->token,
+				'transactionId' => $transaction_id,
+			)
+		);
 
-		// Return result
+		// Return result.
 		return $result;
 	}
 
 	/**
 	 * Get issuers
 	 *
-	 * @return array
+	 * @return array|bool
 	 */
 	public function get_issuers() {
-		// Request
-		$result = $this->send_request( 'v4', 'Transaction', 'getService', 'json', array(
-			'token'           => $this->token,
-			'serviceId'       => $this->service_id,
-			'paymentMethodId' => Methods::IDEAL,
-		) );
+		// Request.
+		$result = $this->send_request(
+			'v4',
+			'Transaction',
+			'getService',
+			'json',
+			array(
+				'token'           => $this->token,
+				'serviceId'       => $this->service_id,
+				'paymentMethodId' => Methods::IDEAL,
+			)
+		);
 
 		if ( ! $result ) {
 			return false;
 		}
 
-		// Country option list
+		// Country option list.
 		if ( ! isset( $result->countryOptionList ) ) {
 			$this->error = new WP_Error(
 				'pay_nl_error',
@@ -221,18 +258,20 @@ class Client {
 			return false;
 		}
 
-		// Ok
+		// Ok.
 		$issuers = array();
 
 		foreach ( $result->countryOptionList as $countries ) {
 			foreach ( $countries->paymentOptionList as $payment_method ) {
-				if ( Methods::IDEAL === $payment_method->id ) {
-					foreach ( $payment_method->paymentOptionSubList as $issuer ) {
-						$id   = Security::filter( $issuer->id );
-						$name = Security::filter( $issuer->name );
+				if ( Methods::IDEAL !== $payment_method->id ) {
+					continue;
+				}
 
-						$issuers[ $id ] = $name;
-					}
+				foreach ( $payment_method->paymentOptionSubList as $issuer ) {
+					$id   = Security::filter( $issuer->id );
+					$name = Security::filter( $issuer->name );
+
+					$issuers[ $id ] = $name;
 				}
 			}
 		}

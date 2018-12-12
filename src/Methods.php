@@ -11,11 +11,25 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
  * Company: Pronamic
  *
  * @author  Reüel van der Steege
- * @version 2.0.0
+ * @version 2.0.1
  * @since   1.0.0
  * @see     https://admin.pay.nl/data/payment_profiles
  */
 class Methods {
+	/**
+	 * Constant for the AfterPay method.
+	 *
+	 *  739 = AfterPay
+	 *  740 = AfterPay EM
+	 * 1921 = AfterPay NL B2B
+	 * 1918 = AfterPay NL B2C
+	 *
+	 * @link https://admin.pay.nl/data/payment_profiles
+	 *
+	 * @var string
+	 */
+	const AFTERPAY = '739';
+
 	/**
 	 * Constant for the Bancontact method.
 	 *
@@ -31,11 +45,39 @@ class Methods {
 	const BANKTRANSFER = '136';
 
 	/**
+	 * Constant for the Billink < € 100 method.
+	 *
+	 * @var string
+	 */
+	const BILLINK_LOW = '1672';
+
+	/**
+	 * Constant for the Billink > € 100 method.
+	 *
+	 * @var string
+	 */
+	const BILLINK_HIGH = '1675';
+
+	/**
+	 * Constant for the Capayable Achteraf Betalen method.
+	 *
+	 * @var string
+	 */
+	const CAPAYABLE = '1744';
+
+	/**
 	 * Constant for the Credit Card method.
 	 *
 	 * @var string
 	 */
 	const CREDITCARD = '706';
+
+	/**
+	 * Constant for the Focum method.
+	 *
+	 * @var string
+	 */
+	const FOCUM = '1702';
 
 	/**
 	 * Constant for the Giropay method.
@@ -52,6 +94,27 @@ class Methods {
 	const IDEAL = '10';
 
 	/**
+	 * Constant for the In3 (Gesprek betalen) method.
+	 *
+	 * @var string
+	 */
+	const IN3 = '1813';
+
+	/**
+	 * Constant for the Klarna method.
+	 *
+	 * @var string
+	 */
+	const KLARNA_PAY_LATER = '1717';
+
+	/**
+	 * Constant for the Maestro method.
+	 *
+	 * @var string
+	 */
+	const MAESTRO = '712';
+
+	/**
 	 * Constant for the PayPal method.
 	 *
 	 * @var string
@@ -66,7 +129,13 @@ class Methods {
 	const PAYSAFECARD = '553';
 
 	/**
-	 * Constant for the Sofort method.
+	 * Constant for the Sofort (Digital Services) method.
+	 *
+	 * 559 = Sofortbanking eCommerce (fysieke producten)
+	 * 577 = Sofortbanking Digital services
+	 * 595 = Sofortbanking High risk
+	 *
+	 * @link https://admin.pay.nl/data/payment_profiles
 	 *
 	 * @var string
 	 */
@@ -78,20 +147,25 @@ class Methods {
 	 * @var array
 	 */
 	private static $map = array(
-		PaymentMethods::BANCONTACT    => Methods::BANCONTACT,
-		PaymentMethods::BANK_TRANSFER => Methods::BANKTRANSFER,
-		PaymentMethods::CREDIT_CARD   => Methods::CREDITCARD,
-		PaymentMethods::GIROPAY       => Methods::GIROPAY,
-		PaymentMethods::IDEAL         => Methods::IDEAL,
-		PaymentMethods::MISTER_CASH   => Methods::BANCONTACT,
-		PaymentMethods::PAYPAL        => Methods::PAYPAL,
-		PaymentMethods::SOFORT        => Methods::SOFORT,
+		PaymentMethods::AFTERPAY         => self::AFTERPAY,
+		PaymentMethods::BANCONTACT       => self::BANCONTACT,
+		PaymentMethods::BANK_TRANSFER    => self::BANKTRANSFER,
+		PaymentMethods::CREDIT_CARD      => self::CREDITCARD,
+		PaymentMethods::FOCUM            => self::FOCUM,
+		PaymentMethods::GIROPAY          => self::GIROPAY,
+		PaymentMethods::IDEAL            => self::IDEAL,
+		PaymentMethods::IN3              => self::IN3,
+		PaymentMethods::KLARNA_PAY_LATER => self::KLARNA_PAY_LATER,
+		PaymentMethods::MISTER_CASH      => self::BANCONTACT,
+		PaymentMethods::MAESTRO          => self::MAESTRO,
+		PaymentMethods::PAYPAL           => self::PAYPAL,
+		PaymentMethods::SOFORT           => self::SOFORT,
 	);
 
 	/**
 	 * Transform WordPress payment method to Pay.nl method.
 	 *
-	 * @param string $payment_method
+	 * @param string $payment_method Payment method.
 	 *
 	 * @return null|string
 	 */
