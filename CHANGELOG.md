@@ -7,6 +7,11 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [2.0.1] - 2018-12-12
+- Added support for payment lines, shipping, billing, customer data.
+- Added support for AfterPay, Focum, In3, Klarna Pay Later.
+- Use issuer field from core gateway.
+
 ## [2.0.0] - 2018-05-11
 - Switched to PHP namespaces.
 
@@ -59,7 +64,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2014-12-15
 - First release.
 
-[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.0...HEAD
+[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.1...HEAD
+[2.0.1]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.8...2.0.0
 [1.1.8]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.7...1.1.8
 [1.1.7]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.6...1.1.7
