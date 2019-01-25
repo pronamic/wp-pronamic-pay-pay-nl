@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
 ## [Unreleased][unreleased]
--
+- Fix error 'invalid paymentProfileId or amount' if no payment method is specified.
 
 ## [2.0.1] - 2018-12-12
 - Added support for payment lines, shipping, billing, customer data.

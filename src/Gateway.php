@@ -161,24 +161,28 @@ class Gateway extends Core_Gateway {
 		// Request.
 		$request = array(
 			// Transaction.
-			'transaction'     => array(
+			'transaction' => array(
 				'currency'    => $payment->get_total_amount()->get_currency()->get_alphabetic_code(),
 				'description' => $payment->get_description(),
 			),
 
-			// Payment method.
-			'paymentOptionId' => Methods::transform( $payment_method ),
-
 			// End user.
-			'enduser'         => $end_user,
+			'enduser'     => $end_user,
 
 			// Sale data.
-			'saleData'        => array(
+			'saleData'    => array(
 				'invoiceDate'  => $payment->get_date()->format( 'd-m-Y' ),
 				'deliveryDate' => $payment->get_date()->format( 'd-m-Y' ),
 				'orderData'    => $order_data,
 			),
 		);
+
+		// Payment method.
+		$method = Methods::transform( $payment_method );
+
+		if ( null !== $method ) {
+			$request['paymentOptionId'] = $method;
+		}
 
 		if ( null !== $payment->get_customer() ) {
 			$enduser = array(
