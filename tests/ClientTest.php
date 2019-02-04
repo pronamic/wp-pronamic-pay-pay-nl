@@ -8,7 +8,7 @@ use WP_Http;
 /**
  * Title: Pay.nl client test
  * Description:
- * Copyright: Copyright (c) 2005 - 2018
+ * Copyright: 2005-2019 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
@@ -23,7 +23,7 @@ class ClientTest extends \WP_UnitTestCase {
 	 * @return string
 	 */
 	public function pre_http_request( $preempt, $request, $url ) {
-		$response = file_get_contents( dirname( __FILE__ ) . '/mocks/transaction-get-service-json-ideal-service-not-found.http' );
+		$response = file_get_contents( dirname( __FILE__ ) . '/mocks/transaction-get-service-json-ideal-service-not-found.http', true );
 
 		$processed_response = WP_Http::processResponse( $response );
 

@@ -7,7 +7,7 @@ use Pronamic\WordPress\Pay\Core\Util as Core_Util;
 /**
  * Title: Pay.nl utility class
  * Description:
- * Copyright: Copyright (c) 2005 - 2018
+ * Copyright: 2005-2019 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
