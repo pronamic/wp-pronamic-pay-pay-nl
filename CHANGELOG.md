@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
 ## [Unreleased][unreleased]
+-
+
+## [2.0.2] - 2019-02-04
 - Fix error 'invalid paymentProfileId or amount' if no payment method is specified.
 
 ## [2.0.1] - 2018-12-12
@@ -64,7 +67,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2014-12-15
 - First release.
 
-[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.1...HEAD
+[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.2...HEAD
+[2.0.2]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.8...2.0.0
 [1.1.8]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.7...1.1.8
