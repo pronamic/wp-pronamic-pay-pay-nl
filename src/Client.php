@@ -179,7 +179,7 @@ class Client {
 	 * @param string $finish_url    Finish URL.
 	 * @param array  $request_param Request parameters.
 	 *
-	 * @return stdClass
+	 * @return null|stdClass
 	 *
 	 * @link https://admin.pay.nl/docpanel/api/Transaction/start/4
 	 */
@@ -209,7 +209,7 @@ class Client {
 	 *
 	 * @link https://admin.pay.nl/docpanel/api/Transaction/info/4
 	 *
-	 * @return stdClass
+	 * @return null|stdClass
 	 */
 	public function transaction_info( $transaction_id ) {
 		// Request.
