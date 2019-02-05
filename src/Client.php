@@ -99,7 +99,7 @@ class Client {
 	 * @param string $output     Output.
 	 * @param array  $parameters Parameters.
 	 *
-	 * @return null|stdClass Response object or null if request failed.
+	 * @return null|array|stdClass Response object or null if request failed.
 	 */
 	private function send_request( $version, $namespace, $method, $output, $parameters = array() ) {
 		$url = $this->get_url( $version, $namespace, $method, $output, $parameters );
@@ -119,6 +119,11 @@ class Client {
 		$body = wp_remote_retrieve_body( $response );
 
 		$result = json_decode( $body );
+
+		// Result is array.
+		if ( is_array( $result ) ) {
+			return $result;
+		}
 
 		// Result is object
 		// NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit.
@@ -198,6 +203,10 @@ class Client {
 		// Request.
 		$result = $this->send_request( 'v4', 'Transaction', 'start', 'json', $parameters );
 
+		if ( is_array( $result ) ) {
+			return null;
+		}
+
 		// Return result.
 		return $result;
 	}
@@ -209,7 +218,7 @@ class Client {
 	 *
 	 * @link https://admin.pay.nl/docpanel/api/Transaction/info/4
 	 *
-	 * @return null|stdClass
+	 * @return null|array|stdClass
 	 */
 	public function transaction_info( $transaction_id ) {
 		// Request.
@@ -247,7 +256,7 @@ class Client {
 			)
 		);
 
-		if ( ! $result ) {
+		if ( ! is_object( $result ) ) {
 			return false;
 		}
 

@@ -255,7 +255,7 @@ class Gateway extends Core_Gateway {
 		// Get transaction info.
 		$result = $this->client->transaction_info( $payment->get_transaction_id() );
 
-		if ( isset( $result->paymentDetails ) ) {
+		if ( is_object( $result ) && isset( $result->paymentDetails ) ) {
 			$status = Statuses::transform( $result->paymentDetails->state );
 
 			// Update payment status.
