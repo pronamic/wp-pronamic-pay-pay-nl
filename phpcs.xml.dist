@@ -1,13 +1,22 @@
 <?xml version="1.0"?>
 
 <ruleset name="WordPress Pay Pay.nl rules">
-	<config name="installed_paths" value="vendor/wp-coding-standards/wpcs,vendor/wimg/php-compatibility" />
-
 	<config name="minimum_supported_wp_version" value="4.7" />
 
-	<config name="testVersion" value="5.3-99.0" />
+	<config name="testVersion" value="5.3-" />
 
-	<rule ref="PHPCompatibility" />
+	<file>.</file>
+
+	<arg name="colors"/>
+	<arg name="extensions" value="php" />
+	<arg value="sp" />
+
+	<exclude-pattern>node_modules/*</exclude-pattern>
+	<exclude-pattern>tests/wp-config.php</exclude-pattern>
+	<exclude-pattern>vendor/*</exclude-pattern>
+	<exclude-pattern>wordpress/*</exclude-pattern>
+
+	<rule ref="PHPCompatibilityWP" />
 
 	<rule ref="WordPress">
 		<exclude name="Generic.Files.LowercasedFilename.NotFound" />
@@ -19,25 +28,11 @@
 
 		<exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar" />
 
-		<exclude name="WordPress.VIP.RestrictedFunctions.wp_remote_get_wp_remote_get" />
-
-		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints___SERVER__REMOTE_ADDR__" />
-
-		<exclude name="WordPress.VIP.SuperGlobalInputUsage.AccessDetected" />
-
 		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents" />
 		<exclude name="WordPress.WP.AlternativeFunctions.file_system_read_file_get_contents" />
 	</rule>
 
-	<rule ref="WordPress.VIP.RestrictedVariables.cache_constraints">
-		<exclude-pattern>/src/Util.php</exclude-pattern>
-	</rule>
-
-	<rule ref="WordPress.VIP.RestrictedFunctions.file_get_contents_file_get_contents">
-		<exclude-pattern>/tests/ClientTest.php</exclude-pattern>
-	</rule>
-
-	<rule ref="WordPress.VIP.SlowDBQuery.slow_db_query_meta_key">
+	<rule ref="WordPress.DB.SlowDBQuery.slow_db_query_meta_key">
 		<exclude-pattern>/src/Settings.php</exclude-pattern>
 	</rule>
 </ruleset>

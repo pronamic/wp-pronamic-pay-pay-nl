@@ -109,8 +109,7 @@ class Client {
 		if ( is_wp_error( $response ) ) {
 			$this->error = new WP_Error(
 				'unknown_response',
-				__( 'Unknown response from Pay.nl.', 'pronamic_ideal' ),
-				$result
+				__( 'Unknown response from Pay.nl.', 'pronamic_ideal' )
 			);
 
 			return null;
