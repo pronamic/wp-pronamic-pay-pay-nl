@@ -99,22 +99,27 @@ class Client {
 	 * @param string $output     Output.
 	 * @param array  $parameters Parameters.
 	 *
-	 * @return stdClass response object or false if request failed.
+	 * @return null|stdClass Response object or null if request failed.
 	 */
 	private function send_request( $version, $namespace, $method, $output, $parameters = array() ) {
 		$url = $this->get_url( $version, $namespace, $method, $output, $parameters );
 
 		$response = wp_remote_get( $url );
 
+		if ( is_wp_error( $response ) ) {
+			$this->error = new WP_Error(
+				'unknown_response',
+				__( 'Unknown response from Pay.nl.', 'pronamic_ideal' ),
+				$result
+			);
+
+			return null;
+		}
+
 		// Body.
 		$body = wp_remote_retrieve_body( $response );
 
 		$result = json_decode( $body );
-
-		// Result is array.
-		if ( is_array( $result ) ) {
-			return $result;
-		}
 
 		// Result is object
 		// NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit.

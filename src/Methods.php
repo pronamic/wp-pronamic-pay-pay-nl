@@ -165,7 +165,7 @@ class Methods {
 	/**
 	 * Transform WordPress payment method to Pay.nl method.
 	 *
-	 * @param string $payment_method Payment method.
+	 * @param mixed $payment_method Payment method.
 	 *
 	 * @return null|string
 	 */
