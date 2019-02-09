@@ -23,7 +23,7 @@ class ClientTest extends \WP_UnitTestCase {
 	 * @return string
 	 */
 	public function pre_http_request( $preempt, $request, $url ) {
-		$response = file_get_contents( dirname( __FILE__ ) . '/../Mock/transaction-get-service-json-ideal-service-not-found.http', true );
+		$response = file_get_contents( dirname( dirname( __FILE__ ) ) . '/Mock/transaction-get-service-json-ideal-service-not-found.http', true );
 
 		$processed_response = WP_Http::processResponse( $response );
 
