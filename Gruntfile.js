@@ -53,10 +53,10 @@ module.exports = function( grunt ) {
 			options: {
 				bin: 'vendor/bin/phpunit'
 			},
-			application: {},
-		},
+			application: {}
+		}
 	} );
 
 	// Default task(s).
-	grunt.registerTask( 'default', [ 'jshint', 'phplint', 'phpmd', 'phpcs' ] );
+	grunt.registerTask( 'default', [ 'jshint', 'phplint', 'phpmd', 'phpcs', 'phpunit' ] );
 };
