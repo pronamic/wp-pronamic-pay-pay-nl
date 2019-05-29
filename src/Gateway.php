@@ -43,21 +43,12 @@ class Gateway extends Core_Gateway {
 		$this->set_slug( self::SLUG );
 
 		// Supported features.
-		$this->supports = self::get_supported_features();
+		$this->supports = array(
+			'payment_status_request',
+		);
 
 		// Client.
 		$this->client = new Client( $config->token, $config->service_id );
-	}
-
-	/**
-	 * Get supported features.
-	 *
-	 * @return array
-	 */
-	public static function get_supported_features() {
-		return array(
-			'payment_status_request',
-		);
 	}
 
 	/**

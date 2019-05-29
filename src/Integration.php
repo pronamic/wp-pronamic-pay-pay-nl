@@ -28,22 +28,48 @@ class Integration extends AbstractIntegration {
 		return __NAMESPACE__ . '\ConfigFactory';
 	}
 
-	public function get_settings_class() {
-		return __NAMESPACE__ . '\Settings';
-	}
-
 	/**
-	 * Get required settings for this integration.
+	 * Get settings fields.
 	 *
-	 * @see   https://github.com/wp-premium/gravityforms/blob/1.9.16/includes/fields/class-gf-field-multiselect.php#L21-L42
-	 * @since 1.0.4
 	 * @return array
 	 */
-	public function get_settings() {
-		$settings = parent::get_settings();
+	public function get_settings_fields() {
+		$fields = array();
 
-		$settings[] = 'pay_nl';
+		// Intro.
+		$fields[] = array(
+			'section' => 'general',
+			'type'    => 'html',
+			'html'    => sprintf(
+				/* translators: 1: Pay.nl */
+				__( 'Account details are provided by %1$s after registration. These settings need to match with the %1$s dashboard.', 'pronamic_ideal' ),
+				__( 'Pay.nl', 'pronamic_ideal' )
+			),
+		);
 
-		return $settings;
+		// Token.
+		$fields[] = array(
+			'section'  => 'general',
+			'filter'   => FILTER_SANITIZE_STRING,
+			'meta_key' => '_pronamic_gateway_pay_nl_token',
+			'title'    => __( 'Token', 'pronamic_ideal' ),
+			'type'     => 'text',
+			'classes'  => array( 'regular-text', 'code' ),
+			'tooltip'  => __( 'Token as mentioned at <strong>Merchant » Company data (Connection)</strong> in the payment provider dashboard.', 'pronamic_ideal' ),
+		);
+
+		// Service ID.
+		$fields[] = array(
+			'section'  => 'general',
+			'filter'   => FILTER_SANITIZE_STRING,
+			'meta_key' => '_pronamic_gateway_pay_nl_service_id',
+			'title'    => __( 'Service ID', 'pronamic_ideal' ),
+			'type'     => 'text',
+			'classes'  => array( 'regular-text', 'code' ),
+			'tooltip'  => __( 'Service ID as mentioned at <strong>Manage » Services</strong> in the payment provider dashboard.', 'pronamic_ideal' ),
+		);
+
+		// Return fields.
+		return $fields;
 	}
 }
