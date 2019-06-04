@@ -21,6 +21,7 @@ class Integration extends AbstractIntegration {
 		$this->url           = 'https://www.pay.nl/';
 		$this->product_url   = 'http://www.pay.nl/';
 		$this->dashboard_url = 'https://admin.pay.nl/';
+		$this->register_url  = 'https://www.pay.nl/registreren/?id=M-7393-3100';
 		$this->provider      = 'pay_nl';
 	}
 
