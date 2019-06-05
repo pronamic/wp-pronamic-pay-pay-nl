@@ -25,10 +25,6 @@ class Integration extends AbstractIntegration {
 		$this->provider      = 'pay_nl';
 	}
 
-	public function get_config_factory_class() {
-		return __NAMESPACE__ . '\ConfigFactory';
-	}
-
 	/**
 	 * Get settings fields.
 	 *
@@ -72,5 +68,14 @@ class Integration extends AbstractIntegration {
 
 		// Return fields.
 		return $fields;
+	}
+
+	public function get_config( $post_id ) {
+		$config = new Config();
+
+		$config->token      = get_post_meta( $post_id, '_pronamic_gateway_pay_nl_token', true );
+		$config->service_id = get_post_meta( $post_id, '_pronamic_gateway_pay_nl_service_id', true );
+
+		return $config;
 	}
 }
