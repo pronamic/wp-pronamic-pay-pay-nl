@@ -18,13 +18,6 @@ use Pronamic\WordPress\Pay\Payments\Payment;
  */
 class Gateway extends Core_Gateway {
 	/**
-	 * Slug of this gateway
-	 *
-	 * @var string
-	 */
-	const SLUG = 'pay_nl';
-
-	/**
 	 * Client.
 	 *
 	 * @var Client
@@ -40,7 +33,6 @@ class Gateway extends Core_Gateway {
 		parent::__construct( $config );
 
 		$this->set_method( self::METHOD_HTTP_REDIRECT );
-		$this->set_slug( self::SLUG );
 
 		// Supported features.
 		$this->supports = array(
