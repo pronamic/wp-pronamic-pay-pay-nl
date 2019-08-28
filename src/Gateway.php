@@ -18,13 +18,6 @@ use Pronamic\WordPress\Pay\Payments\Payment;
  */
 class Gateway extends Core_Gateway {
 	/**
-	 * Slug of this gateway
-	 *
-	 * @var string
-	 */
-	const SLUG = 'pay_nl';
-
-	/**
 	 * Client.
 	 *
 	 * @var Client
@@ -39,13 +32,14 @@ class Gateway extends Core_Gateway {
 	public function __construct( Config $config ) {
 		parent::__construct( $config );
 
+		$this->set_method( self::METHOD_HTTP_REDIRECT );
+
+		// Supported features.
 		$this->supports = array(
 			'payment_status_request',
 		);
 
-		$this->set_method( self::METHOD_HTTP_REDIRECT );
-		$this->set_slug( self::SLUG );
-
+		// Client.
 		$this->client = new Client( $config->token, $config->service_id );
 	}
 
@@ -61,7 +55,7 @@ class Gateway extends Core_Gateway {
 
 		$this->error = $this->client->get_error();
 
-		if ( $result ) {
+		if ( is_array( $result ) ) {
 			$groups[] = array(
 				'options' => $result,
 			);
@@ -255,7 +249,7 @@ class Gateway extends Core_Gateway {
 		// Get transaction info.
 		$result = $this->client->transaction_info( $payment->get_transaction_id() );
 
-		if ( isset( $result->paymentDetails ) ) {
+		if ( is_object( $result ) && isset( $result->paymentDetails ) ) {
 			$status = Statuses::transform( $result->paymentDetails->state );
 
 			// Update payment status.

@@ -99,12 +99,21 @@ class Client {
 	 * @param string $output     Output.
 	 * @param array  $parameters Parameters.
 	 *
-	 * @return stdClass response object or false if request failed.
+	 * @return null|array|stdClass Response object or null if request failed.
 	 */
 	private function send_request( $version, $namespace, $method, $output, $parameters = array() ) {
 		$url = $this->get_url( $version, $namespace, $method, $output, $parameters );
 
 		$response = wp_remote_get( $url );
+
+		if ( is_wp_error( $response ) ) {
+			$this->error = new WP_Error(
+				'unknown_response',
+				__( 'Unknown response from Pay.nl.', 'pronamic_ideal' )
+			);
+
+			return null;
+		}
 
 		// Body.
 		$body = wp_remote_retrieve_body( $response );
@@ -175,7 +184,7 @@ class Client {
 	 * @param string $finish_url    Finish URL.
 	 * @param array  $request_param Request parameters.
 	 *
-	 * @return stdClass
+	 * @return null|stdClass
 	 *
 	 * @link https://admin.pay.nl/docpanel/api/Transaction/start/4
 	 */
@@ -194,6 +203,10 @@ class Client {
 		// Request.
 		$result = $this->send_request( 'v4', 'Transaction', 'start', 'json', $parameters );
 
+		if ( is_array( $result ) ) {
+			return null;
+		}
+
 		// Return result.
 		return $result;
 	}
@@ -205,7 +218,7 @@ class Client {
 	 *
 	 * @link https://admin.pay.nl/docpanel/api/Transaction/info/4
 	 *
-	 * @return stdClass
+	 * @return null|array|stdClass
 	 */
 	public function transaction_info( $transaction_id ) {
 		// Request.
@@ -243,7 +256,7 @@ class Client {
 			)
 		);
 
-		if ( ! $result ) {
+		if ( ! is_object( $result ) ) {
 			return false;
 		}
 

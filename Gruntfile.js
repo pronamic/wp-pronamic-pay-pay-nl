@@ -17,7 +17,9 @@ module.exports = function( grunt ) {
 				src: [
 					'**/*.php',
 					'!node_modules/**',
-					'!vendor/**'
+					'!vendor/**',
+					'!wordpress/**',
+					'!wp-content/**'
 				]
 			},
 			options: {
@@ -53,10 +55,10 @@ module.exports = function( grunt ) {
 			options: {
 				bin: 'vendor/bin/phpunit'
 			},
-			application: {},
-		},
+			application: {}
+		}
 	} );
 
 	// Default task(s).
-	grunt.registerTask( 'default', [ 'jshint', 'phplint', 'phpmd', 'phpcs' ] );
+	grunt.registerTask( 'default', [ 'jshint', 'phplint', 'phpmd', 'phpcs', 'phpunit' ] );
 };
