@@ -53,8 +53,6 @@ class Gateway extends Core_Gateway {
 
 		$result = $this->client->get_issuers();
 
-		$this->error = $this->client->get_error();
-
 		if ( is_array( $result ) ) {
 			$groups[] = array(
 				'options' => $result,
