@@ -20,10 +20,11 @@ class Integration extends AbstractIntegration {
 		$this->name          = 'Pay.nl';
 		$this->url           = 'https://www.pay.nl/';
 		$this->product_url   = 'http://www.pay.nl/';
-		$this->manual_url    = __( 'https://www.pronamic.eu/support/how-to-connect-pay-nl-with-wordpress-via-pronamic-pay/', 'pronamic_ideal' );
 		$this->dashboard_url = 'https://admin.pay.nl/';
 		$this->register_url  = 'https://www.pay.nl/registreren/?id=M-7393-3100';
 		$this->provider      = 'pay_nl';
+
+		$this->set_manual_url( __( 'https://www.pronamic.eu/support/how-to-connect-pay-nl-with-wordpress-via-pronamic-pay/', 'pronamic_ideal' ) );
 	}
 
 	/**
