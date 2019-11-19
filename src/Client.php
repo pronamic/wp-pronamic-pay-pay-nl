@@ -90,7 +90,7 @@ class Client {
 		$response = wp_remote_get( $url );
 
 		if ( is_wp_error( $response ) ) {
-			throw new \Pronamic\WordPress\Pay\GatewayException( 'pay_nl', __( 'Unknown response from Pay.nl.', 'pronamic_ideal' ) );
+			throw new \Exception( __( 'Unknown response from Pay.nl.', 'pronamic_ideal' ) );
 		}
 
 		// Body.
@@ -106,24 +106,24 @@ class Client {
 		// Result is object
 		// NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit.
 		if ( ! is_object( $result ) ) {
-			throw new \Pronamic\WordPress\Pay\GatewayException( 'pay_nl', __( 'Unknown response from Pay.nl error.', 'pronamic_ideal' ), $result );
+			throw new \Exception( __( 'Unknown response from Pay.nl error.', 'pronamic_ideal' ) );
 		}
 
 		// Error.
 		if ( isset( $result->request->errorId, $result->request->errorMessage ) && ! empty( $result->request->errorId ) ) {
 			$pay_nl_error = new PayNL_Error( $result->request->errorId, $result->request->errorMessage );
 
-			throw new \Pronamic\WordPress\Pay\GatewayException( 'pay_nl', (string) $pay_nl_error, $pay_nl_error );
+			throw new \Exception( (string) $pay_nl_error );
 		}
 
 		// Check result (v3).
 		if ( isset( $result->status, $result->error ) && ! filter_var( $result->status, FILTER_VALIDATE_BOOLEAN ) && ! empty( $result->error ) ) {
-			throw new \Pronamic\WordPress\Pay\GatewayException( 'pay_nl', $result->error, $result );
+			throw new \Exception( $result->error);
 		}
 
 		// Check result (v4).
 		if ( isset( $result->request, $result->request->result ) && '1' !== $result->request->result ) {
-			throw new \Pronamic\WordPress\Pay\GatewayException( 'pay_nl', __( 'Unknown Pay.nl error.', 'pronamic_ideal' ), $result );
+			throw new \Exception( __( 'Unknown Pay.nl error.', 'pronamic_ideal' ) );
 		}
 
 		// Return result.
@@ -216,7 +216,7 @@ class Client {
 
 		// Country option list.
 		if ( ! isset( $result->countryOptionList ) ) {
-			throw new \Pronamic\WordPress\Pay\GatewayException( 'pay_nl', __( 'Unknown Pay.nl error.', 'pronamic_ideal' ), $result );
+			throw new \Exception( __( 'Unknown Pay.nl error.', 'pronamic_ideal' ) );
 		}
 
 		// Ok.
