@@ -20,7 +20,7 @@ class ClientTest extends \WP_UnitTestCase {
 	 * Pre HTTP request
 	 *
 	 * @link https://github.com/WordPress/WordPress/blob/3.9.1/wp-includes/class-http.php#L150-L164
-	 * @return string
+	 * @return array
 	 */
 	public function pre_http_request( $preempt, $request, $url ) {
 		$response = file_get_contents( dirname( dirname( __FILE__ ) ) . '/Mock/transaction-get-service-json-ideal-service-not-found.http', true );

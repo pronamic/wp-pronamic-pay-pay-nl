@@ -118,7 +118,7 @@ class Client {
 
 		// Check result (v3).
 		if ( isset( $result->status, $result->error ) && ! filter_var( $result->status, FILTER_VALIDATE_BOOLEAN ) && ! empty( $result->error ) ) {
-			throw new \Exception( $result->error);
+			throw new \Exception( $result->error );
 		}
 
 		// Check result (v4).
