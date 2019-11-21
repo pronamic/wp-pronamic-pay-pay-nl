@@ -50,7 +50,7 @@ class ClientTest extends \WP_UnitTestCase {
 	 *
 	 * @link https://github.com/WordPress/WordPress/blob/3.9.1/wp-includes/class-http.php#L150-L164
 	 *
-	 * @param false|array|WP_Error $preempt Whether to preempt an HTTP request's return value. Default false.
+	 * @param false|array|\WP_Error $preempt Whether to preempt an HTTP request's return value. Default false.
 	 * @param array                $r       HTTP request arguments.
 	 * @param string               $url     The request URL.
 	 *
