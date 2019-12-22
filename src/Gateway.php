@@ -13,7 +13,7 @@ use Pronamic\WordPress\Pay\Payments\Payment;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.1
+ * @version 2.0.4
  * @since   1.0.0
  */
 class Gateway extends Core_Gateway {
@@ -51,14 +51,18 @@ class Gateway extends Core_Gateway {
 	public function get_issuers() {
 		$groups = array();
 
-		$result = $this->client->get_issuers();
+		try {
+			$result = $this->client->get_issuers();
 
-		$this->error = $this->client->get_error();
+			if ( is_array( $result ) ) {
+				$groups[] = array(
+					'options' => $result,
+				);
+			}
+		} catch ( \Exception $e ) {
+			$this->error = new \WP_Error( 'pay_nl_error', $e->getMessage() );
 
-		if ( is_array( $result ) ) {
-			$groups[] = array(
-				'options' => $result,
-			);
+			return $groups;
 		}
 
 		return $groups;
@@ -228,13 +232,6 @@ class Gateway extends Core_Gateway {
 			$request
 		);
 
-		// Handle errors.
-		if ( ! $result ) {
-			$this->error = $this->client->get_error();
-
-			return;
-		}
-
 		// Update gateway results in payment.
 		$payment->set_transaction_id( $result->transaction->transactionId );
 		$payment->set_action_url( $result->transaction->paymentURL );
@@ -246,8 +243,12 @@ class Gateway extends Core_Gateway {
 	 * @param Payment $payment Payment.
 	 */
 	public function update_status( Payment $payment ) {
-		// Get transaction info.
-		$result = $this->client->transaction_info( $payment->get_transaction_id() );
+		try {
+			// Get transaction info.
+			$result = $this->client->transaction_info( $payment->get_transaction_id() );
+		} catch ( \Exception $e ) {
+			return;
+		}
 
 		if ( is_object( $result ) && isset( $result->paymentDetails ) ) {
 			$status = Statuses::transform( $result->paymentDetails->state );

@@ -11,7 +11,7 @@ use Pronamic\WordPress\Pay\Gateways\Common\AbstractIntegration;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.0
+ * @version 2.0.4
  * @since   1.0.0
  */
 class Integration extends AbstractIntegration {
@@ -23,6 +23,8 @@ class Integration extends AbstractIntegration {
 		$this->dashboard_url = 'https://admin.pay.nl/';
 		$this->register_url  = 'https://www.pay.nl/registreren/?id=M-7393-3100';
 		$this->provider      = 'pay_nl';
+
+		$this->set_manual_url( __( 'https://www.pronamic.eu/support/how-to-connect-pay-nl-with-wordpress-via-pronamic-pay/', 'pronamic_ideal' ) );
 	}
 
 	/**

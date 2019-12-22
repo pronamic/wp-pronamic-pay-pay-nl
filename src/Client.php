@@ -5,7 +5,6 @@ namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 use Pronamic\WordPress\Pay\Core\XML\Security;
 use Pronamic\WordPress\Pay\Gateways\PayNL\Error as PayNL_Error;
 use stdClass;
-use WP_Error;
 
 /**
  * Title: Pay.nl client
@@ -14,7 +13,7 @@ use WP_Error;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.0
+ * @version 2.0.4
  * @since   1.0.0
  */
 class Client {
@@ -40,13 +39,6 @@ class Client {
 	private $service_id;
 
 	/**
-	 * Error
-	 *
-	 * @var WP_Error
-	 */
-	private $error;
-
-	/**
 	 * Construct and initialize an Pay.nl client
 	 *
 	 * @param string $token      Token.
@@ -55,15 +47,6 @@ class Client {
 	public function __construct( $token, $service_id ) {
 		$this->token      = $token;
 		$this->service_id = $service_id;
-	}
-
-	/**
-	 * Get latest error
-	 *
-	 * @return WP_Error
-	 */
-	public function get_error() {
-		return $this->error;
 	}
 
 	/**
@@ -107,12 +90,7 @@ class Client {
 		$response = wp_remote_get( $url );
 
 		if ( is_wp_error( $response ) ) {
-			$this->error = new WP_Error(
-				'unknown_response',
-				__( 'Unknown response from Pay.nl.', 'pronamic_ideal' )
-			);
-
-			return null;
+			throw new \Exception( __( 'Unknown response from Pay.nl.', 'pronamic_ideal' ) );
 		}
 
 		// Body.
@@ -128,48 +106,24 @@ class Client {
 		// Result is object
 		// NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit.
 		if ( ! is_object( $result ) ) {
-			$this->error = new WP_Error(
-				'unknown_response',
-				__( 'Unknown response from Pay.nl error.', 'pronamic_ideal' ),
-				$result
-			);
-
-			return null;
+			throw new \Exception( __( 'Unknown response from Pay.nl error.', 'pronamic_ideal' ) );
 		}
 
 		// Error.
 		if ( isset( $result->request->errorId, $result->request->errorMessage ) && ! empty( $result->request->errorId ) ) {
 			$pay_nl_error = new PayNL_Error( $result->request->errorId, $result->request->errorMessage );
 
-			$this->error = new WP_Error(
-				'pay_nl_error',
-				(string) $pay_nl_error,
-				$pay_nl_error
-			);
-
-			return null;
+			throw new \Exception( (string) $pay_nl_error );
 		}
 
 		// Check result (v3).
 		if ( isset( $result->status, $result->error ) && ! filter_var( $result->status, FILTER_VALIDATE_BOOLEAN ) && ! empty( $result->error ) ) {
-			$this->error = new WP_Error(
-				'pay_nl_error',
-				$result->error,
-				$result
-			);
-
-			return null;
+			throw new \Exception( $result->error );
 		}
 
 		// Check result (v4).
 		if ( isset( $result->request, $result->request->result ) && '1' !== $result->request->result ) {
-			$this->error = new WP_Error(
-				'pay_nl_error',
-				__( 'Unknown Pay.nl error.', 'pronamic_ideal' ),
-				$result
-			);
-
-			return null;
+			throw new \Exception( __( 'Unknown Pay.nl error.', 'pronamic_ideal' ) );
 		}
 
 		// Return result.
@@ -262,13 +216,7 @@ class Client {
 
 		// Country option list.
 		if ( ! isset( $result->countryOptionList ) ) {
-			$this->error = new WP_Error(
-				'pay_nl_error',
-				__( 'Unknown Pay.nl error.', 'pronamic_ideal' ),
-				$result
-			);
-
-			return false;
+			throw new \Exception( __( 'Unknown Pay.nl error.', 'pronamic_ideal' ) );
 		}
 
 		// Ok.
