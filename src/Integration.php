@@ -16,6 +16,8 @@ use Pronamic\WordPress\Pay\Gateways\Common\AbstractIntegration;
  */
 class Integration extends AbstractIntegration {
 	public function __construct() {
+		parent::__construct();
+
 		$this->id            = 'pay_nl';
 		$this->name          = 'Pay.nl';
 		$this->url           = 'https://www.pay.nl/';
