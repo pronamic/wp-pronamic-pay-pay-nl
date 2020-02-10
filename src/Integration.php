@@ -2,7 +2,7 @@
 
 namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 
-use Pronamic\WordPress\Pay\Gateways\Common\AbstractIntegration;
+use Pronamic\WordPress\Pay\AbstractGatewayIntegration;
 
 /**
  * Title: Pay.nl integration
@@ -14,19 +14,28 @@ use Pronamic\WordPress\Pay\Gateways\Common\AbstractIntegration;
  * @version 2.0.4
  * @since   1.0.0
  */
-class Integration extends AbstractIntegration {
-	public function __construct() {
-		parent::__construct();
+class Integration extends AbstractGatewayIntegration {
+	/**
+	 * Construct Pay.nl integration.
+	 *
+	 * @param array $args Arguments.
+	 */
+	public function __construct( $args = array() ) {
+		$args = wp_parse_args(
+			$args,
+			array(
+				'id'            => 'pay_nl',
+				'name'          => 'Pay.nl',
+				'url'           => 'https://www.pay.nl/',
+				'product_url'   => 'http://www.pay.nl/',
+				'dashboard_url' => 'https://admin.pay.nl/',
+				'register_url'  => 'https://www.pay.nl/registreren/?id=M-7393-3100',
+				'provider'      => 'pay_nl',
+				'manual_url'    => \__( 'https://www.pronamic.eu/support/how-to-connect-pay-nl-with-wordpress-via-pronamic-pay/', 'pronamic_ideal' ),
+			)
+		);
 
-		$this->id            = 'pay_nl';
-		$this->name          = 'Pay.nl';
-		$this->url           = 'https://www.pay.nl/';
-		$this->product_url   = 'http://www.pay.nl/';
-		$this->dashboard_url = 'https://admin.pay.nl/';
-		$this->register_url  = 'https://www.pay.nl/registreren/?id=M-7393-3100';
-		$this->provider      = 'pay_nl';
-
-		$this->set_manual_url( __( 'https://www.pronamic.eu/support/how-to-connect-pay-nl-with-wordpress-via-pronamic-pay/', 'pronamic_ideal' ) );
+		parent::__construct( $args );
 	}
 
 	/**
