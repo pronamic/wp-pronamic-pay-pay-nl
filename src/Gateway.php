@@ -196,11 +196,14 @@ class Gateway extends Core_Gateway {
 
 			// Set name from customer.
 			if ( null !== $customer->get_name() ) {
-				$enduser['initials'] = $customer->get_name()->get_first_name();
-				$enduser['lastName'] = $customer->get_name()->get_last_name();
+				$first_name = \substr( (string) $customer->get_name()->get_first_name(), 0, 32 );
+				$last_name  = \substr( (string) $customer->get_name()->get_last_name(), 0, 32 );
 
-				$invoice_address['initials'] = $customer->get_name()->get_first_name();
-				$invoice_address['lastName'] = $customer->get_name()->get_last_name();
+				$enduser['initials'] = $first_name;
+				$enduser['lastName'] = $last_name;
+
+				$invoice_address['initials'] = $first_name;
+				$invoice_address['lastName'] = $last_name;
 			}
 
 			// Set date of birth.
