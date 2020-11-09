@@ -51,7 +51,7 @@ class Integration extends AbstractGatewayIntegration {
 			'section' => 'general',
 			'type'    => 'html',
 			'html'    => sprintf(
-				/* translators: 1: Pay.nl */
+				/* translators: 1: payment provider name */
 				__( 'Account details are provided by %1$s after registration. These settings need to match with the %1$s dashboard.', 'pronamic_ideal' ),
 				__( 'Pay.nl', 'pronamic_ideal' )
 			),
