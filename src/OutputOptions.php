@@ -26,7 +26,7 @@ class OutputOptions {
 	 *
 	 * @var string
 	 */
-	const OUPUT_TXT = 'txt';
+	const OUTPUT_TXT = 'txt';
 
 	/**
 	 * Output array
