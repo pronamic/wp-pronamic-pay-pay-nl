@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [2.1.2] - 2021-04-26
+- Happy 2021.
+
 ## [2.1.1] - 2020-11-09
 - Limited first and last name to 32 characters.
 
@@ -44,7 +47,7 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 - Don't schedule `pronamic_ideal_check_transaction_status` event on transaction error.
 
 ## [1.1.6] - 2016-06-08
-- Simplified the gateay payment start function.
+- Simplified the gateway payment start function.
 
 ## [1.1.5] - 2016-05-06
 - Improved error handling.
@@ -67,7 +70,7 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 
 ## [1.1.0] - 2015-02-27
 - Updated WordPress pay core library to version 1.1.0.
-- Fixed isues with filter_input INPUT_SERVER (https://bugs.php.net/bug.php?id=49184).
+- Fixed issues with filter_input INPUT_SERVER (https://bugs.php.net/bug.php?id=49184).
 
 ## [1.0.3] - 2015-01-20
 - Require WordPress pay core library version 1.0.0.
@@ -81,7 +84,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2014-12-15
 - First release.
 
-[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/2.1.1...HEAD
+[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/2.1.2...HEAD
+[2.1.2]: https://github.com/wp-pay-gateways/pay-nl/compare/2.1.1...2.1.2
 [2.1.1]: https://github.com/wp-pay-gateways/pay-nl/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.4...2.1.0
 [2.0.4]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.3...2.0.4
