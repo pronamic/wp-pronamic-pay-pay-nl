@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [2.1.2] - 2021-04-26
+- Happy 2021.
+
 ## [2.1.1] - 2020-11-09
 - Limited first and last name to 32 characters.
 
@@ -81,7 +84,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2014-12-15
 - First release.
 
-[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/2.1.1...HEAD
+[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/2.1.2...HEAD
+[2.1.2]: https://github.com/wp-pay-gateways/pay-nl/compare/2.1.1...2.1.2
 [2.1.1]: https://github.com/wp-pay-gateways/pay-nl/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.4...2.1.0
 [2.0.4]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.3...2.0.4
