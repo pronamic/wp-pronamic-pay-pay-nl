@@ -87,6 +87,7 @@ class Gateway extends Core_Gateway {
 			PaymentMethods::MAESTRO,
 			PaymentMethods::PAYPAL,
 			PaymentMethods::SOFORT,
+			PaymentMethods::SPRAYPAY,
 		);
 	}
 

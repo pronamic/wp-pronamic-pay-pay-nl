@@ -142,6 +142,14 @@ class Methods {
 	const SOFORT = '577';
 
 	/**
+	 * Constant for the SprayPay method.
+	 *
+	 * @link https://docs.pay.nl/developers#transaction-paylater
+	 * @var string
+	 */
+	const SPRAYPAY = '1987';
+
+	/**
 	 * Payments methods map.
 	 *
 	 * @var array
@@ -160,6 +168,7 @@ class Methods {
 		PaymentMethods::MAESTRO          => self::MAESTRO,
 		PaymentMethods::PAYPAL           => self::PAYPAL,
 		PaymentMethods::SOFORT           => self::SOFORT,
+		PaymentMethods::SPRAYPAY         => self::SPRAYPAY,
 	);
 
 	/**
