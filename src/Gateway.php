@@ -46,7 +46,7 @@ class Gateway extends Core_Gateway {
 	/**
 	 * Get issuers
 	 *
-	 * @see Pronamic_WP_Pay_Gateway::get_issuers()
+	 * @see Core_Gateway::get_issuers()
 	 */
 	public function get_issuers() {
 		$groups = array();
@@ -71,7 +71,7 @@ class Gateway extends Core_Gateway {
 	/**
 	 * Get supported payment methods
 	 *
-	 * @see Pronamic_WP_Pay_Gateway::get_supported_payment_methods()
+	 * @see Core_Gateway::get_supported_payment_methods()
 	 */
 	public function get_supported_payment_methods() {
 		return array(
@@ -87,6 +87,7 @@ class Gateway extends Core_Gateway {
 			PaymentMethods::MAESTRO,
 			PaymentMethods::PAYPAL,
 			PaymentMethods::SOFORT,
+			PaymentMethods::SPRAYPAY,
 		);
 	}
 
@@ -116,7 +117,7 @@ class Gateway extends Core_Gateway {
 				$price = null;
 
 				if ( null !== $line->get_unit_price() ) {
-					$price = $line->get_unit_price()->get_including_tax()->get_cents();
+					$price = $line->get_unit_price()->get_including_tax()->get_minor_units()->to_int();
 				}
 
 				$order_data[] = array(
@@ -229,7 +230,7 @@ class Gateway extends Core_Gateway {
 
 		// Start transaction.
 		$result = $this->client->transaction_start(
-			$payment->get_total_amount()->get_minor_units(),
+			$payment->get_total_amount()->get_minor_units()->to_int(),
 			Util::get_ip_address(),
 			$payment->get_return_url(),
 			$request

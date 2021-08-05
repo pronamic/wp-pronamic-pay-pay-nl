@@ -133,7 +133,7 @@ class Client {
 	/**
 	 * Transaction start
 	 *
-	 * @param float  $amount        Transaction amount.
+	 * @param int    $amount        Transaction amount.
 	 * @param string $ip_address    IP address.
 	 * @param string $finish_url    Finish URL.
 	 * @param array  $request_param Request parameters.
