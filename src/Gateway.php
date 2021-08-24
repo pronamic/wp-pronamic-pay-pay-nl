@@ -155,7 +155,7 @@ class Gateway extends Core_Gateway {
 		/**
 		 * End user - Invoice address.
 		 */
-		$billing_address  = $payment->get_billing_address();
+		$billing_address = $payment->get_billing_address();
 
 		if ( null !== $billing_address ) {
 			$address = array(
