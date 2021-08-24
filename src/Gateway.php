@@ -117,7 +117,7 @@ class Gateway extends Core_Gateway {
 				$price = null;
 
 				if ( null !== $line->get_unit_price() ) {
-					$price = $line->get_unit_price()->get_including_tax()->get_minor_units()->to_int();
+					$price = $line->get_unit_price()->get_minor_units()->to_int();
 				}
 
 				$order_data[] = array(
