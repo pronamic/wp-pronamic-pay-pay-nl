@@ -101,39 +101,44 @@ class Gateway extends Core_Gateway {
 	public function start( Payment $payment ) {
 		$payment_method = $payment->get_method();
 
-		/*
-		 * New transaction request.
-		 * @link https://www.pay.nl/docs/developers.php#transactions
+		$customer = $payment->get_customer();
+
+		/**
+		 * End user.
 		 */
-		$customer         = $payment->get_customer();
-		$billing_address  = $payment->get_billing_address();
-		$shipping_address = $payment->get_shipping_address();
+		$end_user = array();
 
-		// Payment lines.
-		$order_data = array();
+		if ( null !== $customer ) {
+			$end_user['gender']       = $customer->get_gender();
+			$end_user['phoneNumber']  = $customer->get_phone();
+			$end_user['emailAddress'] = $customer->get_email();
+			$end_user['language']     = $customer->get_language();
 
-		if ( null !== $payment->get_lines() ) {
-			foreach ( $payment->get_lines() as $line ) {
-				$price = null;
+			/**
+			 * Name.
+			 */
+			$name = $customer->get_name();
 
-				if ( null !== $line->get_unit_price() ) {
-					$price = $line->get_unit_price()->get_minor_units()->to_int();
-				}
+			if ( null !== $name ) {
+				$end_user['initials'] = \substr( (string) $name->get_first_name(), 0, 32 );
+				$end_user['lastName'] = \substr( (string) $name->get_last_name(), 0, 32 );
+			}
 
-				$order_data[] = array(
-					'productId'   => $line->get_id(),
-					'productType' => ProductTypes::transform( $line->get_type() ),
-					'description' => $line->get_name(),
-					'price'       => $price,
-					'quantity'    => $line->get_quantity(),
-				);
+			/**
+			 * Date of Birth.
+			 */
+			$birth_date = $customer->get_birth_date();
+
+			if ( $birth_date instanceof \DateTimeInterface ) {
+				$end_user['dob'] = $birth_date->format( 'dmY' );
 			}
 		}
 
-		// End user.
-		$end_user = array();
+		/**
+		 * End user - Address.
+		 */
+		$shipping_address = $payment->get_shipping_address();
 
-		// End user - Address.
 		if ( null !== $shipping_address ) {
 			$address = array(
 				'streetName'            => $shipping_address->get_street_name(),
@@ -147,7 +152,11 @@ class Gateway extends Core_Gateway {
 			$end_user['address'] = $address;
 		}
 
-		// End user - Invoice address.
+		/**
+		 * End user - Invoice address.
+		 */
+		$billing_address  = $payment->get_billing_address();
+
 		if ( null !== $billing_address ) {
 			$address = array(
 				'streetName'            => $billing_address->get_street_name(),
@@ -158,26 +167,64 @@ class Gateway extends Core_Gateway {
 				'countryCode'           => $billing_address->get_country_code(),
 			);
 
+			if ( \array_key_exists( 'gender', $end_user ) ) {
+				$address['gender'] = $end_user['gender'];
+			}
+
+			if ( \array_key_exists( 'initials', $end_user ) ) {
+				$address['initials'] = $end_user['initials'];
+			}
+
+			if ( \array_key_exists( 'lastName', $end_user ) ) {
+				$address['lastName'] = $end_user['lastName'];
+			}
+
 			$end_user['invoiceAddress'] = $address;
 		}
 
-		// Request.
+		/**
+		 * Sale data.
+		 */
+		$sale_data = array(
+			'invoiceDate'  => $payment->get_date()->format( 'd-m-Y' ),
+			'deliveryDate' => $payment->get_date()->format( 'd-m-Y' ),
+		);
+
+		$payment_lines = $payment->get_lines();
+
+		if ( null !== $payment_lines ) {
+			$sale_data['order_data'] = array();
+
+			foreach ( $payment_lines as $line ) {
+				$order_data_item = array(
+					'productId'   => $line->get_id(),
+					'productType' => ProductTypes::transform( $line->get_type() ),
+					'description' => $line->get_name(),
+					'quantity'    => $line->get_quantity(),
+				);
+
+				$unit_price = $line->get_unit_price();
+
+				if ( null !== $unit_price ) {
+					$order_data_item['price'] = $unit_price->get_minor_units()->to_int();
+				}
+
+				$sale_data['order_data'][] = $order_data_item;
+			}
+		}
+
+		/**
+		 * Request.
+		 *
+		 * @link https://docs.pay.nl/developers?language=nl#transaction-process
+		 */
 		$request = array(
-			// Transaction.
 			'transaction' => array(
 				'currency'    => $payment->get_total_amount()->get_currency()->get_alphabetic_code(),
 				'description' => $payment->get_description(),
 			),
-
-			// End user.
 			'enduser'     => $end_user,
-
-			// Sale data.
-			'saleData'    => array(
-				'invoiceDate'  => $payment->get_date()->format( 'd-m-Y' ),
-				'deliveryDate' => $payment->get_date()->format( 'd-m-Y' ),
-				'orderData'    => $order_data,
-			),
+			'saleData'    => $sale_data,
 		);
 
 		// Payment method.
@@ -185,40 +232,6 @@ class Gateway extends Core_Gateway {
 
 		if ( null !== $method ) {
 			$request['paymentOptionId'] = $method;
-		}
-
-		if ( null !== $payment->get_customer() ) {
-			$enduser = array(
-				'gender'       => $customer->get_gender(),
-				'phoneNumber'  => $customer->get_phone(),
-				'emailAddress' => $customer->get_email(),
-				'language'     => $customer->get_language(),
-			);
-
-			$invoice_address = array(
-				'gender' => $customer->get_gender(),
-			);
-
-			// Set name from customer.
-			if ( null !== $customer->get_name() ) {
-				$first_name = \substr( (string) $customer->get_name()->get_first_name(), 0, 32 );
-				$last_name  = \substr( (string) $customer->get_name()->get_last_name(), 0, 32 );
-
-				$enduser['initials'] = $first_name;
-				$enduser['lastName'] = $last_name;
-
-				$invoice_address['initials'] = $first_name;
-				$invoice_address['lastName'] = $last_name;
-			}
-
-			// Set date of birth.
-			if ( $customer->get_birth_date() instanceof \DateTime ) {
-				$enduser['dob'] = $customer->get_birth_date()->format( 'dmY' );
-			}
-
-			$request['enduser'] = array_merge( $request['enduser'], $enduser );
-
-			$request['enduser']['invoiceAddress'] = array_merge( $request['enduser']['invoiceAddress'], $invoice_address );
 		}
 
 		// Check payment method.
