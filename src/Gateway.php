@@ -135,7 +135,7 @@ class Gateway extends Core_Gateway {
 
 		// End user - Address.
 		if ( null !== $shipping_address ) {
-			$end_user['address'] = array(
+			$address = array(
 				'streetName'            => $shipping_address->get_street_name(),
 				'streetNumber'          => $shipping_address->get_house_number_base(),
 				'streetNumberExtension' => $shipping_address->get_house_number_addition(),
@@ -143,11 +143,13 @@ class Gateway extends Core_Gateway {
 				'city'                  => $shipping_address->get_city(),
 				'countryCode'           => $shipping_address->get_country_code(),
 			);
+
+			$end_user['address'] = $address;
 		}
 
 		// End user - Invoice address.
 		if ( null !== $billing_address ) {
-			$end_user['invoiceAddress'] = array(
+			$address = array(
 				'streetName'            => $billing_address->get_street_name(),
 				'streetNumber'          => $billing_address->get_house_number_base(),
 				'streetNumberExtension' => $billing_address->get_house_number_addition(),
@@ -155,6 +157,8 @@ class Gateway extends Core_Gateway {
 				'city'                  => $billing_address->get_city(),
 				'countryCode'           => $billing_address->get_country_code(),
 			);
+
+			$end_user['invoiceAddress'] = $address;
 		}
 
 		// Request.
