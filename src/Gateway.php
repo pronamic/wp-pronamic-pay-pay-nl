@@ -234,12 +234,6 @@ class Gateway extends Core_Gateway {
 			$request['paymentOptionId'] = $method;
 		}
 
-		// Check payment method.
-		if ( null === $request['paymentOptionId'] && ! empty( $payment_method ) ) {
-			// Leap of faith if the WordPress payment method could not transform to a Pay.nl method?
-			$request['paymentOptionId'] = $payment_method;
-		}
-
 		// Set payment method specific parameters.
 		if ( PaymentMethods::IDEAL === $payment_method ) {
 			$request['paymentOptionSubId'] = $payment->get_issuer();
