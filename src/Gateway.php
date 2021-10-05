@@ -236,7 +236,7 @@ class Gateway extends Core_Gateway {
 
 		// Set payment method specific parameters.
 		if ( PaymentMethods::IDEAL === $payment_method ) {
-			$request['paymentOptionSubId'] = $payment->get_issuer();
+			$request['paymentOptionSubId'] = $payment->get_meta( 'issuer' );
 		}
 
 		// Start transaction.
