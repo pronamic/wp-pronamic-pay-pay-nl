@@ -99,7 +99,7 @@ class Gateway extends Core_Gateway {
 	 * @param Payment $payment Payment.
 	 */
 	public function start( Payment $payment ) {
-		$payment_method = $payment->get_method();
+		$payment_method = $payment->get_payment_method();
 
 		$customer = $payment->get_customer();
 
