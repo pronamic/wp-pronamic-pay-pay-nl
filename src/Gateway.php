@@ -75,7 +75,7 @@ class Gateway extends Core_Gateway {
 	 */
 	public function get_supported_payment_methods() {
 		return array(
-			PaymentMethods::AFTERPAY,
+			PaymentMethods::AFTERPAY_NL,
 			PaymentMethods::BANCONTACT,
 			PaymentMethods::BANK_TRANSFER,
 			PaymentMethods::CREDIT_CARD,
