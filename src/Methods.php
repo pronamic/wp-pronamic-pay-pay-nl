@@ -155,7 +155,7 @@ class Methods {
 	 * @var array
 	 */
 	private static $map = array(
-		PaymentMethods::AFTERPAY         => self::AFTERPAY,
+		PaymentMethods::AFTERPAY_NL      => self::AFTERPAY,
 		PaymentMethods::BANCONTACT       => self::BANCONTACT,
 		PaymentMethods::BANK_TRANSFER    => self::BANKTRANSFER,
 		PaymentMethods::CREDIT_CARD      => self::CREDITCARD,
