@@ -7,7 +7,7 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
 /**
  * Title: Pay.nl payment methods
  * Description:
- * Copyright: 2005-2021 Pronamic
+ * Copyright: 2005-2022 Pronamic
  * Company: Pronamic
  *
  * @author  Reüel van der Steege
@@ -24,8 +24,9 @@ class Methods {
 	 * 1921 = AfterPay NL B2B
 	 * 1918 = AfterPay NL B2C
 	 *
-	 * @link https://admin.pay.nl/data/payment_profiles
+	 * Note: this is for AfterPay (afterpay.nl) and not for Afterpay (afterpay.com)
 	 *
+	 * @link https://admin.pay.nl/data/payment_profiles
 	 * @var string
 	 */
 	const AFTERPAY = '739';
@@ -155,7 +156,7 @@ class Methods {
 	 * @var array
 	 */
 	private static $map = array(
-		PaymentMethods::AFTERPAY         => self::AFTERPAY,
+		PaymentMethods::AFTERPAY_NL      => self::AFTERPAY,
 		PaymentMethods::BANCONTACT       => self::BANCONTACT,
 		PaymentMethods::BANK_TRANSFER    => self::BANKTRANSFER,
 		PaymentMethods::CREDIT_CARD      => self::CREDITCARD,

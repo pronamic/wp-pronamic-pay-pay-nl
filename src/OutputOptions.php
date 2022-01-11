@@ -5,7 +5,7 @@ namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 /**
  * Title: Pay.nl output options
  * Description:
- * Copyright: 2005-2021 Pronamic
+ * Copyright: 2005-2022 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma

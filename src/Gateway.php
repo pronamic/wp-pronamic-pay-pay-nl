@@ -9,7 +9,7 @@ use Pronamic\WordPress\Pay\Payments\Payment;
 /**
  * Title: Pay.nl gateway
  * Description:
- * Copyright: 2005-2021 Pronamic
+ * Copyright: 2005-2022 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
@@ -75,7 +75,7 @@ class Gateway extends Core_Gateway {
 	 */
 	public function get_supported_payment_methods() {
 		return array(
-			PaymentMethods::AFTERPAY,
+			PaymentMethods::AFTERPAY_NL,
 			PaymentMethods::BANCONTACT,
 			PaymentMethods::BANK_TRANSFER,
 			PaymentMethods::CREDIT_CARD,
@@ -99,7 +99,7 @@ class Gateway extends Core_Gateway {
 	 * @param Payment $payment Payment.
 	 */
 	public function start( Payment $payment ) {
-		$payment_method = $payment->get_method();
+		$payment_method = $payment->get_payment_method();
 
 		$customer = $payment->get_customer();
 
@@ -234,15 +234,9 @@ class Gateway extends Core_Gateway {
 			$request['paymentOptionId'] = $method;
 		}
 
-		// Check payment method.
-		if ( null === $request['paymentOptionId'] && ! empty( $payment_method ) ) {
-			// Leap of faith if the WordPress payment method could not transform to a Pay.nl method?
-			$request['paymentOptionId'] = $payment_method;
-		}
-
 		// Set payment method specific parameters.
 		if ( PaymentMethods::IDEAL === $payment_method ) {
-			$request['paymentOptionSubId'] = $payment->get_issuer();
+			$request['paymentOptionSubId'] = $payment->get_meta( 'issuer' );
 		}
 
 		// Start transaction.
