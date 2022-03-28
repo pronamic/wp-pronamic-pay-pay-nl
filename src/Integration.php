@@ -27,7 +27,7 @@ class Integration extends AbstractGatewayIntegration {
 				'id'            => 'pay_nl',
 				'name'          => 'Pay.nl',
 				'url'           => 'https://www.pay.nl/',
-				'product_url'   => 'http://www.pay.nl/',
+				'product_url'   => 'https://www.pay.nl/',
 				'dashboard_url' => 'https://admin.pay.nl/',
 				'register_url'  => 'https://www.pay.nl/registreren/?id=M-7393-3100',
 				'provider'      => 'pay_nl',
