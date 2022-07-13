@@ -50,7 +50,7 @@ class Gateway extends Core_Gateway {
 		$ideal_issuer_field = new SelectField( 'ideal-issuer' );
 		$ideal_issuer_field->set_required( true );
 		$ideal_issuer_field->set_options_callback( function() {
-			return $this->get_issuers();
+			return $this->get_ideal_issuers();
 		} );
 
 		$ideal_payment_method->add_field( $ideal_issuer_field );
@@ -71,11 +71,11 @@ class Gateway extends Core_Gateway {
 	}
 
 	/**
-	 * Get issuers.
+	 * Get iDEAL issuers.
 	 *
 	 * @return array
 	 */
-	private function get_issuers() {
+	private function get_ideal_issuers() {
 		$groups = array();
 
 		$result = $this->client->get_issuers();
