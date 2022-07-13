@@ -3,7 +3,9 @@
 namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 
 use Pronamic\WordPress\Pay\Core\Gateway as Core_Gateway;
+use Pronamic\WordPress\Pay\Core\PaymentMethod;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use Pronamic\WordPress\Pay\Core\SelectField;
 use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
@@ -41,14 +43,39 @@ class Gateway extends Core_Gateway {
 
 		// Client.
 		$this->client = new Client( $config->token, $config->service_id );
+
+		// Methods.
+		$ideal_payment_method = new PaymentMethod( PaymentMethods::IDEAL );
+
+		$ideal_issuer_field = new SelectField( 'ideal-issuer' );
+		$ideal_issuer_field->set_required( true );
+		$ideal_issuer_field->set_options_callback( function() {
+			return $this->get_issuers();
+		} );
+
+		$ideal_payment_method->add_field( $ideal_issuer_field );
+
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::AFTERPAY_NL ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::BANCONTACT ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::BANK_TRANSFER ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::CREDIT_CARD ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::FOCUM ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::GIROPAY ) );
+		$this->register_payment_method( $ideal_payment_method );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::IN3 ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::KLARNA_PAY_LATER ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::MAESTRO ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::PAYPAL ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::SOFORT ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::SPRAYPAY ) );
 	}
 
 	/**
-	 * Get issuers
+	 * Get issuers.
 	 *
-	 * @see Core_Gateway::get_issuers()
+	 * @return array
 	 */
-	public function get_issuers() {
+	private function get_issuers() {
 		$groups = array();
 
 		$result = $this->client->get_issuers();
@@ -60,29 +87,6 @@ class Gateway extends Core_Gateway {
 		}
 
 		return $groups;
-	}
-
-	/**
-	 * Get supported payment methods
-	 *
-	 * @see Core_Gateway::get_supported_payment_methods()
-	 */
-	public function get_supported_payment_methods() {
-		return array(
-			PaymentMethods::AFTERPAY_NL,
-			PaymentMethods::BANCONTACT,
-			PaymentMethods::BANK_TRANSFER,
-			PaymentMethods::CREDIT_CARD,
-			PaymentMethods::FOCUM,
-			PaymentMethods::GIROPAY,
-			PaymentMethods::IDEAL,
-			PaymentMethods::IN3,
-			PaymentMethods::KLARNA_PAY_LATER,
-			PaymentMethods::MAESTRO,
-			PaymentMethods::PAYPAL,
-			PaymentMethods::SOFORT,
-			PaymentMethods::SPRAYPAY,
-		);
 	}
 
 	/**
