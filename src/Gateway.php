@@ -5,7 +5,9 @@ namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 use Pronamic\WordPress\Pay\Core\Gateway as Core_Gateway;
 use Pronamic\WordPress\Pay\Core\PaymentMethod;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
-use Pronamic\WordPress\Pay\Core\SelectField;
+use Pronamic\WordPress\Pay\Fields\CachedCallbackOptions;
+use Pronamic\WordPress\Pay\Fields\IDealIssuerSelectField;
+use Pronamic\WordPress\Pay\Fields\SelectFieldOption;
 use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
@@ -47,11 +49,16 @@ class Gateway extends Core_Gateway {
 		// Methods.
 		$ideal_payment_method = new PaymentMethod( PaymentMethods::IDEAL );
 
-		$ideal_issuer_field = new SelectField( 'ideal-issuer' );
+		$ideal_issuer_field = new IDealIssuerSelectField( 'ideal-issuer' );
+
 		$ideal_issuer_field->set_required( true );
-		$ideal_issuer_field->set_options_callback( function() {
-			return $this->get_ideal_issuers();
-		} );
+
+		$ideal_issuer_field->set_options( new CachedCallbackOptions(
+			function() {
+				return $this->get_ideal_issuers();
+			},
+			'pronamic_pay_ideal_issuers_' . \md5( \wp_json_encode( $config ) )
+		) );
 
 		$ideal_payment_method->add_field( $ideal_issuer_field );
 
@@ -76,17 +83,19 @@ class Gateway extends Core_Gateway {
 	 * @return array
 	 */
 	private function get_ideal_issuers() {
-		$groups = array();
-
 		$result = $this->client->get_issuers();
 
-		if ( is_array( $result ) ) {
-			$groups[] = array(
-				'options' => $result,
-			);
+		if ( ! is_array( $result ) ) {
+			return [];
 		}
 
-		return $groups;
+		$options = [];
+
+		foreach ( $result as $key => $value ) {
+			$options[] = new SelectFieldOption( $key, $value );
+		}
+
+		return $options;
 	}
 
 	/**
