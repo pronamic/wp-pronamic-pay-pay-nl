@@ -3,7 +3,11 @@
 namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 
 use Pronamic\WordPress\Pay\Core\Gateway as Core_Gateway;
+use Pronamic\WordPress\Pay\Core\PaymentMethod;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use Pronamic\WordPress\Pay\Fields\CachedCallbackOptions;
+use Pronamic\WordPress\Pay\Fields\IDealIssuerSelectField;
+use Pronamic\WordPress\Pay\Fields\SelectFieldOption;
 use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
@@ -41,48 +45,58 @@ class Gateway extends Core_Gateway {
 
 		// Client.
 		$this->client = new Client( $config->token, $config->service_id );
+
+		// Methods.
+		$ideal_payment_method = new PaymentMethod( PaymentMethods::IDEAL );
+
+		$ideal_issuer_field = new IDealIssuerSelectField( 'ideal-issuer' );
+
+		$ideal_issuer_field->set_required( true );
+
+		$ideal_issuer_field->set_options( new CachedCallbackOptions(
+			function() {
+				return $this->get_ideal_issuers();
+			},
+			'pronamic_pay_ideal_issuers_' . \md5( \wp_json_encode( $config ) )
+		) );
+
+		$ideal_payment_method->add_field( $ideal_issuer_field );
+
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::AFTERPAY_NL ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::BANCONTACT ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::BANK_TRANSFER ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::CREDIT_CARD ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::FOCUM ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::GIROPAY ) );
+		$this->register_payment_method( $ideal_payment_method );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::IN3 ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::KLARNA_PAY_LATER ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::MAESTRO ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::PAYPAL ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::SOFORT ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::SPRAYPAY ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::VOID ) );
 	}
 
 	/**
-	 * Get issuers
+	 * Get iDEAL issuers.
 	 *
-	 * @see Core_Gateway::get_issuers()
+	 * @return array
 	 */
-	public function get_issuers() {
-		$groups = array();
-
+	private function get_ideal_issuers() {
 		$result = $this->client->get_issuers();
 
-		if ( is_array( $result ) ) {
-			$groups[] = array(
-				'options' => $result,
-			);
+		if ( ! is_array( $result ) ) {
+			return [];
 		}
 
-		return $groups;
-	}
+		$options = [];
 
-	/**
-	 * Get supported payment methods
-	 *
-	 * @see Core_Gateway::get_supported_payment_methods()
-	 */
-	public function get_supported_payment_methods() {
-		return array(
-			PaymentMethods::AFTERPAY_NL,
-			PaymentMethods::BANCONTACT,
-			PaymentMethods::BANK_TRANSFER,
-			PaymentMethods::CREDIT_CARD,
-			PaymentMethods::FOCUM,
-			PaymentMethods::GIROPAY,
-			PaymentMethods::IDEAL,
-			PaymentMethods::IN3,
-			PaymentMethods::KLARNA_PAY_LATER,
-			PaymentMethods::MAESTRO,
-			PaymentMethods::PAYPAL,
-			PaymentMethods::SOFORT,
-			PaymentMethods::SPRAYPAY,
-		);
+		foreach ( $result as $key => $value ) {
+			$options[] = new SelectFieldOption( $key, $value );
+		}
+
+		return $options;
 	}
 
 	/**
