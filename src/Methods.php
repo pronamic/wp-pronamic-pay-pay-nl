@@ -155,7 +155,7 @@ class Methods {
 	 *
 	 * @var array
 	 */
-	private static $map = array(
+	private static $map = [
 		PaymentMethods::AFTERPAY_NL      => self::AFTERPAY,
 		PaymentMethods::BANCONTACT       => self::BANCONTACT,
 		PaymentMethods::BANK_TRANSFER    => self::BANKTRANSFER,
@@ -170,7 +170,7 @@ class Methods {
 		PaymentMethods::PAYPAL           => self::PAYPAL,
 		PaymentMethods::SOFORT           => self::SOFORT,
 		PaymentMethods::SPRAYPAY         => self::SPRAYPAY,
-	);
+	];
 
 	/**
 	 * Transform WordPress payment method to Pay.nl method.
