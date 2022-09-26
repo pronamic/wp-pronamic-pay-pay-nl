@@ -29,10 +29,10 @@ class ClientTest extends \WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->mock_http_responses = array();
+		$this->mock_http_responses = [];
 
 		// Mock HTTP response.
-		add_filter( 'pre_http_request', array( $this, 'pre_http_request' ), 10, 3 );
+		add_filter( 'pre_http_request', [ $this, 'pre_http_request' ], 10, 3 );
 	}
 
 	/**

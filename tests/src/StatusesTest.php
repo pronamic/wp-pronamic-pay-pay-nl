@@ -28,10 +28,10 @@ class StatusesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function states_matrix_provider() {
-		return array(
-			array( Statuses::PAID, Core_Statuses::SUCCESS ),
-			array( Statuses::CANCELLED, Core_Statuses::CANCELLED ),
-			array( 'not existing status', null ),
-		);
+		return [
+			[ Statuses::PAID, Core_Statuses::SUCCESS ],
+			[ Statuses::CANCELLED, Core_Statuses::CANCELLED ],
+			[ 'not existing status', null ],
+		];
 	}
 }

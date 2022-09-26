@@ -60,7 +60,7 @@ class Client {
 	 *
 	 * @return string
 	 */
-	private function get_url( $version, $namespace, $method, $output, $parameters = array() ) {
+	private function get_url( $version, $namespace, $method, $output, $parameters = [] ) {
 		return add_query_arg(
 			rawurlencode_deep( $parameters ),
 			sprintf(
@@ -84,7 +84,7 @@ class Client {
 	 *
 	 * @return null|array|stdClass Response object or null if request failed.
 	 */
-	private function send_request( $version, $namespace, $method, $output, $parameters = array() ) {
+	private function send_request( $version, $namespace, $method, $output, $parameters = [] ) {
 		$url = $this->get_url( $version, $namespace, $method, $output, $parameters );
 
 		$response = wp_remote_get( $url );
@@ -142,16 +142,16 @@ class Client {
 	 *
 	 * @link https://admin.pay.nl/docpanel/api/Transaction/start/4
 	 */
-	public function transaction_start( $amount, $ip_address, $finish_url, $request_param = array() ) {
+	public function transaction_start( $amount, $ip_address, $finish_url, $request_param = [] ) {
 		$parameters = array_merge(
 			$request_param,
-			array(
+			[
 				'token'     => $this->token,
 				'serviceId' => $this->service_id,
 				'amount'    => $amount,
 				'ipAddress' => $ip_address,
 				'finishUrl' => $finish_url,
-			)
+			]
 		);
 
 		// Request.
@@ -181,10 +181,10 @@ class Client {
 			'Transaction',
 			'info',
 			'json',
-			array(
+			[
 				'token'         => $this->token,
 				'transactionId' => $transaction_id,
-			)
+			]
 		);
 
 		// Return result.
@@ -203,11 +203,11 @@ class Client {
 			'Transaction',
 			'getService',
 			'json',
-			array(
+			[
 				'token'           => $this->token,
 				'serviceId'       => $this->service_id,
 				'paymentMethodId' => Methods::IDEAL,
-			)
+			]
 		);
 
 		if ( ! is_object( $result ) ) {
@@ -220,7 +220,7 @@ class Client {
 		}
 
 		// Ok.
-		$issuers = array();
+		$issuers = [];
 
 		foreach ( $result->countryOptionList as $countries ) {
 			foreach ( $countries->paymentOptionList as $payment_method ) {

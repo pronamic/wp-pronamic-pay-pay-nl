@@ -3,7 +3,11 @@
 namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 
 use Pronamic\WordPress\Pay\Core\Gateway as Core_Gateway;
+use Pronamic\WordPress\Pay\Core\PaymentMethod;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use Pronamic\WordPress\Pay\Fields\CachedCallbackOptions;
+use Pronamic\WordPress\Pay\Fields\IDealIssuerSelectField;
+use Pronamic\WordPress\Pay\Fields\SelectFieldOption;
 use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
@@ -30,59 +34,70 @@ class Gateway extends Core_Gateway {
 	 * @param Config $config Config.
 	 */
 	public function __construct( Config $config ) {
-		parent::__construct( $config );
+		parent::__construct();
 
 		$this->set_method( self::METHOD_HTTP_REDIRECT );
 
 		// Supported features.
-		$this->supports = array(
+		$this->supports = [
 			'payment_status_request',
-		);
+		];
 
 		// Client.
 		$this->client = new Client( $config->token, $config->service_id );
+
+		// Methods.
+		$ideal_payment_method = new PaymentMethod( PaymentMethods::IDEAL );
+
+		$ideal_issuer_field = new IDealIssuerSelectField( 'ideal-issuer' );
+
+		$ideal_issuer_field->set_required( true );
+
+		$ideal_issuer_field->set_options(
+			new CachedCallbackOptions(
+				function() {
+					return $this->get_ideal_issuers();
+				},
+				'pronamic_pay_ideal_issuers_' . \md5( \wp_json_encode( $config ) )
+			) 
+		);
+
+		$ideal_payment_method->add_field( $ideal_issuer_field );
+
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::AFTERPAY_NL ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::BANCONTACT ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::BANK_TRANSFER ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::CREDIT_CARD ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::FOCUM ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::GIROPAY ) );
+		$this->register_payment_method( $ideal_payment_method );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::IN3 ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::KLARNA_PAY_LATER ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::MAESTRO ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::PAYPAL ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::SOFORT ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::SPRAYPAY ) );
 	}
 
 	/**
-	 * Get issuers
+	 * Get iDEAL issuers.
 	 *
-	 * @see Core_Gateway::get_issuers()
+	 * @return array
 	 */
-	public function get_issuers() {
-		$groups = array();
-
+	private function get_ideal_issuers() {
 		$result = $this->client->get_issuers();
 
-		if ( is_array( $result ) ) {
-			$groups[] = array(
-				'options' => $result,
-			);
+		if ( ! is_array( $result ) ) {
+			return [];
 		}
 
-		return $groups;
-	}
+		$options = [];
 
-	/**
-	 * Get supported payment methods
-	 *
-	 * @see Core_Gateway::get_supported_payment_methods()
-	 */
-	public function get_supported_payment_methods() {
-		return array(
-			PaymentMethods::AFTERPAY_NL,
-			PaymentMethods::BANCONTACT,
-			PaymentMethods::BANK_TRANSFER,
-			PaymentMethods::CREDIT_CARD,
-			PaymentMethods::FOCUM,
-			PaymentMethods::GIROPAY,
-			PaymentMethods::IDEAL,
-			PaymentMethods::IN3,
-			PaymentMethods::KLARNA_PAY_LATER,
-			PaymentMethods::MAESTRO,
-			PaymentMethods::PAYPAL,
-			PaymentMethods::SOFORT,
-			PaymentMethods::SPRAYPAY,
-		);
+		foreach ( $result as $key => $value ) {
+			$options[] = new SelectFieldOption( $key, $value );
+		}
+
+		return $options;
 	}
 
 	/**
@@ -100,7 +115,7 @@ class Gateway extends Core_Gateway {
 		/**
 		 * End user.
 		 */
-		$end_user = array();
+		$end_user = [];
 
 		if ( null !== $customer ) {
 			$end_user['gender']       = $customer->get_gender();
@@ -134,14 +149,14 @@ class Gateway extends Core_Gateway {
 		$shipping_address = $payment->get_shipping_address();
 
 		if ( null !== $shipping_address ) {
-			$address = array(
+			$address = [
 				'streetName'            => $shipping_address->get_street_name(),
 				'streetNumber'          => $shipping_address->get_house_number_base(),
 				'streetNumberExtension' => $shipping_address->get_house_number_addition(),
 				'zipCode'               => $shipping_address->get_postal_code(),
 				'city'                  => $shipping_address->get_city(),
 				'countryCode'           => $shipping_address->get_country_code(),
-			);
+			];
 
 			$end_user['address'] = $address;
 		}
@@ -152,14 +167,14 @@ class Gateway extends Core_Gateway {
 		$billing_address = $payment->get_billing_address();
 
 		if ( null !== $billing_address ) {
-			$address = array(
+			$address = [
 				'streetName'            => $billing_address->get_street_name(),
 				'streetNumber'          => $billing_address->get_house_number_base(),
 				'streetNumberExtension' => $billing_address->get_house_number_addition(),
 				'zipCode'               => $billing_address->get_postal_code(),
 				'city'                  => $billing_address->get_city(),
 				'countryCode'           => $billing_address->get_country_code(),
-			);
+			];
 
 			if ( \array_key_exists( 'gender', $end_user ) ) {
 				$address['gender'] = $end_user['gender'];
@@ -179,23 +194,23 @@ class Gateway extends Core_Gateway {
 		/**
 		 * Sale data.
 		 */
-		$sale_data = array(
+		$sale_data = [
 			'invoiceDate'  => $payment->get_date()->format( 'd-m-Y' ),
 			'deliveryDate' => $payment->get_date()->format( 'd-m-Y' ),
-		);
+		];
 
 		$payment_lines = $payment->get_lines();
 
 		if ( null !== $payment_lines ) {
-			$sale_data['order_data'] = array();
+			$sale_data['order_data'] = [];
 
 			foreach ( $payment_lines as $line ) {
-				$order_data_item = array(
+				$order_data_item = [
 					'productId'   => $line->get_id(),
 					'productType' => ProductTypes::transform( $line->get_type() ),
 					'description' => $line->get_name(),
 					'quantity'    => $line->get_quantity(),
-				);
+				];
 
 				$unit_price = $line->get_unit_price();
 
@@ -212,14 +227,14 @@ class Gateway extends Core_Gateway {
 		 *
 		 * @link https://docs.pay.nl/developers?language=nl#transaction-process
 		 */
-		$request = array(
-			'transaction' => array(
+		$request = [
+			'transaction' => [
 				'currency'    => $payment->get_total_amount()->get_currency()->get_alphabetic_code(),
 				'description' => $payment->get_description(),
-			),
+			],
 			'enduser'     => $end_user,
 			'saleData'    => $sale_data,
-		);
+		];
 
 		// Payment method.
 		$method = Methods::transform( $payment_method );
