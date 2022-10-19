@@ -10,7 +10,7 @@ use Pronamic\WordPress\Pay\Payments\PaymentLineType;
  * @author  Remco Tolsma
  * @version 2.0.1
  * @since   1.0.0
- * @see     https://admin.pay.nl/docpanel/api
+ * @link    https://docs.pay.nl/developers#transaction-productData
  */
 class ProductTypes {
 	/**

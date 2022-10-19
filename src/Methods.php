@@ -13,7 +13,7 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
  * @author  Reüel van der Steege
  * @version 2.0.1
  * @since   1.0.0
- * @see     https://admin.pay.nl/data/payment_profiles
+ * @link    https://admin.pay.nl/data/payment_profiles
  */
 class Methods {
 	/**
