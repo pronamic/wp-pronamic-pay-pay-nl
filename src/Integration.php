@@ -26,7 +26,7 @@ class Integration extends AbstractGatewayIntegration {
 			$args,
 			[
 				'id'            => 'pay_nl',
-				'name'          => 'Pay.nl',
+				'name'          => 'Pay.',
 				'url'           => 'https://www.pay.nl/',
 				'product_url'   => 'https://www.pay.nl/',
 				'dashboard_url' => 'https://my.pay.nl/',
@@ -56,7 +56,7 @@ class Integration extends AbstractGatewayIntegration {
 			'html'    => sprintf(
 				/* translators: 1: payment provider name */
 				__( 'Account details are provided by %1$s after registration. These settings need to match with the %1$s dashboard.', 'pronamic_ideal' ),
-				__( 'Pay.nl', 'pronamic_ideal' )
+				__( 'Pay.', 'pronamic_ideal' )
 			),
 		];
 
