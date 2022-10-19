@@ -3,6 +3,7 @@
 namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 
 use Pronamic\WordPress\Pay\AbstractGatewayIntegration;
+use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
  * Title: Pay.nl integration
@@ -36,6 +37,8 @@ class Integration extends AbstractGatewayIntegration {
 		);
 
 		parent::__construct( $args );
+
+		add_filter( 'pronamic_payment_provider_url_pay_nl', [ $this, 'payment_provider_url' ], 10, 2 );
 	}
 
 	/**
@@ -81,6 +84,26 @@ class Integration extends AbstractGatewayIntegration {
 
 		// Return fields.
 		return $fields;
+	}
+
+	/**
+	 * Payment provider URL.
+	 *
+	 * @param string|null $url     Payment provider URL.
+	 * @param Payment     $payment Payment.
+	 * @return string|null
+	 */
+	public function payment_provider_url( ?string $url, Payment $payment ): ?string {
+		$transaction_id = $payment->get_transaction_id();
+
+		if ( null === $transaction_id ) {
+			return $url;
+		}
+
+		return sprintf(
+			'https://my.pay.nl/transactions/details/%s',
+			$transaction_id
+		);
 	}
 
 	public function get_config( $post_id ) {
