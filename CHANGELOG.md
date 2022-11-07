@@ -7,6 +7,11 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [4.3.0] - 2022-11-07
+- Updated dashboard URL to https://my.pay.nl/. [#3](https://github.com/pronamic/wp-pronamic-pay-pay-nl/pull/3)
+- Added payment provider URL filter. [#3](https://github.com/pronamic/wp-pronamic-pay-pay-nl/pull/3)
+- Update integration name from "Pay.nl" to "Pay.". [#2](https://github.com/pronamic/wp-pronamic-pay-pay-nl/issues/2)
+
 ## [4.2.0] - 2022-09-26
 - Updated payment methods registration.
 
@@ -103,29 +108,30 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2014-12-15
 - First release.
 
-[unreleased]: https://github.com/wp-pay-gateways/pay-nl/compare/4.2.0...HEAD
+[unreleased]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/4.3.0...HEAD
+[4.3.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/4.2.0...4.3.0
 [4.2.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/4.1.0...4.2.0
-[4.1.0]: https://github.com/wp-pay-gateways/pay-nl/compare/4.0.0...4.1.0
-[4.0.0]: https://github.com/wp-pay-gateways/pay-nl/compare/3.0.1...4.0.0
-[3.0.1]: https://github.com/wp-pay-gateways/pay-nl/compare/3.0.0...3.0.1
-[3.0.0]: https://github.com/wp-pay-gateways/pay-nl/compare/2.1.2...3.0.0
-[2.1.2]: https://github.com/wp-pay-gateways/pay-nl/compare/2.1.1...2.1.2
-[2.1.1]: https://github.com/wp-pay-gateways/pay-nl/compare/2.1.0...2.1.1
-[2.1.0]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.4...2.1.0
-[2.0.4]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.3...2.0.4
-[2.0.3]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.2...2.0.3
-[2.0.2]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.1...2.0.2
-[2.0.1]: https://github.com/wp-pay-gateways/pay-nl/compare/2.0.0...2.0.1
-[2.0.0]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.8...2.0.0
-[1.1.8]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.7...1.1.8
-[1.1.7]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.6...1.1.7
-[1.1.6]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.5...1.1.6
-[1.1.5]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.4...1.1.5
-[1.1.4]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.3...1.1.4
-[1.1.3]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.2...1.1.3
-[1.1.2]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.1...1.1.2
-[1.1.1]: https://github.com/wp-pay-gateways/pay-nl/compare/1.1.0...1.1.1
-[1.1.0]: https://github.com/wp-pay-gateways/pay-nl/compare/1.0.3...1.1.0
-[1.0.3]: https://github.com/wp-pay-gateways/pay-nl/compare/1.0.2...1.0.3
-[1.0.2]: https://github.com/wp-pay-gateways/pay-nl/compare/1.0.1...1.0.2
-[1.0.1]: https://github.com/wp-pay-gateways/pay-nl/compare/1.0.0...1.0.1
+[4.1.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/4.0.0...4.1.0
+[4.0.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/3.0.1...4.0.0
+[3.0.1]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/3.0.0...3.0.1
+[3.0.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/2.1.2...3.0.0
+[2.1.2]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/2.1.1...2.1.2
+[2.1.1]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/2.1.0...2.1.1
+[2.1.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/2.0.4...2.1.0
+[2.0.4]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/2.0.3...2.0.4
+[2.0.3]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/2.0.2...2.0.3
+[2.0.2]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/2.0.1...2.0.2
+[2.0.1]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/2.0.0...2.0.1
+[2.0.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.1.8...2.0.0
+[1.1.8]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.1.7...1.1.8
+[1.1.7]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.1.6...1.1.7
+[1.1.6]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.1.5...1.1.6
+[1.1.5]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.1.4...1.1.5
+[1.1.4]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.1.3...1.1.4
+[1.1.3]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.1.2...1.1.3
+[1.1.2]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.1.1...1.1.2
+[1.1.1]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.1.0...1.1.1
+[1.1.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.0.3...1.1.0
+[1.0.3]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.0.2...1.0.3
+[1.0.2]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.0.1...1.0.2
+[1.0.1]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/1.0.0...1.0.1
