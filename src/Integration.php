@@ -32,7 +32,7 @@ class Integration extends AbstractGatewayIntegration {
 				'dashboard_url' => 'https://my.pay.nl/',
 				'register_url'  => 'https://www.pay.nl/registreren/?id=M-7393-3100',
 				'provider'      => 'pay_nl',
-				'manual_url'    => \__( 'https://www.pronamic.eu/support/how-to-connect-pay-nl-with-wordpress-via-pronamic-pay/', 'pronamic_ideal' ),
+				'manual_url'    => \__( 'https://www.pronamicpay.com/en/manuals/how-to-connect-pay-nl-to-wordpress-with-pronamic-pay/', 'pronamic_ideal' ),
 			]
 		);
 
