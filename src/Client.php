@@ -198,42 +198,24 @@ class Client {
 	public function get_issuers() {
 		// Request.
 		$result = $this->send_request(
-			'v4',
+			'v13',
 			'Transaction',
-			'getService',
-			'json',
-			[
-				'token'           => $this->token,
-				'serviceId'       => $this->service_id,
-				'paymentMethodId' => Methods::IDEAL,
-			]
+			'getBanks',
+			'json'
 		);
 
-		if ( ! is_object( $result ) ) {
+		if ( ! \is_array( $result ) ) {
 			return false;
-		}
-
-		// Country option list.
-		if ( ! isset( $result->countryOptionList ) ) {
-			throw new \Exception( __( 'Unknown Pay.nl error.', 'pronamic_ideal' ) );
 		}
 
 		// Ok.
 		$issuers = [];
 
-		foreach ( $result->countryOptionList as $countries ) {
-			foreach ( $countries->paymentOptionList as $payment_method ) {
-				if ( Methods::IDEAL !== $payment_method->id ) {
-					continue;
-				}
+		foreach ( $result as $issuer ) {
+			$id   = Security::filter( $issuer->id );
+			$name = Security::filter( $issuer->name );
 
-				foreach ( $payment_method->paymentOptionSubList as $issuer ) {
-					$id   = Security::filter( $issuer->id );
-					$name = Security::filter( $issuer->name );
-
-					$issuers[ $id ] = $name;
-				}
-			}
+			$issuers[ $id ] = $name;
 		}
 
 		return $issuers;
