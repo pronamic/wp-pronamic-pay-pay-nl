@@ -154,7 +154,7 @@ class Client {
 		);
 
 		// Request.
-		$result = $this->send_request( 'v4', 'Transaction', 'start', 'json', $parameters );
+		$result = $this->send_request( 'v13', 'Transaction', 'start', 'json', $parameters );
 
 		if ( is_array( $result ) ) {
 			return null;
@@ -176,7 +176,7 @@ class Client {
 	public function transaction_info( $transaction_id ) {
 		// Request.
 		$result = $this->send_request(
-			'v4',
+			'v13',
 			'Transaction',
 			'info',
 			'json',
