@@ -91,6 +91,8 @@ class Gateway extends Core_Gateway {
 			return [];
 		}
 
+		sort( $result );
+
 		$options = [];
 
 		foreach ( $result as $key => $value ) {

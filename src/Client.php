@@ -56,20 +56,16 @@ class Client {
 	 * @param string $namespace  Namespace.
 	 * @param string $method     Method.
 	 * @param string $output     Output.
-	 * @param array  $parameters Parameters.
 	 *
 	 * @return string
 	 */
-	private function get_url( $version, $namespace, $method, $output, $parameters = [] ) {
-		return add_query_arg(
-			rawurlencode_deep( $parameters ),
-			sprintf(
-				self::API_URL,
-				$version,
-				$namespace,
-				$method,
-				$output
-			)
+	private function get_url( $version, $namespace, $method, $output ) {
+		return sprintf(
+			self::API_URL,
+			$version,
+			$namespace,
+			$method,
+			$output
 		);
 	}
 
@@ -85,9 +81,12 @@ class Client {
 	 * @return null|array|stdClass Response object or null if request failed.
 	 */
 	private function send_request( $version, $namespace, $method, $output, $parameters = [] ) {
-		$url = $this->get_url( $version, $namespace, $method, $output, $parameters );
-
-		$response = wp_remote_get( $url );
+		$response = \wp_remote_post(
+			$this->get_url( $version, $namespace, $method, $output ),
+			[
+				'body' => $parameters,
+			]
+		);
 
 		if ( is_wp_error( $response ) ) {
 			throw new \Exception( __( 'Unknown response from Pay.nl.', 'pronamic_ideal' ) );
@@ -155,7 +154,7 @@ class Client {
 		);
 
 		// Request.
-		$result = $this->send_request( 'v4', 'Transaction', 'start', 'json', $parameters );
+		$result = $this->send_request( 'v13', 'Transaction', 'start', 'json', $parameters );
 
 		if ( is_array( $result ) ) {
 			return null;
@@ -177,7 +176,7 @@ class Client {
 	public function transaction_info( $transaction_id ) {
 		// Request.
 		$result = $this->send_request(
-			'v4',
+			'v13',
 			'Transaction',
 			'info',
 			'json',
@@ -199,42 +198,24 @@ class Client {
 	public function get_issuers() {
 		// Request.
 		$result = $this->send_request(
-			'v4',
+			'v13',
 			'Transaction',
-			'getService',
-			'json',
-			[
-				'token'           => $this->token,
-				'serviceId'       => $this->service_id,
-				'paymentMethodId' => Methods::IDEAL,
-			]
+			'getBanks',
+			'json'
 		);
 
-		if ( ! is_object( $result ) ) {
+		if ( ! \is_array( $result ) ) {
 			return false;
-		}
-
-		// Country option list.
-		if ( ! isset( $result->countryOptionList ) ) {
-			throw new \Exception( __( 'Unknown Pay.nl error.', 'pronamic_ideal' ) );
 		}
 
 		// Ok.
 		$issuers = [];
 
-		foreach ( $result->countryOptionList as $countries ) {
-			foreach ( $countries->paymentOptionList as $payment_method ) {
-				if ( Methods::IDEAL !== $payment_method->id ) {
-					continue;
-				}
+		foreach ( $result as $issuer ) {
+			$id   = Security::filter( $issuer->id );
+			$name = Security::filter( $issuer->name );
 
-				foreach ( $payment_method->paymentOptionSubList as $issuer ) {
-					$id   = Security::filter( $issuer->id );
-					$name = Security::filter( $issuer->name );
-
-					$issuers[ $id ] = $name;
-				}
-			}
+			$issuers[ $id ] = $name;
 		}
 
 		return $issuers;
