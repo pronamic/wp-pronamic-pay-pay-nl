@@ -56,20 +56,16 @@ class Client {
 	 * @param string $namespace  Namespace.
 	 * @param string $method     Method.
 	 * @param string $output     Output.
-	 * @param array  $parameters Parameters.
 	 *
 	 * @return string
 	 */
-	private function get_url( $version, $namespace, $method, $output, $parameters = [] ) {
-		return add_query_arg(
-			rawurlencode_deep( $parameters ),
-			sprintf(
-				self::API_URL,
-				$version,
-				$namespace,
-				$method,
-				$output
-			)
+	private function get_url( $version, $namespace, $method, $output ) {
+		return sprintf(
+			self::API_URL,
+			$version,
+			$namespace,
+			$method,
+			$output
 		);
 	}
 
@@ -85,9 +81,12 @@ class Client {
 	 * @return null|array|stdClass Response object or null if request failed.
 	 */
 	private function send_request( $version, $namespace, $method, $output, $parameters = [] ) {
-		$url = $this->get_url( $version, $namespace, $method, $output, $parameters );
-
-		$response = wp_remote_get( $url );
+		$response = \wp_remote_post(
+			$this->get_url( $version, $namespace, $method, $output ),
+			[
+				'body' => $parameters,
+			]
+		);
 
 		if ( is_wp_error( $response ) ) {
 			throw new \Exception( __( 'Unknown response from Pay.nl.', 'pronamic_ideal' ) );
