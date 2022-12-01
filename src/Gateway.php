@@ -228,6 +228,58 @@ class Gateway extends Core_Gateway {
 				'currency'    => $payment->get_total_amount()->get_currency()->get_alphabetic_code(),
 				'description' => $payment->get_description(),
 			],
+			'statsData'   => [
+				/**
+				 * Info.
+				 * 
+				 * From https://developer.pay.nl/reference/post_transactions:
+				 * > "The used info code which can be tracked in the stats."
+				 * 
+				 * From https://docs.pay.nl/developers#transaction-paylater:
+				 * > "Variabele 'info' die kan worden getraceerd in de statistieken"
+				 */
+				'info'   => 'Pronamic Pay payment ' . $payment->get_id(),
+				/**
+				 * Tool.
+				 * 
+				 * From https://developer.pay.nl/reference/post_transactions:
+				 * > "The used tool code which can be tracked in the stats."
+				 * 
+				 * From https://docs.pay.nl/developers#transaction-paylater:
+				 * > "Variabele 'tool' die kan worden getraceerd in de statistieken"
+				 */
+				'tool'   => 'Pronamic Pay ' . \pronamic_pay_plugin()->get_version(),
+				/**
+				 * Extra 1.
+				 * 
+				 * From https://developer.pay.nl/reference/post_transactions:
+				 * > "The first free value which can be tracked in the stats."
+				 * 
+				 * From https://docs.pay.nl/developers#transaction-paylater:
+				 * > "Vrije variabele 'extra1' die kan worden getraceerd in de statistieken (advies: ID van de order)."
+				 */
+				'extra1' => $payment->get_id(),
+				/**
+				 * Extra 2.
+				 * 
+				 * From https://developer.pay.nl/reference/post_transactions:
+				 * > "The second free value which can be tracked in the stats."
+				 * 
+				 * From https://docs.pay.nl/developers#transaction-paylater:
+				 * > "Vrije variabele 'extra2' die kan worden getraceerd in de statistieken (advies: klant referentie)."
+				 */
+				'extra2' => \get_current_user_id(),
+				/**
+				 * Extra 3.
+				 * 
+				 * From https://developer.pay.nl/reference/post_transactions:
+				 * > "The third free value which can be tracked in the stats."
+				 * 
+				 * From https://docs.pay.nl/developers#transaction-paylater:
+				 * > "Vrije variabele 'extra3' die kan worden getraceerd in de statistieken"
+				 */
+				'extra3' => $payment->get_source() . ' - ' . $payment->get_source_id(),
+			],
 			'enduser'     => $end_user,
 			'saleData'    => $sale_data,
 		];
