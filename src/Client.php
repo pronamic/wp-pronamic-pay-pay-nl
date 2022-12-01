@@ -191,31 +191,28 @@ class Client {
 	}
 
 	/**
-	 * Get issuers
+	 * Get issuers.
 	 *
-	 * @return array|bool
+	 * @return array<string, string>
 	 */
 	public function get_issuers() {
 		// Request.
-		$result = $this->send_request(
+		$data = $this->send_request(
 			'v13',
 			'Transaction',
 			'getBanks',
 			'json'
 		);
 
-		if ( ! \is_array( $result ) ) {
-			return false;
+		if ( ! \is_array( $data ) ) {
+			throw new \Exception( \__( 'Failed to request banks from Pay., received an unexpected answer from Pay.', 'pronamic_ideal' ) );
 		}
 
 		// Ok.
 		$issuers = [];
 
-		foreach ( $result as $issuer ) {
-			$id   = Security::filter( $issuer->id );
-			$name = Security::filter( $issuer->name );
-
-			$issuers[ $id ] = $name;
+		foreach ( $data as $item ) {
+			$issuers[ $item->id ] = $item->name;
 		}
 
 		return $issuers;

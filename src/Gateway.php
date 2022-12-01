@@ -82,14 +82,10 @@ class Gateway extends Core_Gateway {
 	/**
 	 * Get iDEAL issuers.
 	 *
-	 * @return array
+	 * @return array<SelectFieldOption>
 	 */
 	private function get_ideal_issuers() {
 		$result = $this->client->get_issuers();
-
-		if ( ! is_array( $result ) ) {
-			return [];
-		}
 
 		$options = [];
 
