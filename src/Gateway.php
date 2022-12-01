@@ -91,7 +91,7 @@ class Gateway extends Core_Gateway {
 			return [];
 		}
 
-		sort( $result );
+		asort( $result );
 
 		$options = [];
 
