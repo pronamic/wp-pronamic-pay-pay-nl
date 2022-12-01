@@ -303,7 +303,7 @@ class Gateway extends Core_Gateway {
 						 *
 						 * @link https://github.com/WordPress/WordPress/blob/f9db66d504fc72942515f6c0ed2b63aee7cef876/wp-includes/class-wp-http.php#L183-L192
 						 */
-						'WordPress/' . get_bloginfo( 'version' ) . '; ' . get_bloginfo( 'url' ),
+						'WordPress/' . get_bloginfo( 'version' ),
 					]
 				),
 			],
