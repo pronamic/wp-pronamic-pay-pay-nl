@@ -279,6 +279,33 @@ class Gateway extends Core_Gateway {
 				 * > "Vrije variabele 'extra3' die kan worden getraceerd in de statistieken"
 				 */
 				'extra3' => $payment->get_source() . ' - ' . $payment->get_source_id(),
+				/**
+				 * Object.
+				 * 
+				 * From https://developer.pay.nl/reference/post_transactions:
+				 * > "The object which can be tracked in stats."
+				 * 
+				 * From https://docs.pay.nl/developers#mandatory-data-technical-partners:
+				 * > "Naam van het platform of de technische partner, eventueel gevolgd door een pipeline met versienummers"
+				 *
+				 */
+				'object' => implode(
+					' | ',
+					[
+						/**
+						 * Pronamic Pay version.
+						 * 
+						 * @link https://github.com/pronamic/pronamic-pay/issues/12
+						 */
+						'PronamicPay/' . \pronamic_pay_plugin()->get_version(),
+						/**
+						 * WordPress version.
+						 *
+						 * @link https://github.com/WordPress/WordPress/blob/f9db66d504fc72942515f6c0ed2b63aee7cef876/wp-includes/class-wp-http.php#L183-L192
+						 */
+						'WordPress/' . get_bloginfo( 'version' ) . '; ' . get_bloginfo( 'url' ),
+					]
+				),
 			],
 			'enduser'     => $end_user,
 			'saleData'    => $sale_data,
