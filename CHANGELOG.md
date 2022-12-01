@@ -7,6 +7,10 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [4.4.0] - 2022-12-01
+- Updated to REST API version 13: https://rest-api.pay.nl/v13/.
+- Added `statsData` to transaction requests. [#18](https://github.com/pronamic/pronamic-pay/issues/18)
+
 ## [4.3.0] - 2022-11-07
 - Updated dashboard URL to https://my.pay.nl/. [#3](https://github.com/pronamic/wp-pronamic-pay-pay-nl/pull/3)
 - Added payment provider URL filter. [#3](https://github.com/pronamic/wp-pronamic-pay-pay-nl/pull/3)
@@ -108,7 +112,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2014-12-15
 - First release.
 
-[unreleased]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/4.3.0...HEAD
+[unreleased]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/4.4.0...HEAD
+[4.4.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/4.3.0...4.4.0
 [4.3.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/4.2.0...4.3.0
 [4.2.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/4.1.0...4.2.0
 [4.1.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/4.0.0...4.1.0
