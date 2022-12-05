@@ -23,10 +23,10 @@ class Config extends GatewayConfig implements JsonSerializable {
 	/**
 	 * Serialize to JSON.
 	 *
-	 * @return array
+	 * @return object
 	 */
-	public function jsonSerialize() {
-		return [
+	public function jsonSerialize(): object {
+		return (object) [
 			'@type'      => __CLASS__,
 			'token'      => $this->token,
 			'service_id' => $this->service_id,
