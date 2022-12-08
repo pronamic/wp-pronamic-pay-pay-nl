@@ -287,7 +287,6 @@ class Gateway extends Core_Gateway {
 				 * 
 				 * From https://docs.pay.nl/developers#mandatory-data-technical-partners:
 				 * > "Naam van het platform of de technische partner, eventueel gevolgd door een pipeline met versienummers"
-				 *
 				 */
 				'object' => implode(
 					' | ',
