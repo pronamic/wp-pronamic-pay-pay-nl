@@ -59,7 +59,7 @@ class Gateway extends Core_Gateway {
 					return $this->get_ideal_issuers();
 				},
 				'pronamic_pay_ideal_issuers_' . \md5( \wp_json_encode( $config ) )
-			) 
+			)
 		);
 
 		$ideal_payment_method->add_field( $ideal_issuer_field );
@@ -231,60 +231,60 @@ class Gateway extends Core_Gateway {
 			'statsData'   => [
 				/**
 				 * Info.
-				 * 
+				 *
 				 * From https://developer.pay.nl/reference/post_transactions:
 				 * > "The used info code which can be tracked in the stats."
-				 * 
+				 *
 				 * From https://docs.pay.nl/developers#transaction-paylater:
 				 * > "Variabele 'info' die kan worden getraceerd in de statistieken"
 				 */
 				'info'   => 'Pronamic Pay payment ' . $payment->get_id(),
 				/**
 				 * Tool.
-				 * 
+				 *
 				 * From https://developer.pay.nl/reference/post_transactions:
 				 * > "The used tool code which can be tracked in the stats."
-				 * 
+				 *
 				 * From https://docs.pay.nl/developers#transaction-paylater:
 				 * > "Variabele 'tool' die kan worden getraceerd in de statistieken"
 				 */
 				'tool'   => 'Pronamic Pay ' . \pronamic_pay_plugin()->get_version(),
 				/**
 				 * Extra 1.
-				 * 
+				 *
 				 * From https://developer.pay.nl/reference/post_transactions:
 				 * > "The first free value which can be tracked in the stats."
-				 * 
+				 *
 				 * From https://docs.pay.nl/developers#transaction-paylater:
 				 * > "Vrije variabele 'extra1' die kan worden getraceerd in de statistieken (advies: ID van de order)."
 				 */
 				'extra1' => $payment->get_id(),
 				/**
 				 * Extra 2.
-				 * 
+				 *
 				 * From https://developer.pay.nl/reference/post_transactions:
 				 * > "The second free value which can be tracked in the stats."
-				 * 
+				 *
 				 * From https://docs.pay.nl/developers#transaction-paylater:
 				 * > "Vrije variabele 'extra2' die kan worden getraceerd in de statistieken (advies: klant referentie)."
 				 */
 				'extra2' => \get_current_user_id(),
 				/**
 				 * Extra 3.
-				 * 
+				 *
 				 * From https://developer.pay.nl/reference/post_transactions:
 				 * > "The third free value which can be tracked in the stats."
-				 * 
+				 *
 				 * From https://docs.pay.nl/developers#transaction-paylater:
 				 * > "Vrije variabele 'extra3' die kan worden getraceerd in de statistieken"
 				 */
 				'extra3' => $payment->get_source() . ' - ' . $payment->get_source_id(),
 				/**
 				 * Object.
-				 * 
+				 *
 				 * From https://developer.pay.nl/reference/post_transactions:
 				 * > "The object which can be tracked in stats."
-				 * 
+				 *
 				 * From https://docs.pay.nl/developers#mandatory-data-technical-partners:
 				 * > "Naam van het platform of de technische partner, eventueel gevolgd door een pipeline met versienummers"
 				 */
@@ -293,7 +293,7 @@ class Gateway extends Core_Gateway {
 					[
 						/**
 						 * Pronamic Pay version.
-						 * 
+						 *
 						 * @link https://github.com/pronamic/pronamic-pay/issues/12
 						 */
 						'PronamicPay/' . \pronamic_pay_plugin()->get_version(),

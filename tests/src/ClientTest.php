@@ -51,8 +51,8 @@ class ClientTest extends \WP_UnitTestCase {
 	 * @link https://github.com/WordPress/WordPress/blob/3.9.1/wp-includes/class-http.php#L150-L164
 	 *
 	 * @param false|array|\WP_Error $preempt Whether to preempt an HTTP request's return value. Default false.
-	 * @param array                $r       HTTP request arguments.
-	 * @param string               $url     The request URL.
+	 * @param array                 $r       HTTP request arguments.
+	 * @param string                $url     The request URL.
 	 *
 	 * @return array
 	 */
@@ -80,7 +80,7 @@ class ClientTest extends \WP_UnitTestCase {
 	 * @throws \Exception Throws exception if service can not be found.
 	 */
 	public function test_get_issuers() {
-		$this->mock_http_response( 'https://rest-api.pay.nl/v4/Transaction/getService/json/?token&serviceId&paymentMethodId=10', dirname( dirname( __FILE__ ) ) . '/http/transaction-get-service-json-ideal-service-not-found.http' );
+		$this->mock_http_response( 'https://rest-api.pay.nl/v4/Transaction/getService/json/?token&serviceId&paymentMethodId=10', dirname( __DIR__ ) . '/http/transaction-get-service-json-ideal-service-not-found.http' );
 
 		$client = new Client( '', '' );
 
