@@ -63,7 +63,6 @@ class Integration extends AbstractGatewayIntegration {
 		// Token.
 		$fields[] = [
 			'section'  => 'general',
-			'filter'   => FILTER_SANITIZE_STRING,
 			'meta_key' => '_pronamic_gateway_pay_nl_token',
 			'title'    => __( 'Token', 'pronamic_ideal' ),
 			'type'     => 'text',
@@ -74,7 +73,6 @@ class Integration extends AbstractGatewayIntegration {
 		// Service ID.
 		$fields[] = [
 			'section'  => 'general',
-			'filter'   => FILTER_SANITIZE_STRING,
 			'meta_key' => '_pronamic_gateway_pay_nl_service_id',
 			'title'    => __( 'Service ID', 'pronamic_ideal' ),
 			'type'     => 'text',
