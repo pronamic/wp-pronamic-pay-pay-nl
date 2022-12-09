@@ -2,7 +2,6 @@
 
 namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 
-use Pronamic\WordPress\Pay\Core\XML\Security;
 use Pronamic\WordPress\Pay\Gateways\PayNL\Error as PayNL_Error;
 use stdClass;
 
