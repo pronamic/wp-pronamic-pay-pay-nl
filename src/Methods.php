@@ -168,6 +168,7 @@ class Methods {
 		PaymentMethods::MISTER_CASH      => self::BANCONTACT,
 		PaymentMethods::MAESTRO          => self::MAESTRO,
 		PaymentMethods::PAYPAL           => self::PAYPAL,
+		PaymentMethods::RIVERTY          => self::AFTERPAY,
 		PaymentMethods::SOFORT           => self::SOFORT,
 		PaymentMethods::SPRAYPAY         => self::SPRAYPAY,
 	];
