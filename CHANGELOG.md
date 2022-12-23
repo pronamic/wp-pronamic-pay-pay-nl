@@ -7,6 +7,22 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [4.5.0] - 2022-12-23
+
+### Commits
+
+- Register Riverty payment method. ([0a7c780](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/0a7c78006fc119de31dd8b0df97c58417782795f))
+- Removed usage of deprecated `\FILTER_SANITIZE_STRING` in gateway settings fields. ([85d9e1c](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/85d9e1c8a5dde898939d339b1b71f19352b3d21e))
+
+### Composer
+
+- Changed `php` from `>=5.6.20` to `>=8.0`.
+- Changed `wp-pay/core` from `^4.5` to `v4.6.0`.
+	Release notes: https://github.com/pronamic/wp-pay-core/releases/tag/v4.4.0
+Full set of changes: [`4.4.0...4.5.0`][4.5.0]
+
+[4.5.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/v4.4.0...v4.5.0
+
 ## [4.4.0] - 2022-12-01
 - Updated to REST API version 13: https://rest-api.pay.nl/v13/.
 - Added `statsData` to transaction requests. [#18](https://github.com/pronamic/pronamic-pay/issues/18)
