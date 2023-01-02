@@ -8,7 +8,7 @@ use Pronamic\WordPress\Pay\Payments\Payment;
 /**
  * Title: Pay.nl integration
  * Description:
- * Copyright: 2005-2022 Pronamic
+ * Copyright: 2005-2023 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
