@@ -4,6 +4,7 @@
 	"keywords": ["wordpress", "wp", "pay", "pay-nl", "ideal", "gateway", "pronamic"],
 	"homepage": "http://www.wp-pay.org/gateways/pay-nl/",
 	"license": "GPL-3.0-or-later",
+	"type": "wordpress-plugin",
 	"authors": [
 		{
 			"name": "Pronamic",
