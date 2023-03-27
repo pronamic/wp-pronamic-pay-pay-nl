@@ -1,6 +1,6 @@
 {
   "name": "pay-nl",
-  "version": "4.5.1",
+  "version": "4.5.2",
   "description": "Pay.nl driver for the WordPress payment processing library.",
   "repository": {
     "type": "git",

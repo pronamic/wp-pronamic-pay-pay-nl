@@ -7,6 +7,17 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [4.5.2] - 2023-03-27
+
+### Commits
+
+- Set Composer type to WordPress plugin. ([6d9c8f5](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/6d9c8f5e27eb37b73288b2d6865440a9f823e40b))
+- Updated .gitattributes ([1d78daa](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/1d78daa757b292cf773a5db22998dded469867a2))
+
+Full set of changes: [`4.5.1...4.5.2`][4.5.2]
+
+[4.5.2]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/v4.5.1...v4.5.2
+
 ## [4.5.1] - 2023-01-31
 ### Composer
 
