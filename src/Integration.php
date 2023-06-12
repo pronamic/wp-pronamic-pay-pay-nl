@@ -53,31 +53,27 @@ class Integration extends AbstractGatewayIntegration {
 		$fields[] = [
 			'section' => 'general',
 			'type'    => 'html',
-			'html'    => sprintf(
-				/* translators: 1: payment provider name */
-				__( 'Account details are provided by %1$s after registration. These settings need to match with the %1$s dashboard.', 'pronamic_ideal' ),
-				__( 'Pay.', 'pronamic_ideal' )
-			),
+			'html'    => \__( 'Account details are provided by Pay. after registration. These settings need to match with the Pay. dashboard.', 'pronamic_ideal' ),
 		];
 
 		// Token.
 		$fields[] = [
 			'section'  => 'general',
 			'meta_key' => '_pronamic_gateway_pay_nl_token',
-			'title'    => __( 'Token', 'pronamic_ideal' ),
+			'title'    => \__( 'Token', 'pronamic_ideal' ),
 			'type'     => 'text',
 			'classes'  => [ 'regular-text', 'code' ],
-			'tooltip'  => __( 'Token as mentioned at <strong>Merchant » Company data (Connection)</strong> in the payment provider dashboard.', 'pronamic_ideal' ),
+			'tooltip'  => \__( 'Token as mentioned at <strong>Merchant → API Tokens</strong> in the Pay. dashboard.', 'pronamic_ideal' ),
 		];
 
 		// Service ID.
 		$fields[] = [
 			'section'  => 'general',
 			'meta_key' => '_pronamic_gateway_pay_nl_service_id',
-			'title'    => __( 'Service ID', 'pronamic_ideal' ),
+			'title'    => \__( 'Sales location code', 'pronamic_ideal' ),
 			'type'     => 'text',
 			'classes'  => [ 'regular-text', 'code' ],
-			'tooltip'  => __( 'Service ID as mentioned at <strong>Manage » Services</strong> in the payment provider dashboard.', 'pronamic_ideal' ),
+			'tooltip'  => \__( 'Sales location code as mentioned at <strong>Settings → Sales locations</strong> in the Pay. dashboard.', 'pronamic_ideal' ),
 		];
 
 		// Return fields.
