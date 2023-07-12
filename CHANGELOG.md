@@ -7,6 +7,16 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [4.5.4] - 2023-07-12
+
+### Commits
+
+- Updated tooltips to new Pay. dashboard, closes #11 . ([1a2d818](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/1a2d818605df131d18d0d8d24e115831e3d80905))
+
+Full set of changes: [`4.5.3...4.5.4`][4.5.4]
+
+[4.5.4]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/v4.5.3...v4.5.4
+
 ## [4.5.3] - 2023-06-01
 
 ### Commits
