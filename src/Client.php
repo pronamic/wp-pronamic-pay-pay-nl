@@ -88,7 +88,12 @@ class Client {
 		);
 
 		if ( is_wp_error( $response ) ) {
-			throw new \Exception( __( 'Unknown response from Pay.nl.', 'pronamic_ideal' ) );
+			throw new \Exception(
+				\sprintf(
+					__( 'Unknown response from Pay.nl: "%s".', 'pronamic_ideal' ),
+					$response->get_error_message()
+				)
+			);
 		}
 
 		// Body.
