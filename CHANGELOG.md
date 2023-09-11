@@ -7,6 +7,16 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [4.5.5] - 2023-09-11
+
+### Commits
+
+- Include error message for unknown response. ([00d8ee8](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/00d8ee8701aac5d39f998fd8c0fdd774d8933452))
+
+Full set of changes: [`4.5.4...4.5.5`][4.5.5]
+
+[4.5.5]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/v4.5.4...v4.5.5
+
 ## [4.5.4] - 2023-07-12
 
 ### Commits
