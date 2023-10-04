@@ -49,7 +49,6 @@ class Integration extends AbstractGatewayIntegration {
 	public function get_settings_fields() {
 		$fields = [];
 
-		// Token.
 		$fields[] = [
 			'section'  => 'general',
 			'meta_key' => '_pronamic_gateway_pay_nl_token',
@@ -59,7 +58,6 @@ class Integration extends AbstractGatewayIntegration {
 			'tooltip'  => \__( 'Token as mentioned at <strong>Merchant → API Tokens</strong> in the Pay. dashboard.', 'pronamic_ideal' ),
 		];
 
-		// Service ID.
 		$fields[] = [
 			'section'  => 'general',
 			'meta_key' => '_pronamic_gateway_pay_nl_service_id',
@@ -69,7 +67,6 @@ class Integration extends AbstractGatewayIntegration {
 			'tooltip'  => \__( 'Sales location code as mentioned at <strong>Settings → Sales locations</strong> in the Pay. dashboard.', 'pronamic_ideal' ),
 		];
 
-		// Return fields.
 		return $fields;
 	}
 
