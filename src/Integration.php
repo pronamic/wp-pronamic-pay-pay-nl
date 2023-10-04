@@ -49,13 +49,6 @@ class Integration extends AbstractGatewayIntegration {
 	public function get_settings_fields() {
 		$fields = [];
 
-		// Intro.
-		$fields[] = [
-			'section' => 'general',
-			'type'    => 'html',
-			'html'    => \__( 'Account details are provided by Pay. after registration. These settings need to match with the Pay. dashboard.', 'pronamic_ideal' ),
-		];
-
 		// Token.
 		$fields[] = [
 			'section'  => 'general',
