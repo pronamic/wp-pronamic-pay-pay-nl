@@ -7,6 +7,17 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [4.5.6] - 2023-10-13
+
+### Commits
+
+- Removed inline comments that have no added value. ([0a05c2e](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/0a05c2e80e68ad2e2cdba875fe731d39bcabc807))
+- Removed intro, this applies to all gateways, this intro adds little. ([ab59d75](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/ab59d75ace09c0d2fd156eb95a78a1206895bd2f))
+
+Full set of changes: [`4.5.5...4.5.6`][4.5.6]
+
+[4.5.6]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/v4.5.5...v4.5.6
+
 ## [4.5.5] - 2023-09-11
 
 ### Commits
