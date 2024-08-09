@@ -13,7 +13,7 @@ use Pronamic\WordPress\Pay\Payments\Payment;
 /**
  * Title: Pay.nl gateway
  * Description:
- * Copyright: 2005-2023 Pronamic
+ * Copyright: 2005-2024 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
