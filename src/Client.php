@@ -90,6 +90,7 @@ class Client {
 		if ( is_wp_error( $response ) ) {
 			throw new \Exception(
 				\sprintf(
+					/* translators: %s: error message */
 					__( 'Unknown response from Pay.nl: "%s".', 'pronamic_ideal' ),
 					$response->get_error_message()
 				)
