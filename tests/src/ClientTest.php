@@ -73,20 +73,4 @@ class ClientTest extends \WP_UnitTestCase {
 
 		return $processed_headers;
 	}
-
-	/**
-	 * Test get issuers.
-	 *
-	 * @throws \Exception Throws exception if service can not be found.
-	 */
-	public function test_get_issuers() {
-		$this->mock_http_response( 'https://rest-api.pay.nl/v4/Transaction/getService/json/?token&serviceId&paymentMethodId=10', dirname( __DIR__ ) . '/http/transaction-get-service-json-ideal-service-not-found.http' );
-
-		$client = new Client( '', '' );
-
-		$this->expectException( \Exception::class );
-		$this->expectExceptionMessage( 'PAY-404 - Service not found' );
-
-		$client->get_issuers();
-	}
 }

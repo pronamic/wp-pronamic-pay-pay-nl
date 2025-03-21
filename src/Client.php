@@ -194,32 +194,4 @@ class Client {
 		// Return result.
 		return $result;
 	}
-
-	/**
-	 * Get issuers.
-	 *
-	 * @return array<string, string>
-	 */
-	public function get_issuers() {
-		// Request.
-		$data = $this->send_request(
-			'v13',
-			'Transaction',
-			'getBanks',
-			'json'
-		);
-
-		if ( ! \is_array( $data ) ) {
-			throw new \Exception( \__( 'Failed to request banks from Pay., received an unexpected answer from Pay.', 'pronamic_ideal' ) );
-		}
-
-		// Ok.
-		$issuers = [];
-
-		foreach ( $data as $item ) {
-			$issuers[ $item->id ] = $item->name;
-		}
-
-		return $issuers;
-	}
 }
