@@ -7,6 +7,16 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [4.6.0] - 2025-06-19
+
+### Removed
+
+- Removed iDEAL issuers field. ([7a9d4b8](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/7a9d4b808f9dc1834813bcb9c323c45d49c033ca))
+
+Full set of changes: [`4.5.7...4.6.0`][4.6.0]
+
+[4.6.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/v4.5.7...v4.6.0
+
 ## [4.5.7] - 2024-12-17
 
 ### Commits
