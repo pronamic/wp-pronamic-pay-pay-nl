@@ -17,6 +17,9 @@
 /package-lock.json
 /node_modules/
 
+# wp-env
+/.wp-env.override.json
+
 # WordPress
 /wordpress/
 /wp-content/
