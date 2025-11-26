@@ -169,7 +169,7 @@ class Gateway extends Core_Gateway {
 					'productId'   => $line->get_id(),
 					'productType' => ProductTypes::transform( $line->get_type() ),
 					'description' => $line->get_name(),
-					'quantity'    => $line?->get_quantity(),
+					'quantity'    => $line->get_quantity(),
 				];
 
 				$unit_price = $line->get_unit_price();
