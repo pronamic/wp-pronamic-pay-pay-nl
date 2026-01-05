@@ -5,7 +5,7 @@ namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 /**
  * Title: Pay.nl error
  * Description:
- * Copyright: 2005-2024 Pronamic
+ * Copyright: 2005-2026 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
