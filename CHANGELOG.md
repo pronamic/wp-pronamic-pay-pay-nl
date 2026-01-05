@@ -7,6 +7,18 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [4.7.0] - 2026-01-05
+
+### Commits
+
+- Merge pull request #14 from pronamic/core-230-payment-line-quantity-type ([2790fed](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/2790fed8a5d6c14444fee077e40a2fe26929dce8))
+- Oops, fix line `null` value. ([b1379d6](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/b1379d6ef8b1e09410754fce54aeee48ef35606e))
+- Updated for quantity `Number` (https://github.com/pronamic/wp-pay-core/issues/230). ([4f8ea89](https://github.com/pronamic/wp-pronamic-pay-pay-nl/commit/4f8ea89a3870567dabc49af23e00c8a7221b1492))
+
+Full set of changes: [`4.6.1...4.7.0`][4.7.0]
+
+[4.7.0]: https://github.com/pronamic/wp-pronamic-pay-pay-nl/compare/v4.6.1...v4.7.0
+
 ## [4.6.1] - 2025-11-11
 
 ### Commits
