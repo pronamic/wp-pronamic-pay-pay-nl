@@ -10,7 +10,6 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
  * Copyright: 2005-2026 Pronamic
  * Company: Pronamic
  *
- * @author  Reüel van der Steege
  * @version 2.0.1
  * @since   1.0.0
  * @link    https://admin.pay.nl/data/payment_profiles

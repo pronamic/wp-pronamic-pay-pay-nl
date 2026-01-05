@@ -13,7 +13,6 @@ use Pronamic\WordPress\Pay\Payments\Payment;
  * Copyright: 2005-2026 Pronamic
  * Company: Pronamic
  *
- * @author  Remco Tolsma
  * @version 3.0.1
  * @since   1.0.0
  */
