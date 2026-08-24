@@ -72,6 +72,27 @@ class Methods {
 	 */
 	const CREDITCARD = '706';
 
+    /**
+     * Constant for Visa
+     *
+     * @var string
+     */
+    const VISA = '3141';
+
+    /**
+     * Constant for Mastercard
+     *
+     * @var string
+     */
+    const MASTERCARD = '3138';
+
+    /**
+     * Constant for AmEx
+     *
+     * @var string
+     */
+    const AMEX = '1705';
+
 	/**
 	 * Constant for the Focum method.
 	 *
@@ -159,6 +180,9 @@ class Methods {
 		PaymentMethods::BANCONTACT       => self::BANCONTACT,
 		PaymentMethods::BANK_TRANSFER    => self::BANKTRANSFER,
 		PaymentMethods::CREDIT_CARD      => self::CREDITCARD,
+        PaymentMethods::VISA             => self::VISA,
+        PaymentMethods::MASTERCARD       => self::MASTERCARD,
+        PaymentMethods::AMERICAN_EXPRESS => self::AMEX,
 		PaymentMethods::FOCUM            => self::FOCUM,
 		PaymentMethods::GIROPAY          => self::GIROPAY,
 		PaymentMethods::IDEAL            => self::IDEAL,
