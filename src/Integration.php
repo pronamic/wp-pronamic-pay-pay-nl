@@ -11,7 +11,7 @@ use Pronamic\WordPress\Pay\Payments\Payment;
  * Copyright: 2005-2026 Pronamic
  * Company: Pronamic
  *
- * @version 2.0.4
+ * @version 3.0.0
  * @since   1.0.0
  */
 class Integration extends AbstractGatewayIntegration {
@@ -50,20 +50,29 @@ class Integration extends AbstractGatewayIntegration {
 
 		$fields[] = [
 			'section'  => 'general',
-			'meta_key' => '_pronamic_gateway_pay_nl_token',
-			'title'    => \__( 'Token', 'pronamic_ideal' ),
+			'meta_key' => '_pronamic_gateway_pay_nl_token_code',
+			'title'    => \__( 'Token code', 'pronamic_ideal' ),
 			'type'     => 'text',
 			'classes'  => [ 'regular-text', 'code' ],
-			'tooltip'  => \__( 'Token as mentioned at <strong>Merchant → API Tokens</strong> in the Pay. dashboard.', 'pronamic_ideal' ),
+			'tooltip'  => \__( 'Token code as mentioned at <strong>Merchant → Company information</strong> in the Pay. dashboard.', 'pronamic_ideal' ),
+		];
+
+		$fields[] = [
+			'section'  => 'general',
+			'meta_key' => '_pronamic_gateway_pay_nl_token',
+			'title'    => \__( 'API token', 'pronamic_ideal' ),
+			'type'     => 'text',
+			'classes'  => [ 'regular-text', 'code' ],
+			'tooltip'  => \__( 'API token as mentioned at <strong>Merchant → Company information</strong> in the Pay. dashboard.', 'pronamic_ideal' ),
 		];
 
 		$fields[] = [
 			'section'  => 'general',
 			'meta_key' => '_pronamic_gateway_pay_nl_service_id',
-			'title'    => \__( 'Sales location code', 'pronamic_ideal' ),
+			'title'    => \__( 'Service ID', 'pronamic_ideal' ),
 			'type'     => 'text',
 			'classes'  => [ 'regular-text', 'code' ],
-			'tooltip'  => \__( 'Sales location code as mentioned at <strong>Settings → Sales locations</strong> in the Pay. dashboard.', 'pronamic_ideal' ),
+			'tooltip'  => \__( 'Service ID as mentioned at <strong>Settings → Sales locations</strong> in the Pay. dashboard.', 'pronamic_ideal' ),
 		];
 
 		return $fields;
@@ -92,8 +101,9 @@ class Integration extends AbstractGatewayIntegration {
 	public function get_config( $post_id ) {
 		$config = new Config();
 
-		$config->token      = get_post_meta( $post_id, '_pronamic_gateway_pay_nl_token', true );
-		$config->service_id = get_post_meta( $post_id, '_pronamic_gateway_pay_nl_service_id', true );
+		$config->token_code = $this->get_meta( $post_id, 'pay_nl_token_code' );
+		$config->token      = $this->get_meta( $post_id, 'pay_nl_token' );
+		$config->service_id = $this->get_meta( $post_id, 'pay_nl_service_id' );
 
 		return $config;
 	}
