@@ -6,6 +6,7 @@ use Pronamic\WordPress\Money\Money;
 use Pronamic\WordPress\Pay\Core\Gateway as Core_Gateway;
 use Pronamic\WordPress\Pay\Core\PaymentMethod;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use Pronamic\WordPress\Pay\Core\PaymentMethodsCollection;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Pronamic\WordPress\Pay\Refunds\Refund;
 
@@ -52,7 +53,7 @@ class Gateway extends Core_Gateway {
 		];
 
 		// Client.
-		$this->client = new Client( $config->token_code, $config->token );
+		$this->client = new Client( $this->config );
 
 		// Methods.
 		$this->register_payment_method( new PaymentMethod( PaymentMethods::AFTERPAY_NL ) );
@@ -74,6 +75,51 @@ class Gateway extends Core_Gateway {
         $this->register_payment_method(new PaymentMethod(PaymentMethods::AMERICAN_EXPRESS));
 
 	}
+
+    /**
+     * Get payment methods.
+     *
+     * @param array<string, string> $args Query arguments.
+     * @return PaymentMethodsCollection
+     */
+    public function get_payment_methods( array $args = [] ): PaymentMethodsCollection {
+        try {
+            $this->maybe_enrich_payment_methods();
+        } catch ( \Exception ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch -- No problem.
+            // No problem.
+        }
+
+        return parent::get_payment_methods( $args );
+    }
+
+
+    /**
+     * Maybe enrich payment methods.
+     *
+     * @return void
+     */
+    private function maybe_enrich_payment_methods() {
+        $cache_key = 'pronamic_pay_pay_payment_methods_' . \md5( (string) \wp_json_encode( $this->config ) );
+        $pay_payment_methods = \get_transient( $cache_key );
+
+        if ( false === $pay_payment_methods ) {
+            $pay_payment_methods = $this->client->get_payment_methods();
+            \set_transient( $cache_key, $pay_payment_methods, \DAY_IN_SECONDS );
+        }
+//
+        foreach ( $this->payment_methods as $payment_method ) {
+            $pay_payment_method = Methods::transform($payment_method->get_id());
+            $core_payment_method = $this->get_payment_method($payment_method->get_id());
+
+            if(array_key_exists($pay_payment_method, $pay_payment_methods)) {
+                $core_payment_method->set_status('active');
+            } else {
+                $core_payment_method->set_status('inactive');
+            }
+        }
+
+        return;
+    }
 
 	/**
 	 * Get customer request data.

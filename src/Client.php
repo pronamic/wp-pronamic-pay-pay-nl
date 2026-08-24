@@ -28,6 +28,12 @@ class Client {
 	 */
 	const REST_API_URL = 'https://rest.pay.nl/v2/';
 
+    /**
+     * The config for the client
+     *
+     * @var Config
+     */
+    private $config;
 	/**
 	 * Token code.
 	 *
@@ -45,12 +51,12 @@ class Client {
 	/**
 	 * Construct and initialize an Pay.nl client.
 	 *
-	 * @param string $token_code Token code (AT-…).
-	 * @param string $token      API token.
+	 * @param Config $config     the configuration
 	 */
-	public function __construct( $token_code, $token ) {
-		$this->token_code = $token_code;
-		$this->token      = $token;
+	public function __construct( $config ) {
+		$this->config = $config;
+		$this->token_code = $config->token_code;
+		$this->token      = $config->token;
 	}
 
 	/**
@@ -88,9 +94,13 @@ class Client {
 			],
 		];
 
-		if ( null !== $data ) {
+		if ( null !== $data && $method !== 'GET' ) {
 			$args['body'] = \wp_json_encode( $data );
 		}
+
+        if(null !== $data && $method === 'GET') {
+            $url = add_query_arg($data, $url);
+        }
 
 		try {
 			$response = \Pronamic\WordPress\Http\Facades\Http::request( $url, $args );
@@ -209,4 +219,42 @@ class Client {
 	public function create_refund( $transaction_id, array $refund ) {
 		return $this->send_request( 'PATCH', self::REST_API_URL . 'transactions/' . rawurlencode( (string) $transaction_id ) . '/refund', $refund );
 	}
+
+    /**
+     * Get the service configuration for this account
+     *
+     * @return array
+     */
+    public function get_service_config()
+    {
+        return $this->send_request('GET', self::REST_API_URL . 'services/config', [
+            'serviceId' => $this->config->service_id
+        ]);
+    }
+
+    /**
+     * Get all the payment methods
+     *
+     * @return array
+     */
+    public function get_payment_methods(): array
+    {
+        $data = (array) $this->get_service_config();
+        $paymentMethods = [];
+        foreach ($data['checkoutOptions'] ?? [] as $checkoutOption) {
+            foreach ($checkoutOption->paymentMethods ?? [] as $paymentMethod) {
+                $paymentMethods[$paymentMethod->id] = [
+                    'id' => $paymentMethod->id,
+                    'name' => $paymentMethod->name,
+                    'description' => $paymentMethod->description ?? null,
+                    'image' => $paymentMethod->image ?? null,
+                    'minAmount' => $paymentMethod->minAmount ?? null,
+                    'maxAmount' => $paymentMethod->maxAmount ?? null,
+                    'targetCountries' => $paymentMethod->targetCountries ?? [],
+                ];
+            }
+        }
+
+        return $paymentMethods;
+    }
 }
