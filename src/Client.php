@@ -2,195 +2,259 @@
 
 namespace Pronamic\WordPress\Pay\Gateways\PayNL;
 
-use Pronamic\WordPress\Pay\Gateways\PayNL\Error as PayNL_Error;
-use stdClass;
-
 /**
  * Title: Pay.nl client
  * Description:
  * Copyright: 2005-2026 Pronamic
  * Company: Pronamic
  *
- * @version 2.0.4
+ * @version 3.0.0
  * @since   1.0.0
+ *
+ * @link https://developer.pay.nl/docs/orders-1
  */
 class Client {
 	/**
-	 * API URL
+	 * Connect API URL.
 	 *
 	 * @var string
 	 */
-	const API_URL = 'https://rest-api.pay.nl/%s/%s/%s/%s/';
+	const CONNECT_API_URL = 'https://connect.pay.nl/v1/';
 
 	/**
-	 * Token.
+	 * REST API URL.
+	 *
+	 * @var string
+	 */
+	const REST_API_URL = 'https://rest.pay.nl/v2/';
+
+    /**
+     * The config for the client
+     *
+     * @var Config
+     */
+    private $config;
+	/**
+	 * Token code.
+	 *
+	 * @var string
+	 */
+	private $token_code;
+
+	/**
+	 * API token.
 	 *
 	 * @var string
 	 */
 	private $token;
 
 	/**
-	 * Service id.
+	 * Construct and initialize an Pay.nl client.
 	 *
-	 * @var string
+	 * @param Config $config     the configuration
 	 */
-	private $service_id;
-
-	/**
-	 * Construct and initialize an Pay.nl client
-	 *
-	 * @param string $token      Token.
-	 * @param string $service_id Service ID.
-	 */
-	public function __construct( $token, $service_id ) {
-		$this->token      = $token;
-		$this->service_id = $service_id;
+	public function __construct( $config ) {
+		$this->config = $config;
+		$this->token_code = $config->token_code;
+		$this->token      = $config->token;
 	}
 
 	/**
-	 * Get Pay.nl API URL.
+	 * Get authorization header value.
 	 *
-	 * @param string $version    Version.
-	 * @param string $namespace  Namespace.
-	 * @param string $method     Method.
-	 * @param string $output     Output.
+	 * Authentication occurs via HTTP Basic authentication using:
+	 *
+	 * - Token code (AT-…) as username and API token as password, or
+	 * - Service ID (SL-…) as username and secret as password.
 	 *
 	 * @return string
+	 *
+	 * @link https://developer.pay.nl/docs/create-an-order#12-authentication
 	 */
-	private function get_url( $version, $namespace, $method, $output ) {
-		return sprintf(
-			self::API_URL,
-			$version,
-			$namespace,
-			$method,
-			$output
-		);
+	private function get_authorization_header() {
+		return 'Basic ' . base64_encode( $this->token_code . ':' . $this->token ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	}
 
 	/**
-	 * Send request to the specified URL.
+	 * Send request.
 	 *
-	 * @param string $version    Version.
-	 * @param string $namespace  Namespace.
-	 * @param string $method     Method.
-	 * @param string $output     Output.
-	 * @param array  $parameters Parameters.
-	 *
-	 * @return null|array|stdClass Response object or null if request failed.
+	 * @param string                          $method HTTP method.
+	 * @param string                          $url    URL.
+	 * @param object|array<string, mixed>|null $data  Data.
+	 * @return object
+	 * @throws \Exception Throws exception when the request fails.
 	 */
-	private function send_request( $version, $namespace, $method, $output, $parameters = [] ) {
-		$response = \wp_remote_post(
-			$this->get_url( $version, $namespace, $method, $output ),
-			[
-				'body' => $parameters,
-			]
-		);
+	private function send_request( $method, $url, $data = null ) {
+		$args = [
+			'method'  => $method,
+			'headers' => [
+				'Accept'        => 'application/json',
+				'Authorization' => $this->get_authorization_header(),
+				'Content-Type'  => 'application/json',
+			],
+		];
 
-		if ( is_wp_error( $response ) ) {
+		if ( null !== $data && $method !== 'GET' ) {
+			$args['body'] = \wp_json_encode( $data );
+		}
+
+        if(null !== $data && $method === 'GET') {
+            $url = add_query_arg($data, $url);
+        }
+
+		try {
+			$response = \Pronamic\WordPress\Http\Facades\Http::request( $url, $args );
+		} catch ( \Exception $e ) {
 			throw new \Exception(
 				\sprintf(
 					/* translators: %s: error message */
-					__( 'Unknown response from Pay.nl: "%s".', 'pronamic_ideal' ),
-					$response->get_error_message()
+					__( 'Request to Pay.nl failed: "%s".', 'pronamic_ideal' ),
+					$e->getMessage()
 				)
 			);
 		}
 
 		// Body.
-		$body = wp_remote_retrieve_body( $response );
+		$body = $response->body();
 
-		$result = json_decode( $body );
+		$result = \json_decode( $body );
 
-		// Result is array.
-		if ( is_array( $result ) ) {
-			return $result;
-		}
-
-		// Result is object
-		// NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit.
+		// NULL is returned if the JSON cannot be decoded.
 		if ( ! is_object( $result ) ) {
-			throw new \Exception( __( 'Unknown response from Pay.nl error.', 'pronamic_ideal' ) );
+			throw new \Exception(
+				\sprintf(
+					/* translators: %s: HTTP status code */
+					__( 'Unknown response from Pay.nl with status code %s.', 'pronamic_ideal' ),
+					$response->status()
+				)
+			);
 		}
 
 		// Error.
-		if ( isset( $result->request->errorId, $result->request->errorMessage ) && ! empty( $result->request->errorId ) ) {
-			$pay_nl_error = new PayNL_Error( $result->request->errorId, $result->request->errorMessage );
-
-			throw new \Exception( (string) $pay_nl_error );
+		if ( isset( $result->title ) || isset( $result->detail ) ) {
+			throw new \Exception( $this->parse_error_message( $result ) );
 		}
 
-		// Check result (v3).
-		if ( isset( $result->status, $result->error ) && ! filter_var( $result->status, FILTER_VALIDATE_BOOLEAN ) && ! empty( $result->error ) ) {
-			throw new \Exception( $result->error );
+		if ( $response->status() >= 400 ) {
+			throw new \Exception(
+				\sprintf(
+					/* translators: %s: HTTP status code */
+					__( 'Error response from Pay.nl with status code %s.', 'pronamic_ideal' ),
+					$response->status()
+				)
+			);
 		}
 
-		// Check result (v4).
-		if ( isset( $result->request, $result->request->result ) && '1' !== $result->request->result ) {
-			throw new \Exception( __( 'Unknown Pay.nl error.', 'pronamic_ideal' ) );
-		}
-
-		// Return result.
 		return $result;
 	}
 
 	/**
-	 * Transaction start
+	 * Parse error message from result object.
 	 *
-	 * @param int    $amount        Transaction amount.
-	 * @param string $ip_address    IP address.
-	 * @param string $finish_url    Finish URL.
-	 * @param array  $request_param Request parameters.
+	 * @param object $result Result.
+	 * @return string
 	 *
-	 * @return null|stdClass
-	 *
-	 * @link https://admin.pay.nl/docpanel/api/Transaction/start/4
+	 * @link https://developer.pay.nl/docs/error-codes
 	 */
-	public function transaction_start( $amount, $ip_address, $finish_url, $request_param = [] ) {
-		$parameters = array_merge(
-			$request_param,
-			[
-				'token'     => $this->token,
-				'serviceId' => $this->service_id,
-				'amount'    => $amount,
-				'ipAddress' => $ip_address,
-				'finishUrl' => $finish_url,
-			]
-		);
+	private function parse_error_message( $result ) {
+		$message = '';
 
-		// Request.
-		$result = $this->send_request( 'v13', 'Transaction', 'start', 'json', $parameters );
-
-		if ( is_array( $result ) ) {
-			return null;
+		if ( \property_exists( $result, 'detail' ) && null !== $result->detail ) {
+			$message = $result->detail;
+		} elseif ( \property_exists( $result, 'title' ) && null !== $result->title ) {
+			$message = $result->title;
 		}
 
-		// Return result.
-		return $result;
+		if ( \property_exists( $result, 'violations' ) && is_array( $result->violations ) ) {
+			foreach ( $result->violations as $violation ) {
+				$message .= ' ' . $violation->message;
+
+				if ( \property_exists( $violation, 'propertyPath' ) && null !== $violation->propertyPath ) {
+					$message .= ' (' . $violation->propertyPath . ')';
+				}
+			}
+		}
+
+		return (string) $message;
 	}
 
 	/**
-	 * Transaction info.
+	 * Create order.
 	 *
-	 * @param string $transaction_id Transaction ID.
+	 * @param array<string, mixed> $order Order.
+	 * @return object
+	 * @throws \Exception Throws exception when the request fails.
 	 *
-	 * @link https://admin.pay.nl/docpanel/api/Transaction/info/4
-	 *
-	 * @return null|array|stdClass
+	 * @link https://developer.pay.nl/reference/api_create_order-1
 	 */
-	public function transaction_info( $transaction_id ) {
-		// Request.
-		$result = $this->send_request(
-			'v13',
-			'Transaction',
-			'info',
-			'json',
-			[
-				'token'         => $this->token,
-				'transactionId' => $transaction_id,
-			]
-		);
-
-		// Return result.
-		return $result;
+	public function create_order( array $order ) {
+		return $this->send_request( 'POST', self::CONNECT_API_URL . 'orders', $order );
 	}
+
+	/**
+	 * Get order status.
+	 *
+	 * @param string $order_id Order ID.
+	 * @return object
+	 * @throws \Exception Throws exception when the request fails.
+	 *
+	 * @link https://developer.pay.nl/reference/api_get_status-1
+	 */
+	public function get_order_status( $order_id ) {
+		return $this->send_request( 'GET', self::CONNECT_API_URL . 'orders/' . rawurlencode( (string) $order_id ) . '/status' );
+	}
+
+	/**
+	 * Create refund.
+	 *
+	 * The transaction ID can be an EX code or a Pay. order ID.
+	 *
+	 * @param string                    $transaction_id Transaction ID.
+	 * @param array<string, mixed>      $refund         Refund.
+	 * @return object
+	 * @throws \Exception Throws exception when the request fails.
+	 *
+	 * @link https://developer.pay.nl/reference/patch_transactions-transactionid-refund
+	 */
+	public function create_refund( $transaction_id, array $refund ) {
+		return $this->send_request( 'PATCH', self::REST_API_URL . 'transactions/' . rawurlencode( (string) $transaction_id ) . '/refund', $refund );
+	}
+
+    /**
+     * Get the service configuration for this account
+     *
+     * @return array
+     */
+    public function get_service_config()
+    {
+        return $this->send_request('GET', self::REST_API_URL . 'services/config', [
+            'serviceId' => $this->config->service_id
+        ]);
+    }
+
+    /**
+     * Get all the payment methods
+     *
+     * @return array
+     */
+    public function get_payment_methods(): array
+    {
+        $data = (array) $this->get_service_config();
+        $paymentMethods = [];
+        foreach ($data['checkoutOptions'] ?? [] as $checkoutOption) {
+            foreach ($checkoutOption->paymentMethods ?? [] as $paymentMethod) {
+                $paymentMethods[$paymentMethod->id] = [
+                    'id' => $paymentMethod->id,
+                    'name' => $paymentMethod->name,
+                    'description' => $paymentMethod->description ?? null,
+                    'image' => $paymentMethod->image ?? null,
+                    'minAmount' => $paymentMethod->minAmount ?? null,
+                    'maxAmount' => $paymentMethod->maxAmount ?? null,
+                    'targetCountries' => $paymentMethod->targetCountries ?? [],
+                ];
+            }
+        }
+
+        return $paymentMethods;
+    }
 }
